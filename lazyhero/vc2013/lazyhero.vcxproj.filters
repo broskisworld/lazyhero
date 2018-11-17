@@ -341,7 +341,10 @@
     <ClCompile Include="..\src\Hero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="..\src\Camera2D.cpp">
+	<ClCompile Include="..\src\GodController.cpp">
+      <Filter>Header Files</Filter>
+    </ClCompile>
+	<ClCompile Include="..\src\Camera2D.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -365,9 +368,6 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\src\Game.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
-    <ClInclude Include="..\src\Camera2D.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

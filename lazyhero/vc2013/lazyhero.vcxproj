@@ -254,6 +254,7 @@
     <ClInclude Include="..\src\Camera2D.h" />
     <ClInclude Include="..\src\Entity.h" />
     <ClInclude Include="..\src\Game.h" />
+    <ClInclude Include="..\src\GodController.h" />
     <ClInclude Include="..\src\Hero.h" />
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LazyWorld.h" />
@@ -262,6 +263,7 @@
     <ClCompile Include="..\src\Block.cpp" />
     <ClCompile Include="..\src\Camera2D.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
+    <ClCompile Include="..\src\GodController.cpp" />
     <ClCompile Include="..\src\Hero.cpp" />
     <ClCompile Include="..\src\lazyheroApp.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
