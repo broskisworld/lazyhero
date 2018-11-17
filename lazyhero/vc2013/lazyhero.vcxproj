@@ -252,6 +252,7 @@
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Box2d.h" />
     <ClInclude Include="..\src\Block.h" />
     <ClInclude Include="..\src\Entity.h" />
+    <ClInclude Include="..\src\Game.h" />
     <ClInclude Include="..\src\Hero.h" />
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LazyWorld.h" />
