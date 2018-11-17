@@ -2,6 +2,7 @@
 #include <vector>
 #include <list>
 #include <Box2D/Box2D.h>
+#include <math.h>
 
 
 using namespace std;
@@ -35,11 +36,15 @@ void LazyWorld::buildLevel0()
 			worldData[x][y] = bob;
 		}
 	
-	for (int i = 0; i < WORLD_WIDTH_BLOCK; i++) {
+	for (int i = 1; i < WORLD_WIDTH_BLOCK - 2; i++) {
 		worldData[i][60].type = 1;
 	}
-	
+	/*for (int i = 0; i < WORLD_WIDTH_BLOCK - 2; i++) {
+		double test = sin(i) + 2;
+		worldData[i][(int)round(test * 20)].type = 1;
+	}*/
 	worldData[45][10].type = 1;
+	worldData[46][10].type = 1;
 
 	worldData[80][10].type = 1;
 	worldData[45][34].type = 1;
@@ -67,13 +72,13 @@ void LazyWorld::addPhysics(b2World * _physWorld)
 vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mBoxes) {
 	vector<Line2> addLines;
 	//Run a for loop for a horizontal adding of lines
-	for(int j = 0; j < WORLD_HEIGHT_BLOCK; j++)
+	for (int j = 0; j < WORLD_HEIGHT_BLOCK; j++)
 	{
-		for(int i = 0; i < WORLD_WIDTH_BLOCK; i++)
+		for (int i = 0; i < WORLD_WIDTH_BLOCK; i++)
 		{
-		//TODO might need to take out this littl epart with the currBlock and just test the block using the getBlock function
-			//currBlock = getBlockAt(i, j);
-			if (getBlockAt(i,j).type != 0)
+			//TODO might need to take out this littl epart with the currBlock and just test the block using the getBlock function
+				//currBlock = getBlockAt(i, j);
+			if (getBlockAt(i, j).type != 0)
 			{
 				//Test block above if it is air
 				if (j + 1 < WORLD_HEIGHT_BLOCK) {
@@ -114,6 +119,17 @@ vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mB
 
 					}
 				}
+			}
+		}
+	}
+	for (int j = 0; j < WORLD_HEIGHT_BLOCK; j++)
+	{
+		for (int i = 0; i < WORLD_WIDTH_BLOCK; i++)
+		{
+			//TODO might need to take out this littl epart with the currBlock and just test the block using the getBlock function
+				//currBlock = getBlockAt(i, j);
+			if (getBlockAt(i, j).type != 0)
+			{
 				if (j - 1 > 0)
 				{
 					if (getBlockAt(i, j - 1).type == 0)
@@ -163,7 +179,7 @@ vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mB
 		{
 			//currBlock = getBlockAt(j, i);
 
-			if (getBlockAt(j,i).type != 0)
+			if (getBlockAt(j, i).type != 0)
 			{
 				if (j - 1 > 0)
 				{
@@ -184,7 +200,7 @@ vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mB
 							{
 								keepGoing = false;
 							}
-							
+
 							currIndex++;
 						}
 						if (i >= WORLD_HEIGHT_BLOCK)
@@ -203,6 +219,17 @@ vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mB
 						i = endIndex;
 					}
 				}
+			}
+		}
+	}
+	for (int j = 0; j < WORLD_WIDTH_BLOCK; j++)
+	{
+		for (int i = 0; i < WORLD_HEIGHT_BLOCK; i++)
+		{
+			//currBlock = getBlockAt(j, i);
+
+			if (getBlockAt(j, i).type != 0)
+			{
 				if (j + 1 < WORLD_WIDTH_BLOCK) {
 					if (getBlockAt(j + 1, i).type == 0)
 					{
