@@ -17,6 +17,7 @@ LazyWorld gameWorld;
 GodController godInput;
 gameState curGameState;
 
+
 class lazyheroApp : public App {
   public:
 	void setup() override;
@@ -105,7 +106,7 @@ void lazyheroApp::update()
 
 void lazyheroApp::draw()
 {
-	if(curGameState == RUNNING)
+	if (curGameState == RUNNING)
 		gameWorld.render();
 }
 
