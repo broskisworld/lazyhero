@@ -31,11 +31,10 @@ LazyWorld::LazyWorld()
 	}
 
 	//camera vars
-	cam.pos.x = 0;
-	cam.pos.y = 0;
 	cam.scale = 30;
 	cam.rotation = 0;
 	cam.setSlow(10);
+	cam.setFixPoint(1500, 1100);
 }
 b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
 	b2RayCastInput input;
