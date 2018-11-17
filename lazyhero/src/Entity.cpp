@@ -49,16 +49,21 @@ void Entity::initPhysics(b2World* physWorld) {
 	sensorDef.filter.maskBits = BOUNDARY;
 	body->CreateFixture(&sensorDef);
 }
-void Entity::MoveRight() {
-	b2RayCastInput input;
-	input.p1 = b2Vec2(pos.x, pos.y);
-	input.p2 = b2Vec2(pos.x, pos.y - 1.5);
-	input.maxFraction = 1;
-
-	float closestFraction = 1;
-	b2Vec2 intersectionNormal(0, 0);
+void Entity::moveRight() {
+	
+}
+void Entity::update() {
 
 }
-void Entity::Update() {
+void Entity::ai() {
+
+}
+void Entity::physics() {
+
+}
+void Entity::draw() {
+
+}
+Entity::~Entity() {
 
 }
