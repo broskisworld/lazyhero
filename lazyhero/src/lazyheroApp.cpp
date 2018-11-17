@@ -32,11 +32,20 @@ void lazyheroApp::setup()
 {
 	curGameState = SETUP;
 
+	console() << "lazyheroApp initialized, building world...";
+
 	gameWorld.initPhysics();
 	
 	//build world
 	gameWorld.buildLevel0();
 	gameWorld.createWorldFromList();
+
+	console() << "OK!\n";
+
+	//connect to leap motion
+	console() << "initializing leapc connection\n";
+	while (!godInput.initConnection())
+		;
 	
 	curGameState = RUNNING;
 }

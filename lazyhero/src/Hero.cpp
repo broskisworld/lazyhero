@@ -3,15 +3,19 @@
 
 using namespace std;
 
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+using namespace ci;
+using namespace ci::app;
+
 #include "GodController.h"
 #include "LazyWorld.h"
 #include "Entity.h"
 #include "Hero.h"
 
 extern LazyWorld gameWorld;
-
-using namespace ci;
-using namespace ci::app;
 
 Hero::Hero()
 {
