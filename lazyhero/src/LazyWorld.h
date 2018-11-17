@@ -34,16 +34,20 @@ class LazyWorld
 	b2World * physWorld;
 	vector<b2Body *> physicsBodies;
 
-	//camera
+	Timer deltaRenderTimer;
+	Timer deltaPhysicsTimer;
+	float deltaRender = 1.0;
+	float deltaPhysics = 1.0;
 	
 public:
-	Camera2D cam;
 	//constructor
 	LazyWorld();
 
 	//init physics/graphics
 	void initPhysics();
 
+	//camera
+	Camera2D cam;
 
 	//levels
 	void buildLevel0();
@@ -67,7 +71,8 @@ public:
 	void setBlockAt(int x, int y, int type);
 	void fillBlocks(int x1, int y1, int x2, int y2, int type);
 	void addPhysicsBody(b2Body * newPhysBody);
-
+	float getDeltaRender();
+	float getDeltaPhysics();
 	//destructor
 	~LazyWorld();
 };
