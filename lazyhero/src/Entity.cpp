@@ -26,6 +26,8 @@ Entity::Entity()
 	startPos.x = 50;	//start pos
 	startPos.y = 20;
 	currentFrame = 0;
+	timeSinceLastFrame = 0;
+	flip = false;
 }
 
 void Entity::initPhysics() {
@@ -44,7 +46,7 @@ void Entity::initPhysics() {
 	//Makes it so it won't rotate
 	//fixtureDef.density = 0.0f
 	fixtureDef.friction = 0.3f;
-	fixtureDef.restitution = 0.5f; // bounce
+	fixtureDef.restitution = 0.0f; // bounce
 
 	entityBody->CreateFixture(&fixtureDef);
 	
@@ -82,7 +84,7 @@ void Entity::draw() {
 		subFrame = 0;
 	}
 	*/
-	currentFrame++;
+	
 	if (!mTexture)
 	{
 		auto img = loadImage(loadAsset(entSpriteSheet.textureName));
@@ -91,7 +93,11 @@ void Entity::draw() {
 		if(!mTexture)
 			return;	//notexture
 	}
-	
+	timeSinceLastFrame = timeSinceLastFrame + gameWorld.getDeltaRender();
+	if ((1 / currentAnimation.fps) < timeSinceLastFrame) {
+		timeSinceLastFrame = 0;
+		currentFrame++;
+	}
 
 	if (currentFrame + 1 > currentAnimation.numFrames) {
 		currentFrame = 0;
@@ -100,11 +106,15 @@ void Entity::draw() {
 	mTexture->setMagFilter(GL_NEAREST); // disable multi-sample if >= 100%
 	mTexture->setMinFilter(GL_LINEAR); // enable multi-sampling if < 100%
 	//vec2 tPos2(1 / mTexture->getActualWidth() * (currentAnimation.width * frame), 1 / mTexture->getActualHeight() * (currentAnimation.height * frame));
+	
 	Rectf destRect{ -1.5,-1.5, 1, 1 };
+	if (flip) {
+		destRect = { -1,-1.5,1.5,1 };
+	}
 	int x = currentAnimation.width * (currentFrame + 1) + currentAnimation.frameOffsetX * currentAnimation.width + entSpriteSheet.paddingLeft;
 	int y = currentAnimation.height + currentAnimation.frameOffsetY * currentAnimation.height + entSpriteSheet.paddingTop;
 	//console() << currentFrame << endl;
-	console() << currentFrame << endl;
+	//console() << currentFrame << endl;
 	if (x > mTexture->getActualWidth() - entSpriteSheet.paddingRight) {
 		//y = currentAnimation.height + (x / (mTexture->getActualWidth() - currentSpriteSheet.paddingRight)) * currentAnimation.height;
 
@@ -121,8 +131,7 @@ void Entity::draw() {
 
 	gl::ScopedGlslProg shader(gl::getStockShader(gl::ShaderDef().texture(mTexture)));
 	gl::ScopedTextureBind tex0(mTexture);
-	bool flip = true;
-	if (flip) {
+	if (!flip) {
 		gl::drawSolidRect(destRect, uvs.getUpperLeft(), uvs.getLowerRight());
 	}
 	else {

@@ -30,11 +30,13 @@ class Entity
 {
 public:
 	int currentFrame;
+	double timeSinceLastFrame;
 	gl::Texture2dRef mTexture;
 	spriteSheet entSpriteSheet;
 	animation currentAnimation;
 	b2Vec2 startPos;
 	b2Body* entityBody;
+	bool flip;
 	//Texture2d curTexture;
 
 	Entity();

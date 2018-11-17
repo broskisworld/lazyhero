@@ -35,7 +35,7 @@ LazyWorld::LazyWorld()
 	worldEntities.push_back(/*(Entity *)*/ hero);
 
 	//camera vars
-	cam.scale = 30;
+	cam.scale = 40;
 	cam.rotation = 0;
 	cam.setSlow(10);
 	cam.setFixPoint(1500, 1100);
@@ -69,6 +69,7 @@ b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
 		
 		
 	}
+	
 	b2Vec2 intersectionPoint = p1 + closestFraction * (p2 - p1);
 	return intersectionPoint;
 }
@@ -92,6 +93,10 @@ void LazyWorld::buildLevel0()
 	for (int i = 0; i < 8; i++) {
 		fillBlocks(0 + (i * 3 + 1), 50 - (i + 1), WORLD_WIDTH_BLOCK - (i * 3 + 1), 50, 1);
 	}
+	fillBlocks(1, 1, 1, WORLD_HEIGHT_BLOCK - 1,1);
+	fillBlocks(WORLD_WIDTH_BLOCK - 1, 1, WORLD_WIDTH_BLOCK - 1, WORLD_HEIGHT_BLOCK - 1,1);
+
+	fillBlocks(45, 38, 50, 49, 1);
 	/*for (int i = 0; i < WORLD_WIDTH_BLOCK - 2; i++) {
 		double test = sin(i) + 2;
 		worldData[i][(int)round(test * 20)].type = 1;
@@ -154,7 +159,7 @@ void LazyWorld::fillBlocks(int x1, int y1, int x2, int y2, int type) {
 void LazyWorld::initPhysics()
 {
 	//init gravity
-	b2Vec2 gravity(0.0f, 1.0f);
+	b2Vec2 gravity(0.0f, 0.05f);
 
 	//create world
 	physWorld = new b2World(gravity);
@@ -170,10 +175,12 @@ void LazyWorld::stepPhysics()
 	deltaPhysicsTimer.stop();
 	deltaPhysicsTimer.start();
 
-	console() << deltaPhysics;
+	//console() << deltaPhysics;
 
-	for (int i = 0; i < worldEntities.size(); i++)
-		worldEntities[i]->physics();	//nothing
+	for (int i = 0; i < worldEntities.size(); i++) {
+		worldEntities[i]->physics();
+		//nothing
+	}
 
 	for (int i = 0; i < 10; ++i)
 		physWorld->Step(1 / 30.0f, 10, 10);
@@ -228,7 +235,7 @@ void LazyWorld::render()
 	for (int i = 0; i < worldEntities.size(); i++) {
 	gl::pushMatrices();
 	gl::translate(vec2(worldEntities[i]->entityBody->GetPosition().x,worldEntities[i]->entityBody->GetPosition().y));
-	gl::drawSolidRect(Rectf(vec2(-0.5, -1), vec2(0.5, 1)));
+	//l::drawSolidRect(Rectf(vec2(-0.5, -1), vec2(0.5, 1)));
 	worldEntities[i]->draw();	//TODO: implement draw function
 	gl::popMatrices();
 }
@@ -239,7 +246,7 @@ void LazyWorld::render()
 	//gl::translate(lines[0].p1.x + -100, lines[0].p1.y + 100);
 	for (int i = 0; i < blockOutlines.size(); i++) {
 		Line2 line = blockOutlines[i];
-		cout << line.p1.x;
+		//cout << line.p1.x;
 		gl::color(Color(0, 1, 1));
 		vec2 p1(line.p1.x, line.p1.y);
 		vec2 p2(line.p2.x, line.p2.y);
@@ -478,8 +485,8 @@ vector<Line2> LazyWorld::createWorldFromList() {
 		b2FixtureDef fixtureDef;
 		fixtureDef.shape = &dynamicBox;
 		fixtureDef.density = 0.0f;
-		fixtureDef.friction = 0.3f;
-		fixtureDef.restitution = 0.5f; // bounce
+		fixtureDef.friction = 0.9f;
+		fixtureDef.restitution = 0.1f; // bounce
 
 		body->CreateFixture(&fixtureDef);
 		physicsBodies.push_back(body);

@@ -20,7 +20,8 @@ using namespace std;
 class LazyWorld
 {
 	//static boxes
-	int WORLD_WIDTH_BLOCK = 100;
+	bool debug = true;
+	int WORLD_WIDTH_BLOCK = 200;
 	int WORLD_HEIGHT_BLOCK = 100;
 	double WORLD_SCALE_BLOCK = 1;
 	vector<vector<Block>> worldData;

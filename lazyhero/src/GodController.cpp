@@ -17,7 +17,7 @@ bool GodController::hasRevelation()
 
 revelation GodController::getRevelation()
 {
-	return NO_REVELATION;
+	return curRevelation;
 }
 
 void GodController::forceRevelation(revelation newRevelation)
