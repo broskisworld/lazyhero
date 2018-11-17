@@ -39,6 +39,11 @@ LazyWorld::LazyWorld()
 	cam.rotation = 0;
 	cam.setSlow(10);
 	cam.setFixPoint(1500, 1100);
+
+	//reset timers
+
+	deltaRenderTimer.start();
+	deltaPhysicsTimer.start();
 }
 
 b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
@@ -160,6 +165,13 @@ void LazyWorld::initPhysics()
 
 void LazyWorld::stepPhysics()
 {
+	//delta t
+	deltaPhysics = deltaPhysicsTimer.getSeconds();
+	deltaPhysicsTimer.stop();
+	deltaPhysicsTimer.start();
+
+	console() << deltaPhysics;
+
 	for (int i = 0; i < worldEntities.size(); i++)
 		worldEntities[i]->physics();	//nothing
 
@@ -176,6 +188,11 @@ void LazyWorld::stepAI()
 
 void LazyWorld::render()
 {
+	//delta t
+	deltaRender = deltaRenderTimer.getSeconds();
+	deltaRenderTimer.stop();
+	deltaRenderTimer.start();
+
 	cam.update();
 	gl::clear();
 	//MENU
@@ -504,6 +521,8 @@ int LazyWorld::getBlockWidth() { return WORLD_WIDTH_BLOCK; }
 int LazyWorld::getBlockHeight() { return WORLD_HEIGHT_BLOCK; }
 double LazyWorld::getBlockScale() { return WORLD_SCALE_BLOCK; }
 void LazyWorld::addPhysicsBody(b2Body * newPhysBody) { physicsBodies.push_back(newPhysBody); }
+float LazyWorld::getDeltaRender() {return deltaRender; }
+float LazyWorld::getDeltaPhysics() { return deltaPhysics; }
 
 LazyWorld::~LazyWorld()
 {
