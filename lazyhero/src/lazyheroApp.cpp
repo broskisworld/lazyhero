@@ -13,7 +13,7 @@ using namespace std;
 const float BOX_SIZE = 10;
 
 class lazyheroApp : public App {
-	LazyWorld blockWorld;
+	LazyWorld gameWorld;
 	vector<Line2> lines;
   public:
 	void setup() override;
@@ -23,93 +23,33 @@ class lazyheroApp : public App {
 	
 	void addBox( const vec2 &pos );
 	
-	b2World				*mWorld;
-	vector<b2Body*>		mBoxes;
-	
 };
 
 void lazyheroApp::setup()
 {
-	b2Vec2 gravity( 0.0f, 10.0f );
-	mWorld = new b2World( gravity );
-	blockWorld.addPhysics(mWorld);
-	blockWorld.buildLevel0();
+	gameWorld.initPhysics();
+	gameWorld.buildLevel0();
 
-	b2BodyDef groundBodyDef;
-	groundBodyDef.position.Set( 0.0f, getWindowHeight() );
-	b2Body* groundBody = mWorld->CreateBody( &groundBodyDef );
-
-	// Define the ground box shape.
-	b2PolygonShape groundBox;
-
-	// The extents are the half-widths of the box.
-	groundBox.SetAsBox( getWindowWidth(), 10.0f );
-
-	// Add the ground fixture to the ground body.
-	groundBody->CreateFixture( &groundBox, 0.0f );
-	lines = blockWorld.createWorldFromList(mWorld,mBoxes);
-	
-}
-
-void lazyheroApp::addBox( const vec2 &pos )
-{
-	b2BodyDef bodyDef;
-	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set( pos.x, pos.y );
-
-	b2Body *body = mWorld->CreateBody( &bodyDef );
-
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox( BOX_SIZE, BOX_SIZE );
-
-	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
-	fixtureDef.density = 1.0f;
-	fixtureDef.friction = 0.3f;
-	fixtureDef.restitution = 0.5f; // bounce
-
-	body->CreateFixture( &fixtureDef );
-	mBoxes.push_back( body );
+	lines = gameWorld.createWorldFromList();
 }
 
 void lazyheroApp::mouseDown( MouseEvent event )
 {
-	addBox( event.getPos() );
+	gameWorld.createTestBox(event.getPos().x, event.getPos().y);
 }
 
 void lazyheroApp::update()
 {
+	//run physics
+	gameWorld.stepPhysics();
 	
-	for( int i = 0; i < 10; ++i )
-		mWorld->Step( 1 / 30.0f, 10, 10 );
-
+	//run ai
+	gameWorld.stepAI();
 }
 
 void lazyheroApp::draw()
 {
-	gl::clear();
-	
-	gl::color( 1, 0.5f, 0.25f );
-	for( const auto &box : mBoxes ) {
-		gl::pushModelMatrix();
-		gl::translate( box->GetPosition().x, box->GetPosition().y );
-		gl::rotate( box->GetAngle() );
-
-		gl::drawSolidRect( Rectf( -BOX_SIZE, -BOX_SIZE, BOX_SIZE, BOX_SIZE ) );
-
-		gl::popModelMatrix();
-	}
-	gl::pushModelMatrix();
-	//gl::translate(lines[0].p1.x + -100, lines[0].p1.y + 100);
-	for (int i = 0; i < lines.size(); i++) {
-		Line2 line = lines[i];
-		cout << line.p1.x;
-		gl::color(Color(0, 1, 1));
-		vec2 p1(line.p1.x, line.p1.y);
-		vec2 p2(line.p2.x, line.p2.y);
-		gl::drawLine(p1,p2);
-	}
-	gl::popModelMatrix();
+	gameWorld.render();
 }
 
 CINDER_APP( lazyheroApp, RendererGl )

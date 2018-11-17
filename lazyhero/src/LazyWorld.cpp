@@ -1,9 +1,15 @@
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
+
+#include <Box2D/Box2D.h>
+
+using namespace ci;
+
 #include <iostream>
 #include <vector>
 #include <list>
-#include <Box2D/Box2D.h>
 #include <math.h>
-
 
 using namespace std;
 
@@ -15,12 +21,18 @@ using namespace std;
 LazyWorld::LazyWorld()
 {
 	//instantiate vars
+	//world blocks
 	for (int x = 0; x < WORLD_WIDTH_BLOCK; x++)
 	{
 		Block jim(0);
 		vector<Block> bob(WORLD_HEIGHT_BLOCK, jim);
 		worldData.push_back(bob);	//Fill 
 	}
+
+	//camera vars
+	cameraX = 0.0;
+	cameraY = 0.0;
+	cameraScale = 1.0;
 }
 
 void LazyWorld::buildLevel0()
@@ -59,24 +71,100 @@ void LazyWorld::buildLevel0()
 	//generate box2d physics objects for entities (or have entities self call that)
 }
 
+void LazyWorld::createTestBox(double x, double y)
+{
+	b2BodyDef bodyDef;
+	bodyDef.type = b2_dynamicBody;
+	bodyDef.position.Set(x, y);
+
+	b2Body *body = physWorld->CreateBody(&bodyDef);
+
+	b2PolygonShape dynamicBox;
+	dynamicBox.SetAsBox(10, 10);	//TEST BOX SIDE LENGTH IS 10
+
+	b2FixtureDef fixtureDef;
+	fixtureDef.shape = &dynamicBox;
+	fixtureDef.density = 1.0f;
+	fixtureDef.friction = 0.3f;
+	fixtureDef.restitution = 0.5f; // bounce
+
+	body->CreateFixture(&fixtureDef);
+	physicsBodies.push_back(body);
+}
+
 Block LazyWorld::getBlockAt(int x, int y)
 {
 	return worldData[x][y];
 }
 
-void LazyWorld::addPhysics(b2World * _physWorld)
+void LazyWorld::initPhysics()
 {
-	physWorld = _physWorld;
+	//init gravity
+	b2Vec2 gravity(0.0f, 10.0f);
+
+	//create world
+	physWorld = new b2World(gravity);
 }
 
-vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mBoxes) {
+void LazyWorld::stepPhysics()
+{
+	for (int i = 0; i < 10; ++i)
+		physWorld->Step(1 / 30.0f, 10, 10);
+}
+
+void LazyWorld::stepAI()
+{
+	//iterate through all ai's
+}
+
+void LazyWorld::render()
+{
+	gl::clear();
+
+	//fill screen w color
+	gl::color(1, 0.5f, 0.25f);
+
+	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST
+	for (const auto &box : physicsBodies) {
+		gl::pushModelMatrix();
+		gl::translate(box->GetPosition().x, box->GetPosition().y);
+		gl::rotate(box->GetAngle());
+
+		gl::drawSolidRect(Rectf(-10, -10, 10, 10));	//BOX SIZE
+
+		gl::popModelMatrix();
+	}
+
+	//TODO: ADD CAMERA STUFF
+
+	//TODO: iterate through entities and draw
+	/*for(int i = 0; i < worldEntities.size(); i++)
+	{
+		worldEntities[i].draw();
+	}*/
+
+	//draw block outlines
+	gl::pushModelMatrix();
+	//gl::translate(lines[0].p1.x + -100, lines[0].p1.y + 100);
+	for (int i = 0; i < blockOutlines.size(); i++) {
+		Line2 line = blockOutlines[i];
+		cout << line.p1.x;
+		gl::color(Color(0, 1, 1));
+		vec2 p1(line.p1.x, line.p1.y);
+		vec2 p2(line.p2.x, line.p2.y);
+		gl::drawLine(p1, p2);
+	}
+	gl::popModelMatrix();
+}
+
+vector<Line2> LazyWorld::createWorldFromList() {
 	vector<Line2> addLines;
 	//Run a for loop for a horizontal adding of lines
 	for (int j = 0; j < WORLD_HEIGHT_BLOCK; j++)
 	{
 		for (int i = 0; i < WORLD_WIDTH_BLOCK; i++)
 		{
-			//TODO might need to take out this littl epart with the currBlock and just test the block using the getBlock function
+			//TODO ight need to take out this littl epart with the currBlock and just test the block using the getBlock function
 				//currBlock = getBlockAt(i, j);
 			if (getBlockAt(i, j).type != 0)
 			{
@@ -280,7 +368,7 @@ vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mB
 		float len = b2Vec2(line.p2.x - line.p1.x, line.p2.y - line.p1.y).Length();
 		bodyDef.position.Set(pos.x, pos.y);
 
-		b2Body *body = mWorld->CreateBody(&bodyDef);
+		b2Body *body = physWorld->CreateBody(&bodyDef);
 
 		//b2PolygonShape dynamicBox;
 		//dynamicBox.SetAsBox(len, len);
@@ -295,7 +383,7 @@ vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mB
 		fixtureDef.restitution = 0.5f; // bounce
 
 		body->CreateFixture(&fixtureDef);
-		mBoxes.push_back(body);
+		physicsBodies.push_back(body);
 
 		/*
 		Line2 line = addLines[i];
@@ -330,7 +418,9 @@ vector<Line2> LazyWorld::createWorldFromList(b2World * mWorld, vector<b2Body*>mB
 
 	}
 	
-	return addLines;
+	blockOutlines = addLines;
+
+	return addLines;	//deprecated
 }
 
 //utilitiy functions
