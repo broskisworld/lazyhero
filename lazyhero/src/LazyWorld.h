@@ -45,6 +45,7 @@ public:
 
 	//physics/entity/test shit
 	void createTestBox(double x, double y);
+	b2Vec2 raycast(b2Vec2 p1, b2Vec2 p2);
 
 	//update
 	void stepPhysics();
@@ -56,6 +57,8 @@ public:
 	int getBlockWidth();
 	int getBlockHeight();
 	double getBlockScale();
+	b2World* getB2World();
+
 
 	//destructor
 	~LazyWorld();

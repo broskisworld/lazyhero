@@ -4,6 +4,7 @@ using namespace std;
 
 #include "LazyWorld.h"
 #include "Entity.h"
+extern LazyWorld gameWorld;
 enum _entityCategory {
 	BOUNDARY = 0x0001,
 	ENTITY = 0x0002,
@@ -38,7 +39,7 @@ void Entity::initPhysics(b2World* physWorld) {
 	fixtureDef.filter.categoryBits = ENTITY;
 	fixtureDef.filter.maskBits = BOUNDARY | HERO;
 	entityBody = body;
-	/**/
+	/*
 	//Create the hitbox
 	b2PolygonShape hitBox;
 	hitBox.SetAsBox(0.7, 0.3);
@@ -48,17 +49,23 @@ void Entity::initPhysics(b2World* physWorld) {
 	sensorDef.filter.categoryBits = SENSOR;
 	sensorDef.filter.maskBits = BOUNDARY;
 	body->CreateFixture(&sensorDef);
+	*/
 }
-void Entity::MoveRight() {
-	b2RayCastInput input;
-	input.p1 = b2Vec2(pos.x, pos.y);
-	input.p2 = b2Vec2(pos.x, pos.y - 1.5);
-	input.maxFraction = 1;
-
-	float closestFraction = 1;
-	b2Vec2 intersectionNormal(0, 0);
+void Entity::moveRight() {
+	
+}
+void Entity::update() {
 
 }
-void Entity::Update() {
+void Entity::ai() {
+
+}
+void Entity::physics() {
+
+}
+void Entity::draw() {
+
+}
+Entity::~Entity() {
 
 }

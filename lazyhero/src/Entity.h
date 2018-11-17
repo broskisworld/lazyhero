@@ -17,8 +17,8 @@ protected:
 public:
 	Entity();
 	void initPhysics(b2World * physWorld);
-	void Update();
-	void MoveRight();
+	void update();
+	void moveRight();
 	virtual void ai();
 	virtual void physics();
 	virtual void draw();

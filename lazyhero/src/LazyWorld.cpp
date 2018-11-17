@@ -5,6 +5,7 @@
 #include <Box2D/Box2D.h>
 
 using namespace ci;
+using namespace ci::app;
 
 #include <iostream>
 #include <vector>
@@ -34,6 +35,32 @@ LazyWorld::LazyWorld()
 	cameraY = 0.0;
 	cameraScale = 1.0;
 }
+b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
+	b2RayCastInput input;
+	input.p1 = p1;
+	input.p2 = p2;
+	input.maxFraction = 1;
+	float closestFraction = 1;
+	b2Vec2 intersectionNormal(0, 0);
+	for (b2Body* b = physWorld->GetBodyList(); b; b = b->GetNext()) 
+	{
+		for (b2Fixture* f = b ->GetFixtureList(); f; f = f->GetNext()) 
+		{
+			b2RayCastOutput output;
+			if (! f->RayCast(&output, input, 0 ) )
+				continue;
+			if (output.fraction < closestFraction) {
+				closestFraction = output.fraction;
+				intersectionNormal = output.normal;
+			}
+
+		}
+		
+		
+	}
+	b2Vec2 intersectionPoint = p1 + closestFraction * (p2 - p1);
+	return intersectionPoint;
+}
 
 void LazyWorld::buildLevel0()
 {
@@ -49,7 +76,7 @@ void LazyWorld::buildLevel0()
 		}
 	
 	for (int i = 1; i < WORLD_WIDTH_BLOCK - 2; i++) {
-		worldData[i][60].type = 1;
+		worldData[i][20].type = 1;
 	}
 	/*for (int i = 0; i < WORLD_WIDTH_BLOCK - 2; i++) {
 		double test = sin(i) + 2;
@@ -70,7 +97,9 @@ void LazyWorld::buildLevel0()
 
 	//generate box2d physics objects for entities (or have entities self call that)
 }
-
+b2World* LazyWorld::getB2World() {
+	return physWorld;
+}
 void LazyWorld::createTestBox(double x, double y)
 {
 	b2BodyDef bodyDef;
@@ -119,6 +148,7 @@ void LazyWorld::stepAI()
 
 void LazyWorld::render()
 {
+	
 	gl::clear();
 
 	//fill screen w color
@@ -155,6 +185,13 @@ void LazyWorld::render()
 		gl::drawLine(p1, p2);
 	}
 	gl::popModelMatrix();
+
+	b2Vec2 point = raycast(b2Vec2(100, 0), b2Vec2(1000, 1000));
+	vec2 p1(point.x, point.y);
+	vec2 p2(100, 0);
+	gl::color(Color(1, 1, 1));
+	gl::drawLine(p1, p2);
+	gl::drawLine(vec2(0, 0), vec2(1000, 1000));
 }
 
 vector<Line2> LazyWorld::createWorldFromList() {
