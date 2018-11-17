@@ -251,13 +251,15 @@
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Box2d.h" />
     <ClInclude Include="..\src\Block.h" />
+    <ClInclude Include="..\src\Entity.h" />
+    <ClInclude Include="..\src\Hero.h" />
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LazyWorld.h" />
-    <ClInclude Include="Entity.h" />
-    <ClInclude Include="Hero.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Block.cpp" />
+    <ClCompile Include="..\src\Entity.cpp" />
+    <ClCompile Include="..\src\Hero.cpp" />
     <ClCompile Include="..\src\lazyheroApp.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2CollideCircle.cpp" />
@@ -305,8 +307,6 @@
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.cpp" />
     <ClCompile Include="..\src\LazyWorld.cpp" />
-    <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="Hero.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

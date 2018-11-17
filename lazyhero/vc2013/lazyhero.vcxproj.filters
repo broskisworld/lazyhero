@@ -335,10 +335,10 @@
     <ClCompile Include="..\src\LazyWorld.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Entity.cpp">
+    <ClCompile Include="..\src\Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Hero.cpp">
+    <ClCompile Include="..\src\Hero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
@@ -355,10 +355,10 @@
     <ClInclude Include="..\src\LazyWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Hero.h">
+    <ClInclude Include="..\src\Entity.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Entity.h">
+    <ClInclude Include="..\src\Hero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

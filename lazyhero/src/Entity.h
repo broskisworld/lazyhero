@@ -5,7 +5,7 @@
 using namespace std;
 
 #include "LazyWorld.h"
-
+/*
 class Entity
 {
 	double x, y;
@@ -17,4 +17,4 @@ public:
 	virtual void physics();
 	virtual void draw();
 	~Entity();
-}
+}*/
