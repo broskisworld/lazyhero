@@ -29,6 +29,8 @@ Hero::Hero()
 	allFrames = { 50,37,50,10,1,1 };
 	falling = { 50,37,2,10,1,3 };
 	jumpingStat = 0;
+	leftJumpStat = 0;
+	rightJumpStat = 0;
 }
 
 void Hero::ai()
@@ -50,8 +52,12 @@ void Hero::ai()
 	gameWorld.cam.setFixPoint(v.x,v.y);
 	v = vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
 	b2Vec2 j = gameWorld.raycast(b2Vec2(v.x, v.y), b2Vec2(v.x, v.y + 1.2));
+	b2Vec2 j2 = gameWorld.raycast(b2Vec2(v.x - 0.45, v.y), b2Vec2(v.x - 0.45, v.y + 1.2));
+	b2Vec2 j3 = gameWorld.raycast(b2Vec2(v.x + 0.45, v.y), b2Vec2(v.x + 0.45, v.y + 1.2));
 	b2Vec2 jv = b2Vec2(j.x - v.x, j.y - v.y);
-	if (jv.Length() < 1.1) {
+	b2Vec2 jv2 = b2Vec2(j2.x - (v.x - 0.45), j2.y - v.y);
+	b2Vec2 jv3 = b2Vec2(j3.x - (v.x + 0.45), j3.y - v.y);
+	if (jv.Length() < 1.1 || jv2.Length() < 1.1 || jv3.Length() < 1.1) {
 		touching = true;
 		if (jumpingStat != 0) {
 			jumpingStat = jumpingStat + 1;
@@ -59,12 +65,43 @@ void Hero::ai()
 				jumpingStat = 0;
 			}
 		}
-			
-		
 	}
 	else {
 		touching = false;
 		
+	}
+	v = vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
+	j = gameWorld.raycast(b2Vec2(v.x, v.y), b2Vec2(v.x + 0.7, v.y));
+	
+	jv = b2Vec2(j.x - v.x, j.y - v.y);
+	if (jv.Length() < 0.6) {
+		touchingRight = true;
+		if (rightJumpStat != 0) {
+			rightJumpStat = rightJumpStat + 1;
+			if (rightJumpStat > 10) {
+				rightJumpStat = 0;
+			}
+		}
+	}
+	else {
+		touchingRight = false;
+
+	}
+	v = vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
+	j = gameWorld.raycast(b2Vec2(v.x, v.y), b2Vec2(v.x - 0.7, v.y));
+	jv = b2Vec2(j.x - v.x, j.y - v.y);
+	if (jv.Length() < 0.6) {
+		touchingLeft = true;
+		if (leftJumpStat != 0) {
+			leftJumpStat = leftJumpStat + 1;
+			if (leftJumpStat > 10) {
+				leftJumpStat = 0;
+			}
+		}
+	}
+	else {
+		touchingLeft = false;
+
 	}
 
 	
@@ -72,6 +109,103 @@ void Hero::ai()
 	//gl::drawLine()
 	//STATE-DEPENDANT
 	//handle based off state
+	if (Entity::entityBody->GetLinearVelocity().x > 0) {
+		flip = false;
+	}
+	else {
+		flip = true;
+	}
+	if (godInput.w) {
+		if (touching && jumpingStat == 0) {	//touching ground
+			currentAnimation = jump;
+			currentFrame = 0;
+			jumpingStat = 1;
+			Entity::entityBody->ApplyForceToCenter(b2Vec2(0.0, -HERO_JUMPING_FORCE));
+			touching = false;
+		}
+		if (touchingLeft && leftJumpStat == 0) {
+			currentAnimation = jump;
+			currentFrame = 0;
+			leftJumpStat = 1;
+			Entity::entityBody->SetLinearVelocity(b2Vec2(-10, -10));
+			flip = true;
+			touchingLeft = false;
+		}
+		if (touchingRight && rightJumpStat == 0) {
+			currentAnimation = jump;
+			currentFrame = 0;
+			rightJumpStat = 1;
+			Entity::entityBody->SetLinearVelocity(b2Vec2(10, -10));
+			flip = true;
+			touchingRight = false;
+		}
+		if (touching == false && currentFrame == jump.numFrames - 2) {
+			currentAnimation = falling;
+			//currentFrame = 0;
+		}
+	}
+
+	if (godInput.d) {
+		if (touching) {
+			currentAnimation = run;
+
+			boredomFactor = 0.0;	//reset boredom
+
+
+		}
+		
+		if (Entity::entityBody->GetLinearVelocity().x < HERO_WALKING_VELOCITY) {
+			if (touching) {
+				Entity::entityBody->SetLinearVelocity(b2Vec2(0.1 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+			}
+			else
+			{
+				Entity::entityBody->SetLinearVelocity(b2Vec2(0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+			}
+		}
+		if (touching == false && currentFrame == jump.numFrames - 2) {
+			currentAnimation = falling;
+			//currentFrame = 0;
+		}
+	}
+	if (godInput.a) {
+		if (touching) {
+			currentAnimation = run;
+
+			boredomFactor = 0.0;//reset boredom
+		}
+		if (/*Entity::entityBody->GetLinearVelocity().x > -(HERO_WALKING_VELOCITY)*/1 == 1)	//wait to slow down?
+			if (Entity::entityBody->GetLinearVelocity().x > -HERO_WALKING_VELOCITY) {
+				if (touching) 
+				{
+					Entity::entityBody->SetLinearVelocity(b2Vec2(-0.1 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+				}
+				else
+				{
+					Entity::entityBody->SetLinearVelocity(b2Vec2(-0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+				}
+			}
+
+		if (touching == false && currentFrame == jump.numFrames - 2) {
+			currentAnimation = falling;
+			//currentFrame = 0;
+		}
+	}
+	if (!godInput.w && !godInput.a && !godInput.d) {
+		if (touching && jumpingStat != 0) {
+			currentAnimation = crouch;
+		}
+		if (touching) {
+			Entity::entityBody->SetLinearVelocity(b2Vec2(Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y+0.4f));
+		}
+		if (touching && jumpingStat == 0) {
+			currentAnimation = idle;
+		}
+		if (touching == false && currentFrame == jump.numFrames - 2) {
+			currentAnimation = falling;
+			//currentFrame = 0;
+		}
+	}
 	switch (curState)
 	{
 	case IDLE:
@@ -98,71 +232,21 @@ void Hero::ai()
 		switch (curRevelation)
 		{
 		case GO_LEFT:
-			if (touching) {
-				currentAnimation = run;
-
-				boredomFactor = 0.0;//reset boredom
-			}
-			if (Entity::entityBody->GetLinearVelocity().x < 0) {
-				flip = true;
-			}
-				if (/*Entity::entityBody->GetLinearVelocity().x > -(HERO_WALKING_VELOCITY)*/1 == 1)	//wait to slow down?
-					if (Entity::entityBody->GetLinearVelocity().x > -HERO_WALKING_VELOCITY) {
-						Entity::entityBody->SetLinearVelocity(b2Vec2(-0.1 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
-					}
-
-			if (touching == false && currentFrame == jump.numFrames - 2) {
-				currentAnimation = falling;
-					//currentFrame = 0;
-			}
+			
 					
 			
 
 			break;
 		case GO_RIGHT:
-			if (touching) {
-				currentAnimation = run;
-				
-				boredomFactor = 0.0;	//reset boredom
-
-				
-			}
-			if (Entity::entityBody->GetLinearVelocity().x > 0) {
-				flip = false;
-			}
-			if (Entity::entityBody->GetLinearVelocity().x < HERO_WALKING_VELOCITY) {
-				Entity::entityBody->SetLinearVelocity(b2Vec2(0.1 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
-			}
-			if (touching == false && currentFrame == jump.numFrames - 2) {
-				currentAnimation = falling;
-				//currentFrame = 0;
-			}
+			
 			break;
 		case JUMP:
 			boredomFactor = 0.0;	//reset boredom
 
-			if (touching && jumpingStat == 0) {	//touching ground
-				currentAnimation = jump;
-				currentFrame = 0;
-				jumpingStat = 1;
-				Entity::entityBody->ApplyForceToCenter(b2Vec2(0.0, -HERO_JUMPING_FORCE));
-			}
-			if (touching == false && currentFrame == jump.numFrames-2) {
-				currentAnimation = falling;
-				//currentFrame = 0;
-			}
+			
 			break;
 		case NO_REVELATION:
-			if (touching && jumpingStat != 0) {
-				currentAnimation = crouch;
-			}
-			if (touching && jumpingStat == 0 ) {
-				currentAnimation = idle;
-			}
-			if (touching == false && currentFrame == jump.numFrames - 2) {
-				currentAnimation = falling;
-				//currentFrame = 0;
-			}
+			
 			//increment boredom
 			break;
 

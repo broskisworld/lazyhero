@@ -96,7 +96,10 @@ void LazyWorld::buildLevel0()
 	fillBlocks(1, 1, 1, WORLD_HEIGHT_BLOCK - 1,1);
 	fillBlocks(WORLD_WIDTH_BLOCK - 1, 1, WORLD_WIDTH_BLOCK - 1, WORLD_HEIGHT_BLOCK - 1,1);
 
-	fillBlocks(45, 38, 50, 49, 1);
+	fillBlocks(45, 38, 50, 49, 1); 
+	fillBlocks(60, 30, 65, 49, 1);
+	fillBlocks(70, 25, 79, 49, 1);
+
 	/*for (int i = 0; i < WORLD_WIDTH_BLOCK - 2; i++) {
 		double test = sin(i) + 2;
 		worldData[i][(int)round(test * 20)].type = 1;

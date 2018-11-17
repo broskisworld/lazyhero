@@ -13,7 +13,7 @@ using namespace std;
 #define HERO_BOREDOM_THRESHOLD 8.0	//seconds? roughly
 #define HERO_TIRED_THRESHOLD 12.0
 
-#define HERO_WALKING_VELOCITY 0.9
+#define HERO_WALKING_VELOCITY 0.7
 #define HERO_JUMPING_FORCE 15.0
 
 typedef enum
@@ -30,6 +30,10 @@ public:
 	double boredomFactor;
 	double tiredFactor;
 	bool touching;
+	bool touchingLeft;
+	bool touchingRight;
+	int leftJumpStat;
+	int rightJumpStat;
 	int jumpingStat;
 
 	//animations

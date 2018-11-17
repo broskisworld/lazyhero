@@ -45,7 +45,7 @@ void Entity::initPhysics() {
 	fixtureDef.shape = &dynamicBox;
 	//Makes it so it won't rotate
 	//fixtureDef.density = 0.0f
-	fixtureDef.friction = 0.3f;
+	fixtureDef.friction = 0.8f;
 	fixtureDef.restitution = 0.0f; // bounce
 
 	entityBody->CreateFixture(&fixtureDef);
