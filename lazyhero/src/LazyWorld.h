@@ -19,7 +19,7 @@ class LazyWorld
 	//static boxes
 	int WORLD_WIDTH_BLOCK = 100;
 	int WORLD_HEIGHT_BLOCK = 100;
-	double WORLD_SCALE_BLOCK = 5;
+	double WORLD_SCALE_BLOCK = 10;
 	vector<vector<Block>> worldData;
 	vector<Line2> blockOutlines;
 
