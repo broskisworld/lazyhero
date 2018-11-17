@@ -3,15 +3,19 @@
 #include "cinder/gl/gl.h"
 
 #include <Box2D/Box2D.h>
+
 #include "LazyWorld.h"
 #include "Line.h"
+#include "Game.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
+LazyWorld gameWorld;
+gameState curGameState;
+
 class lazyheroApp : public App {
-	LazyWorld gameWorld;
   public:
 	void setup() override;
 	void mouseDown( MouseEvent event ) override;
@@ -21,30 +25,39 @@ class lazyheroApp : public App {
 
 void lazyheroApp::setup()
 {
+	curGameState = SETUP;
+
 	gameWorld.initPhysics();
 	
 	//build world
 	gameWorld.buildLevel0();
 	gameWorld.createWorldFromList();
+
+	curGameState = RUNNING;
 }
 
 void lazyheroApp::mouseDown( MouseEvent event )
 {
-	gameWorld.createTestBox(event.getPos().x, event.getPos().y);
+	if(curGameState == RUNNING)
+		gameWorld.createTestBox(event.getPos().x, event.getPos().y);
 }
 
 void lazyheroApp::update()
 {
-	//run physics
-	gameWorld.stepPhysics();
-	
-	//run ai
-	gameWorld.stepAI();
+	if (curGameState == RUNNING)
+	{
+		//run physics
+		gameWorld.stepPhysics();
+
+		//run ai
+		gameWorld.stepAI();
+	}
 }
 
 void lazyheroApp::draw()
 {
-	gameWorld.render();
+	if(curGameState == RUNNING)
+		gameWorld.render();
 }
 
 CINDER_APP( lazyheroApp, RendererGl )
