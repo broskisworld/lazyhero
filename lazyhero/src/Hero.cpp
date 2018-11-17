@@ -72,9 +72,12 @@ void Hero::ai()
 	}
 	v = vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
 	j = gameWorld.raycast(b2Vec2(v.x, v.y), b2Vec2(v.x + 0.7, v.y));
+	j3 = gameWorld.raycast(b2Vec2(v.x, v.y- 0.95), b2Vec2(v.x + 0.7, v.y - 0.95));
+	
 	
 	jv = b2Vec2(j.x - v.x, j.y - v.y);
-	if (jv.Length() < 0.6) {
+	jv3 = b2Vec2(j3.x - v.x, j3.y -( v.y - 0.95));
+	if (jv.Length() < 0.6 || jv3.Length() < 0.6) {
 		touchingRight = true;
 		if (rightJumpStat != 0) {
 			rightJumpStat = rightJumpStat + 1;
@@ -89,8 +92,10 @@ void Hero::ai()
 	}
 	v = vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
 	j = gameWorld.raycast(b2Vec2(v.x, v.y), b2Vec2(v.x - 0.7, v.y));
+	j3 = gameWorld.raycast(b2Vec2(v.x, v.y - 0.95), b2Vec2(v.x - 0.7, v.y - 0.95));
 	jv = b2Vec2(j.x - v.x, j.y - v.y);
-	if (jv.Length() < 0.6) {
+	jv3 = b2Vec2(j3.x - v.x, j3.y - (v.y - 0.95));
+	if (jv.Length() < 0.6 || jv3.Length() < 0.6) {
 		touchingLeft = true;
 		if (leftJumpStat != 0) {
 			leftJumpStat = leftJumpStat + 1;
@@ -105,14 +110,14 @@ void Hero::ai()
 	}
 
 	
-	console() << "x " << j.x << " y " << j.y << " length " << jv.Length() << endl;
+	//console() << "x " << j.x << " y " << j.y << " length " << jv.Length() << endl;
 	//gl::drawLine()
 	//STATE-DEPENDANT
 	//handle based off state
 	if (Entity::entityBody->GetLinearVelocity().x > 0) {
 		flip = false;
 	}
-	else {
+	else if(Entity::entityBody->GetLinearVelocity().x < 0){
 		flip = true;
 	}
 	if (godInput.w) {
@@ -127,7 +132,7 @@ void Hero::ai()
 			currentAnimation = jump;
 			currentFrame = 0;
 			leftJumpStat = 1;
-			Entity::entityBody->SetLinearVelocity(b2Vec2(-10, -10));
+			Entity::entityBody->SetLinearVelocity(b2Vec2(0.9, -0.8));
 			flip = true;
 			touchingLeft = false;
 		}
@@ -135,7 +140,7 @@ void Hero::ai()
 			currentAnimation = jump;
 			currentFrame = 0;
 			rightJumpStat = 1;
-			Entity::entityBody->SetLinearVelocity(b2Vec2(10, -10));
+			Entity::entityBody->SetLinearVelocity(b2Vec2(-0.9, -0.8));
 			flip = true;
 			touchingRight = false;
 		}
@@ -160,7 +165,10 @@ void Hero::ai()
 			}
 			else
 			{
-				Entity::entityBody->SetLinearVelocity(b2Vec2(0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+				if (!touchingRight) {
+					Entity::entityBody->SetLinearVelocity(b2Vec2(0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+
+				}
 			}
 		}
 		if (touching == false && currentFrame == jump.numFrames - 2) {
@@ -182,7 +190,13 @@ void Hero::ai()
 				}
 				else
 				{
-					Entity::entityBody->SetLinearVelocity(b2Vec2(-0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+					if (!touchingLeft) {
+						Entity::entityBody->SetLinearVelocity(b2Vec2(-0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
+
+					}
+					else {
+						Entity::entityBody->SetLinearVelocity(b2Vec2(0, Entity::entityBody->GetLinearVelocity().y));
+					}
 				}
 			}
 
