@@ -13,6 +13,8 @@ using namespace std;
 
 #include "Block.h"
 #include "Line.h"
+#include "Entity.h"
+#include "Hero.h"
 #include "Camera2D.h"
 
 class LazyWorld
@@ -25,11 +27,12 @@ class LazyWorld
 	vector<Line2> blockOutlines;
 
 	//entities
-	//vector<Entity> worldEntities;
+	vector<Entity *> worldEntities;
+	Hero * hero;	//0th element of worldEntities (generated in buildLevel0() function)
 
 	//overall physics
 	b2World * physWorld;
-	vector<b2Body*> physicsBodies;
+	vector<b2Body *> physicsBodies;
 
 	//camera
 	
@@ -40,6 +43,7 @@ public:
 
 	//init physics/graphics
 	void initPhysics();
+
 
 	//levels
 	void buildLevel0();
@@ -62,7 +66,7 @@ public:
 	b2World* getB2World();
 	void setBlockAt(int x, int y, int type);
 	void fillBlocks(int x1, int y1, int x2, int y2, int type);
-
+	void addPhysicsBody(b2Body * newPhysBody);
 
 	//destructor
 	~LazyWorld();

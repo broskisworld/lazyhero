@@ -4,7 +4,12 @@ using namespace std;
 
 #include "LazyWorld.h"
 #include "Entity.h"
+
 extern LazyWorld gameWorld;
+
+using namespace ci;
+using namespace ci::app;
+
 enum _entityCategory {
 	BOUNDARY = 0x0001,
 	ENTITY = 0x0002,
@@ -15,14 +20,17 @@ enum _entityCategory {
 
 Entity::Entity()
 {
-
+	startPos.x = 50;	//start pos
+	startPos.y = 20;
 }
-void Entity::initPhysics(b2World* physWorld) {
+
+void Entity::initPhysics() {
+	b2World * physWorld = gameWorld.getB2World();
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
-	bodyDef.position.Set(pos.x, pos.y);
+	bodyDef.position.Set(startPos.x, startPos.y);
 
-	b2Body *body = physWorld->CreateBody(&bodyDef);
+	entityBody = physWorld->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(1, 2);
@@ -34,11 +42,13 @@ void Entity::initPhysics(b2World* physWorld) {
 	fixtureDef.friction = 0.3f;
 	fixtureDef.restitution = 0.5f; // bounce
 
-	body->CreateFixture(&fixtureDef);
+	entityBody->CreateFixture(&fixtureDef);
 	
 	fixtureDef.filter.categoryBits = ENTITY;
 	fixtureDef.filter.maskBits = BOUNDARY | HERO;
-	entityBody = body;
+	
+	gameWorld.addPhysicsBody(entityBody);	//add to render n shit
+
 	/*
 	//Create the hitbox
 	b2PolygonShape hitBox;
@@ -51,18 +61,15 @@ void Entity::initPhysics(b2World* physWorld) {
 	body->CreateFixture(&sensorDef);
 	*/
 }
-void Entity::moveRight() {
-	
-}
-void Entity::update() {
 
-}
 void Entity::ai() {
-
+	//console() << "ENTITY XY\t" << entityBody->GetPosition().x << ", " << entityBody->GetPosition().y << endl;
+	console() << "ENTITY" << endl;
 }
 void Entity::physics() {
 
 }
+
 void Entity::draw() {
 
 }
