@@ -11,12 +11,14 @@ using namespace ci::app;
 #include <vector>
 #include <list>
 #include <math.h>
+#include <time.h>
 
 using namespace std;
 
 #include "LazyWorld.h"
 #include "Line.h"
 #include "Block.h"
+
 
 
 LazyWorld::LazyWorld()
@@ -44,6 +46,7 @@ LazyWorld::LazyWorld()
 
 	deltaRenderTimer.start();
 	deltaPhysicsTimer.start();
+	srand(time(NULL));
 }
 
 b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
@@ -93,10 +96,13 @@ void LazyWorld::buildLevel0()
 	for (int i = 0; i < 8; i++) {
 		fillBlocks(0 + (i * 3 + 1), 50 - (i + 1), WORLD_WIDTH_BLOCK - (i * 3 + 1), 50, 1);
 	}
-	fillBlocks(1, 1, 1, WORLD_HEIGHT_BLOCK - 1,1);
+	fillBlocks(0, 1, 0, WORLD_HEIGHT_BLOCK - 1,1);
 	fillBlocks(WORLD_WIDTH_BLOCK - 1, 1, WORLD_WIDTH_BLOCK - 1, WORLD_HEIGHT_BLOCK - 1,1);
 
-	fillBlocks(45, 38, 50, 49, 1);
+	fillBlocks(45, 38, 50, 49, 1); 
+	fillBlocks(60, 30, 65, 49, 1);
+	fillBlocks(70, 25, 79, 49, 1);
+
 	/*for (int i = 0; i < WORLD_WIDTH_BLOCK - 2; i++) {
 		double test = sin(i) + 2;
 		worldData[i][(int)round(test * 20)].type = 1;
@@ -183,7 +189,7 @@ void LazyWorld::stepPhysics()
 	}
 
 	for (int i = 0; i < 10; ++i)
-		physWorld->Step(1 / 30.0f, 10, 10);
+		physWorld->Step(1/30.0f, 10, 10);
 }
 
 void LazyWorld::stepAI()
@@ -215,9 +221,55 @@ void LazyWorld::render()
 	gl::scale(vec2(cam.scale, cam.scale));
 
 	gl::rotate(cam.rotation);
+
+
+	//Render Blocks
+	//getBlockAt(round(getWindowWidth() / cam.scale), (getWindowHeight() / cam.scale));
+	vec2 b = cam.camToWorldPos(vec2(0, 0));
+	console() << (getWindowWidth() / 2 / cam.scale) << endl;
+	int bWidth = round(getWindowWidth() / cam.scale);
+	int bHeight = round(getWindowHeight() / cam.scale);
+	vec2 v = cam.camToWorldPos(vec2(0, 0));
+	int startX =round(b.x);
+	int startY = round(b.y);
+	int endX = startX + bWidth + 1;
+	int endY = startY + bHeight + 1;
+	if (startX < 0) {
+		startX = 0;
+	}
+	if (startY < 0) {
+		startY = 0;
+	}
+	if (endX >= WORLD_WIDTH_BLOCK) {
+		endX = WORLD_WIDTH_BLOCK - 1;
+	}
+	if (endY >= WORLD_HEIGHT_BLOCK) {
+		endY = WORLD_HEIGHT_BLOCK - 1;
+	}
+	/*
+	if (startX < WORLD_WIDTH_BLOCK && startY < WORLD_HEIGHT_BLOCK) {
+		for (int i = startX; i < endX; i++) {
+			for (int j = startY; j < endY; j++) {
+				if (getBlockAt(i, j).type != 0) {
+					gl::pushMatrices();
+					//gl::color((rand() % 100) / 100.0, (rand() % 100) / 100.0, (rand() % 100) / 100.0);
+					gl::translate(i, j);
+
+					gl::drawSolidRect(Rectf(-0.5, -0.5, 0.5, 0.5));
+					gl::popMatrices();
+				}
+				
+			}
+		}
+	}
+	*/
+	
+	
+
+	
 	//End of camera
 	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST
-	/*for (const auto &box : physicsBodies) {
+	for (const auto &box : physicsBodies) {
 		gl::pushModelMatrix();
 		gl::translate(box->GetPosition().x, box->GetPosition().y);
 		gl::rotate(box->GetAngle());
@@ -225,7 +277,7 @@ void LazyWorld::render()
 		gl::drawSolidRect(Rectf(-0.5, -0.5, 0.5, 0.5));	//BOX SIZE
 
 		gl::popModelMatrix();
-	}*/
+	}
 
 	//TODO: iterate through entities and draw
 	/*for(int i = 0; i < worldEntities.size(); i++)
@@ -434,7 +486,7 @@ vector<Line2> LazyWorld::createWorldFromList() {
 						while (keepGoing && currIndex < WORLD_HEIGHT_BLOCK)
 						{
 
-							if (getBlockAt(j - 1, currIndex).type == 0 && getBlockAt(j, currIndex).type != 0)
+							if (getBlockAt(j + 1, currIndex).type == 0 && getBlockAt(j, currIndex).type != 0)
 							{
 								endIndex = currIndex;
 							}
@@ -485,7 +537,7 @@ vector<Line2> LazyWorld::createWorldFromList() {
 		b2FixtureDef fixtureDef;
 		fixtureDef.shape = &dynamicBox;
 		fixtureDef.density = 0.0f;
-		fixtureDef.friction = 0.9f;
+		fixtureDef.friction = 0.7f;
 		fixtureDef.restitution = 0.1f; // bounce
 
 		body->CreateFixture(&fixtureDef);

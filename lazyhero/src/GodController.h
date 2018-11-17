@@ -16,6 +16,7 @@ class GodController
 {
 	revelation curRevelation;
 public:
+	bool w, a, s, d, spacebar, left, right, up, down;
 	bool isAlive();
 	bool hasRevelation();
 	revelation getRevelation();
