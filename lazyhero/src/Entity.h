@@ -9,6 +9,7 @@ using namespace std;
 
 class Entity
 {
+protected:
 	b2Vec2 pos;
 	b2Body* entityBody;
 	//Texture2d curTexture;
