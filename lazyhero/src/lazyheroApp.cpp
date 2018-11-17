@@ -3,6 +3,8 @@
 #include "cinder/gl/gl.h"
 
 #include <Box2D/Box2D.h>
+#include "LazyWorld.h"
+#include "Line.h"
 
 using namespace ci;
 using namespace ci::app;
@@ -11,6 +13,8 @@ using namespace std;
 const float BOX_SIZE = 10;
 
 class lazyheroApp : public App {
+	LazyWorld blockWorld;
+	vector<Line2> lines;
   public:
 	void setup() override;
 	void mouseDown( MouseEvent event ) override;
@@ -21,12 +25,15 @@ class lazyheroApp : public App {
 	
 	b2World				*mWorld;
 	vector<b2Body*>		mBoxes;
+	
 };
 
 void lazyheroApp::setup()
 {
 	b2Vec2 gravity( 0.0f, 10.0f );
 	mWorld = new b2World( gravity );
+	blockWorld.addPhysics(mWorld);
+	blockWorld.buildLevel0();
 
 	b2BodyDef groundBodyDef;
 	groundBodyDef.position.Set( 0.0f, getWindowHeight() );
@@ -40,6 +47,7 @@ void lazyheroApp::setup()
 
 	// Add the ground fixture to the ground body.
 	groundBody->CreateFixture( &groundBox, 0.0f );
+	lines = blockWorld.createWorldFromList(mWorld,mBoxes);
 	
 }
 
@@ -71,8 +79,10 @@ void lazyheroApp::mouseDown( MouseEvent event )
 
 void lazyheroApp::update()
 {
+	
 	for( int i = 0; i < 10; ++i )
 		mWorld->Step( 1 / 30.0f, 10, 10 );
+
 }
 
 void lazyheroApp::draw()
@@ -89,6 +99,17 @@ void lazyheroApp::draw()
 
 		gl::popModelMatrix();
 	}
+	gl::pushModelMatrix();
+	//gl::translate(lines[0].p1.x + -100, lines[0].p1.y + 100);
+	for (int i = 0; i < lines.size(); i++) {
+		Line2 line = lines[i];
+		cout << line.p1.x;
+		gl::color(Color(0, 1, 1));
+		vec2 p1(line.p1.x, line.p1.y);
+		vec2 p2(line.p2.x, line.p2.y);
+		gl::drawLine(p1,p2);
+	}
+	gl::popModelMatrix();
 }
 
 CINDER_APP( lazyheroApp, RendererGl )
