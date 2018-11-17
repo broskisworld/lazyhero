@@ -56,14 +56,13 @@ void lazyheroApp::keyDown(KeyEvent event)
 	switch (event.getChar())
 	{
 	case 'w':
-		godInput.forceRevelation(JUMP);
-		console() << "w pushed" << endl;
+		godInput.w = true;
 		break;
 	case 'a':
-		godInput.forceRevelation(GO_LEFT);
+		godInput.a = true;
 		break;
 	case 'd':
-		godInput.forceRevelation(GO_RIGHT);
+		godInput.d = true;
 		break;
 	default:
 		//godInput.forceRevelation(NO_REVELATION);
@@ -76,16 +75,13 @@ void lazyheroApp::keyUp(KeyEvent event)
 	switch (event.getChar())
 	{
 	case 'w':
-		if (godInput.getRevelation() == JUMP)
-			godInput.forceRevelation(NO_REVELATION);
+		godInput.w = false;
 		break;
 	case 'a':
-		if (godInput.getRevelation() == JUMP)
-			godInput.forceRevelation(NO_REVELATION);
+		godInput.a = false;
 		break;
 	case 'd':
-		if (godInput.getRevelation() == JUMP)
-			godInput.forceRevelation(NO_REVELATION);
+		godInput.d = false;
 		break;
 	default:
 		//godInput.forceRevelation(NO_REVELATION);
