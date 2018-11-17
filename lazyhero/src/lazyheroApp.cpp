@@ -10,27 +10,22 @@ using namespace ci;
 using namespace ci::app;
 using namespace std;
 
-const float BOX_SIZE = 10;
-
 class lazyheroApp : public App {
 	LazyWorld gameWorld;
-	vector<Line2> lines;
   public:
 	void setup() override;
 	void mouseDown( MouseEvent event ) override;
 	void update() override;
 	void draw() override;
-	
-	void addBox( const vec2 &pos );
-	
 };
 
 void lazyheroApp::setup()
 {
 	gameWorld.initPhysics();
+	
+	//build world
 	gameWorld.buildLevel0();
-
-	lines = gameWorld.createWorldFromList();
+	gameWorld.createWorldFromList();
 }
 
 void lazyheroApp::mouseDown( MouseEvent event )
