@@ -16,6 +16,16 @@ using namespace ci::app;
 Hero::Hero()
 {
 	curState = IDLE;
+
+	entSpriteSheet = { "adventurer-v1.5-Sheet.png", 35, 0, 0, 0 };
+
+	idle = { 50,37,4,10,0,0 };
+	crouch = { 50,37,4,10,4,0 };
+	run = { 50,37,6,10,1,1 };
+	jump = { 50,37,10,10,0,2 };
+	slide = { 50,37,5,10,3,3 };
+	ledgeClimb = { 50,37,9,10,1,4 };
+	allFrames = { 50,37,50,10,1,1 };
 }
 
 void Hero::ai()
@@ -29,9 +39,9 @@ void Hero::ai()
 	//boredomFactor += 0.001;
 
 	//talk to camera
-	console() << "HERO XY\t" << entityBody->GetPosition().x << ", " << entityBody->GetPosition().y << endl;
-
-	gameWorld.cam.setFixPoint(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
+	//console() << "HERO XY\t" << entityBody->GetPosition().x << ", " << entityBody->GetPosition().y << endl;
+	vec2 v = gameWorld.cam.worldToCamPos(vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y));
+	//gameWorld.cam.setFixPoint(v.x,v.y);
 
 	//STATE-DEPENDANT
 	//handle based off state
@@ -42,13 +52,15 @@ void Hero::ai()
 			;	//START WANDERING
 
 		//stay still af
-
+		currentAnimation = idle;
 		break;
 	case WANDER:
 		if (tiredFactor > HERO_TIRED_THRESHOLD)
 			curState = IDLE;
 
 		//keep walking towards desiredX
+
+		currentAnimation = jump;
 		break;
 	case FOLLOWING:
 		revelation curRevelation = GO_RIGHT/*GodController.hasRevelation()*/;
@@ -79,9 +91,12 @@ void Hero::ai()
 			//increment boredom
 			break;
 
+			
+
 			if (boredomFactor > HERO_BOREDOM_THRESHOLD)
 				curState = IDLE;
 		}
+		currentAnimation = run;
 		break;
 	}
 }

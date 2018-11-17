@@ -1,5 +1,8 @@
 #include <iostream>
 #include <Box2D/Box2D.h>
+#include "cinder/app/App.h"
+#include "cinder/app/RendererGl.h"
+#include "cinder/gl/gl.h"
 using namespace std;
 
 #include "LazyWorld.h"
@@ -22,6 +25,7 @@ Entity::Entity()
 {
 	startPos.x = 50;	//start pos
 	startPos.y = 20;
+	currentFrame = 0;
 }
 
 void Entity::initPhysics() {
@@ -33,7 +37,7 @@ void Entity::initPhysics() {
 	entityBody = physWorld->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(1, 2);
+	dynamicBox.SetAsBox(0.5, 1);
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
@@ -64,14 +68,66 @@ void Entity::initPhysics() {
 
 void Entity::ai() {
 	//console() << "ENTITY XY\t" << entityBody->GetPosition().x << ", " << entityBody->GetPosition().y << endl;
-	console() << "ENTITY" << endl;
+	//console() << "ENTITY" << endl;
 }
 void Entity::physics() {
 
 }
 
 void Entity::draw() {
+	/*
+	subFrame++;
+	if (subFrame > 10) {
+		currentFrame++;
+		subFrame = 0;
+	}
+	*/
+	currentFrame++;
+	if (!mTexture)
+	{
+		auto img = loadImage(loadAsset(entSpriteSheet.textureName));
+		mTexture = gl::Texture2d::create(img);
 
+		if(!mTexture)
+			return;	//notexture
+	}
+	
+
+	if (currentFrame + 1 > currentAnimation.numFrames) {
+		currentFrame = 0;
+	}
+	
+	mTexture->setMagFilter(GL_NEAREST); // disable multi-sample if >= 100%
+	mTexture->setMinFilter(GL_LINEAR); // enable multi-sampling if < 100%
+	//vec2 tPos2(1 / mTexture->getActualWidth() * (currentAnimation.width * frame), 1 / mTexture->getActualHeight() * (currentAnimation.height * frame));
+	Rectf destRect{ -1.5,-1.5, 1, 1 };
+	int x = currentAnimation.width * (currentFrame + 1) + currentAnimation.frameOffsetX * currentAnimation.width + entSpriteSheet.paddingLeft;
+	int y = currentAnimation.height + currentAnimation.frameOffsetY * currentAnimation.height + entSpriteSheet.paddingTop;
+	//console() << currentFrame << endl;
+	console() << currentFrame << endl;
+	if (x > mTexture->getActualWidth() - entSpriteSheet.paddingRight) {
+		//y = currentAnimation.height + (x / (mTexture->getActualWidth() - currentSpriteSheet.paddingRight)) * currentAnimation.height;
+
+		//console() << (x / (mTexture->getActualWidth() - entSpriteSheet.paddingRight)) << endl;
+		//console() << x << endl;
+		x = x % (mTexture->getActualWidth() - entSpriteSheet.paddingRight) + entSpriteSheet.paddingLeft;
+		//console() << x << endl;
+
+		y = y + currentAnimation.height;
+	}
+
+	Area sourceArea{ x - currentAnimation.width, y - currentAnimation.height, x, y };
+	Rectf uvs = mTexture->getAreaTexCoords(sourceArea);
+
+	gl::ScopedGlslProg shader(gl::getStockShader(gl::ShaderDef().texture(mTexture)));
+	gl::ScopedTextureBind tex0(mTexture);
+	bool flip = true;
+	if (flip) {
+		gl::drawSolidRect(destRect, uvs.getUpperLeft(), uvs.getLowerRight());
+	}
+	else {
+		gl::drawSolidRect(destRect, uvs.getUpperRight(), uvs.getLowerLeft());
+	}
 }
 Entity::~Entity() {
 

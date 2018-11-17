@@ -30,6 +30,15 @@ public:
 	double boredomFactor;
 	double tiredFactor;
 
+	//animations
+	animation idle;
+	animation crouch;
+	animation run;
+	animation jump;
+	animation slide;
+	animation ledgeClimb;
+	animation allFrames;
+
 	Hero();
 	
 	void ai() override;

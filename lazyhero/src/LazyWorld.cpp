@@ -180,7 +180,7 @@ void LazyWorld::render()
 	gl::clear();
 	//MENU
 
-	
+
 	//fill screen w color
 	gl::color(1, 0.5f, 0.25f);
 	//Camera
@@ -189,7 +189,7 @@ void LazyWorld::render()
 
 	gl::translate(vec2(getWindowWidth() / 2, getWindowHeight() / 2));
 	gl::scale(vec2(cam.scale, cam.scale));
-	
+
 	gl::rotate(cam.rotation);
 	//End of camera
 	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST
@@ -208,8 +208,14 @@ void LazyWorld::render()
 	{
 		worldEntities[i].draw();
 	}*/
-	for (int i = 0; i < worldEntities.size(); i++)
-		worldEntities[i]->draw();	//TODO: implement draw function
+	for (int i = 0; i < worldEntities.size(); i++) {
+	gl::pushMatrices();
+	gl::translate(vec2(worldEntities[i]->entityBody->GetPosition().x,worldEntities[i]->entityBody->GetPosition().y));
+	gl::drawSolidRect(Rectf(vec2(-0.5, -1), vec2(0.5, 1)));
+	worldEntities[i]->draw();	//TODO: implement draw function
+	gl::popMatrices();
+}
+
 
 	//draw block outlines
 	gl::pushModelMatrix();
