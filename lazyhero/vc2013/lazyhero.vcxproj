@@ -258,6 +258,7 @@
     <ClInclude Include="..\src\Hero.h" />
     <ClInclude Include="..\src\Line.h" />
     <ClInclude Include="..\src\LazyWorld.h" />
+    <ClInclude Include="..\src\ninja.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Block.cpp" />
@@ -312,6 +313,7 @@
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.cpp" />
     <ClCompile Include="..\src\LazyWorld.cpp" />
+    <ClCompile Include="..\src\ninja.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
