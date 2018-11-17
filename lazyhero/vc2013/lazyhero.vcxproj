@@ -251,6 +251,7 @@
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Box2d.h" />
     <ClInclude Include="..\src\Block.h" />
+    <ClInclude Include="..\src\Camera2D.h" />
     <ClInclude Include="..\src\Entity.h" />
     <ClInclude Include="..\src\Game.h" />
     <ClInclude Include="..\src\Hero.h" />
@@ -259,6 +260,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\src\Block.cpp" />
+    <ClCompile Include="..\src\Camera2D.cpp" />
     <ClCompile Include="..\src\Entity.cpp" />
     <ClCompile Include="..\src\Hero.cpp" />
     <ClCompile Include="..\src\lazyheroApp.cpp" />

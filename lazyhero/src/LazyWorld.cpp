@@ -31,9 +31,11 @@ LazyWorld::LazyWorld()
 	}
 
 	//camera vars
-	cameraX = 0.0;
-	cameraY = 0.0;
-	cameraScale = 1.0;
+	cam.pos.x = 0;
+	cam.pos.y = 0;
+	cam.scale = 30;
+	cam.rotation = 0;
+	cam.setSlow(10);
 }
 b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
 	b2RayCastInput input;
@@ -75,8 +77,10 @@ void LazyWorld::buildLevel0()
 			worldData[x][y] = bob;
 		}
 	
-	for (int i = 1; i < WORLD_WIDTH_BLOCK - 2; i++) {
-		worldData[i][20].type = 1;
+	
+	fillBlocks(0, 50, WORLD_WIDTH_BLOCK - 1, WORLD_HEIGHT_BLOCK - 1,1);
+	for (int i = 0; i < 8; i++) {
+		fillBlocks(0 + (i * 3 + 1), 50 - (i + 1), WORLD_WIDTH_BLOCK - (i * 3 + 1), 50, 1);
 	}
 	/*for (int i = 0; i < WORLD_WIDTH_BLOCK - 2; i++) {
 		double test = sin(i) + 2;
@@ -109,7 +113,7 @@ void LazyWorld::createTestBox(double x, double y)
 	b2Body *body = physWorld->CreateBody(&bodyDef);
 
 	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(10, 10);	//TEST BOX SIDE LENGTH IS 10
+	dynamicBox.SetAsBox(0.5, 0.5);	//TEST BOX SIDE LENGTH IS 10
 
 	b2FixtureDef fixtureDef;
 	fixtureDef.shape = &dynamicBox;
@@ -125,11 +129,21 @@ Block LazyWorld::getBlockAt(int x, int y)
 {
 	return worldData[x][y];
 }
+void LazyWorld::setBlockAt(int x, int y, int type) {
+	worldData[x][y].type = type;
+}
+void LazyWorld::fillBlocks(int x1, int y1, int x2, int y2, int type) {
+	for (int i = x1; i <= x2; i++) {
+		for (int j = y1; j <= y2; j++) {
+			setBlockAt(i, j, type);
+		}
+	}
+}
 
 void LazyWorld::initPhysics()
 {
 	//init gravity
-	b2Vec2 gravity(0.0f, 10.0f);
+	b2Vec2 gravity(0.0f, 1.0f);
 
 	//create world
 	physWorld = new b2World(gravity);
@@ -148,19 +162,29 @@ void LazyWorld::stepAI()
 
 void LazyWorld::render()
 {
-	
+	cam.update();
 	gl::clear();
+	//MENU
 
+	
 	//fill screen w color
 	gl::color(1, 0.5f, 0.25f);
+	//Camera
+	gl::pushMatrices();
+	gl::translate(cam.pos);
 
+	gl::translate(vec2(getWindowWidth() / 2, getWindowHeight() / 2));
+	gl::scale(vec2(cam.scale, cam.scale));
+	
+	gl::rotate(cam.rotation);
+	//End of camera
 	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST
 	for (const auto &box : physicsBodies) {
 		gl::pushModelMatrix();
 		gl::translate(box->GetPosition().x, box->GetPosition().y);
 		gl::rotate(box->GetAngle());
 
-		gl::drawSolidRect(Rectf(-10, -10, 10, 10));	//BOX SIZE
+		gl::drawSolidRect(Rectf(-0.5, -0.5, 0.5, 0.5));	//BOX SIZE
 
 		gl::popModelMatrix();
 	}
@@ -192,6 +216,7 @@ void LazyWorld::render()
 	gl::color(Color(1, 1, 1));
 	gl::drawLine(p1, p2);
 	gl::drawLine(vec2(0, 0), vec2(1000, 1000));
+	gl::popModelMatrix();
 }
 
 vector<Line2> LazyWorld::createWorldFromList() {

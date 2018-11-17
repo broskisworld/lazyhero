@@ -36,10 +36,14 @@ void lazyheroApp::setup()
 	curGameState = RUNNING;
 }
 
-void lazyheroApp::mouseDown( MouseEvent event )
+void lazyheroApp::mouseDown(MouseEvent event)
 {
-	if(curGameState == RUNNING)
-		gameWorld.createTestBox(event.getPos().x, event.getPos().y);
+	if (curGameState == RUNNING) {
+		vec2 v = gameWorld.cam.camToWorldPos(vec2(event.getPos().x, event.getPos().y));
+		gameWorld.createTestBox(v.x,v.y);
+		//vec2 v2 = gameWorld.cam.worldToCamPos(vec2(event.getPos().x, event.getPos().y));
+		gameWorld.cam.setFixPoint(v.x * gameWorld.cam.scale,v.y * gameWorld.cam.scale);
+	}
 }
 
 void lazyheroApp::update()
