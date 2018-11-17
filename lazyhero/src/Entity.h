@@ -9,16 +9,13 @@ using namespace std;
 
 class Entity
 {
-protected:
-	b2Vec2 pos;
+public:
+	b2Vec2 startPos;
 	b2Body* entityBody;
 	//Texture2d curTexture;
 
-public:
 	Entity();
-	void initPhysics(b2World * physWorld);
-	void update();
-	void moveRight();
+	void initPhysics();
 	virtual void ai();
 	virtual void physics();
 	virtual void draw();

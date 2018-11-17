@@ -23,15 +23,16 @@ typedef enum
 	FOLLOWING
 }heroState;
 
-class Hero : Entity
+class Hero : public Entity
 {
+public:
 	heroState curState;
 	double boredomFactor;
 	double tiredFactor;
-public:
+
 	Hero();
 	
-	void ai();
+	void ai() override;
 	heroState getCurState();
 
 	~Hero();

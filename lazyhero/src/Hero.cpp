@@ -8,6 +8,11 @@ using namespace std;
 #include "Entity.h"
 #include "Hero.h"
 
+extern LazyWorld gameWorld;
+
+using namespace ci;
+using namespace ci::app;
+
 Hero::Hero()
 {
 	curState = IDLE;
@@ -15,13 +20,20 @@ Hero::Hero()
 
 void Hero::ai()
 {
+	//STATE-INDEPENDANT
 	//state control
 	if (1/*GodController.hasRevelation()*/)
 		curState = FOLLOWING;
 
 	//increment boredom
-	boredomFactor += 0.001;
+	//boredomFactor += 0.001;
 
+	//talk to camera
+	console() << "HERO XY\t" << entityBody->GetPosition().x << ", " << entityBody->GetPosition().y << endl;
+
+	gameWorld.cam.setFixPoint(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
+
+	//STATE-DEPENDANT
 	//handle based off state
 	switch (curState)
 	{
