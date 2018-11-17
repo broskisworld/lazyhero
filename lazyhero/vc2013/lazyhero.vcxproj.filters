@@ -329,9 +329,24 @@
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Box2d.h">
       <Filter>Blocks\Box2D\src\Box2D</Filter>
     </ClInclude>
+    <ClCompile Include="..\src\Block.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\src\LazyWorld.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Block.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\Line.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\src\LazyWorld.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
