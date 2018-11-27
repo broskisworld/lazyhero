@@ -142,7 +142,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\blocks\Box2D\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -158,7 +158,7 @@
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>"..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget)";"..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\"</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget);$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -250,23 +250,17 @@
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Box2d.h" />
-    <ClInclude Include="..\src\Block.h" />
-    <ClInclude Include="..\src\Camera2D.h" />
-    <ClInclude Include="..\src\Entity.h" />
-    <ClInclude Include="..\src\Game.h" />
-    <ClInclude Include="..\src\GodController.h" />
-    <ClInclude Include="..\src\Hero.h" />
-    <ClInclude Include="..\src\Line.h" />
-    <ClInclude Include="..\src\LazyWorld.h" />
-    <ClInclude Include="..\src\ninja.h" />
+    <ClInclude Include="Block.h" />
+    <ClInclude Include="Camera2D.h" />
+    <ClInclude Include="Entity.h" />
+    <ClInclude Include="Game.h" />
+    <ClInclude Include="GodController.h" />
+    <ClInclude Include="Hero.h" />
+    <ClInclude Include="LazyWorld.h" />
+    <ClInclude Include="Line.h" />
+    <ClInclude Include="ninja.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\src\Block.cpp" />
-    <ClCompile Include="..\src\Camera2D.cpp" />
-    <ClCompile Include="..\src\Entity.cpp" />
-    <ClCompile Include="..\src\GodController.cpp" />
-    <ClCompile Include="..\src\Hero.cpp" />
-    <ClCompile Include="..\src\lazyheroApp.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2CollideCircle.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2CollideEdge.cpp" />
@@ -312,8 +306,14 @@
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.cpp" />
-    <ClCompile Include="..\src\LazyWorld.cpp" />
-    <ClCompile Include="..\src\ninja.cpp" />
+    <ClCompile Include="Block.cpp" />
+    <ClCompile Include="Camera2D.cpp" />
+    <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="GodController.cpp" />
+    <ClCompile Include="Hero.cpp" />
+    <ClCompile Include="lazyheroApp.cpp" />
+    <ClCompile Include="LazyWorld.cpp" />
+    <ClCompile Include="ninja.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
