@@ -50,9 +50,6 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\lazyheroApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp">
       <Filter>Blocks\Box2D\src\Box2D\Collision</Filter>
     </ClCompile>

@@ -91,7 +91,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;"..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\blocks\Box2D\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -102,11 +102,11 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>"..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>C:\Users\Micha\Documents\lazyhero\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\x86;C:\Users\Micha\Documents\lazyhero\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\x86\debug\v120;C:\Users\Micha\Documents\lazyhero\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib;..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget);..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;$(ProjectDir)cinder\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -154,11 +154,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>"..\..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget);$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;$(ProjectDir)cinder\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
