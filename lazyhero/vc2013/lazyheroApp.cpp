@@ -7,14 +7,14 @@
 #include "LazyWorld.h"
 #include "Line.h"
 #include "Game.h"
-#include "GodController.h"
+#include "InputManager.h"
 
 using namespace ci;
 using namespace ci::app;
 using namespace std;
 
 LazyWorld gameWorld;
-GodController godInput;
+InputManager controls;
 gameState curGameState;
 
 
@@ -44,10 +44,11 @@ void lazyheroApp::setup()
 void lazyheroApp::mouseDown(MouseEvent event)
 {
 	if (curGameState == RUNNING) {
-		vec2 v = gameWorld.cam.camToWorldPos(vec2(event.getPos().x, event.getPos().y));
+		//create physics box to mess around with
+		/*vec2 v = gameWorld.cam.camToWorldPos(vec2(event.getPos().x, event.getPos().y));
 		gameWorld.createTestBox(v.x,v.y);
 		vec2 v2 = gameWorld.cam.worldToCamPos(vec2(event.getPos().x, event.getPos().y));
-		gameWorld.cam.setFixPoint(v.x * gameWorld.cam.scale,v.y * gameWorld.cam.scale);
+		gameWorld.cam.setFixPoint(v.x * gameWorld.cam.scale,v.y * gameWorld.cam.scale);*/
 	}
 }
 
@@ -56,13 +57,13 @@ void lazyheroApp::keyDown(KeyEvent event)
 	switch (event.getChar())
 	{
 	case 'w':
-		godInput.w = true;
+		controls.w = true;
 		break;
 	case 'a':
-		godInput.a = true;
+		controls.a = true;
 		break;
 	case 'd':
-		godInput.d = true;
+		controls.d = true;
 		break;
 	default:
 		//godInput.forceRevelation(NO_REVELATION);
@@ -75,13 +76,13 @@ void lazyheroApp::keyUp(KeyEvent event)
 	switch (event.getChar())
 	{
 	case 'w':
-		godInput.w = false;
+		controls.w = false;
 		break;
 	case 'a':
-		godInput.a = false;
+		controls.a = false;
 		break;
 	case 'd':
-		godInput.d = false;
+		controls.d = false;
 		break;
 	default:
 		//godInput.forceRevelation(NO_REVELATION);

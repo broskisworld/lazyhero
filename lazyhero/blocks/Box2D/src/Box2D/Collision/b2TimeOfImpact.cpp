@@ -47,7 +47,7 @@ struct b2SeparationFunction
 		m_proxyA = proxyA;
 		m_proxyB = proxyB;
 		int32 count = cache->count;
-		b2Assert(0 < count && count < 3);
+		b2assert(0 < count && count < 3);
 
 		m_sweepA = sweepA;
 		m_sweepB = sweepB;
@@ -180,7 +180,7 @@ struct b2SeparationFunction
 			}
 
 		default:
-			b2Assert(false);
+			b2assert(false);
 			*indexA = -1;
 			*indexB = -1;
 			return 0.0f;
@@ -239,7 +239,7 @@ struct b2SeparationFunction
 			}
 
 		default:
-			b2Assert(false);
+			b2assert(false);
 			return 0.0f;
 		}
 	}
@@ -277,7 +277,7 @@ void b2TimeOfImpact(b2TOIOutput* output, const b2TOIInput* input)
 	float32 totalRadius = proxyA->m_radius + proxyB->m_radius;
 	float32 target = b2Max(b2_linearSlop, totalRadius - 3.0f * b2_linearSlop);
 	float32 tolerance = 0.25f * b2_linearSlop;
-	b2Assert(target > tolerance);
+	b2assert(target > tolerance);
 
 	float32 t1 = 0.0f;
 	const int32 k_maxIterations = 20;	// TODO_ERIN b2Settings

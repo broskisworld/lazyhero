@@ -3,13 +3,13 @@
 
 using namespace std;
 
-#include "GodController.h"
+#include "InputManager.h"
 #include "LazyWorld.h"
 #include "Entity.h"
 #include "Hero.h"
 
 extern LazyWorld gameWorld;
-extern GodController godInput;
+extern InputManager controls;
 
 using namespace ci;
 using namespace ci::app;
@@ -31,18 +31,12 @@ Hero::Hero()
 	jumpingStat = 0;
 	leftJumpStat = 0;
 	rightJumpStat = 0;
+
+	currentAnimation = falling;
 }
 
 void Hero::ai()
 {
-	//STATE-INDEPENDANT
-	//state control
-	if (1/*GodController.hasRevelation()*/)
-		curState = FOLLOWING;
-
-	//increment boredom
-	//boredomFactor += 0.001;
-
 	//talk to camera
 	//console() << "HERO XY\t" << entityBody->GetPosition().x << ", " << entityBody->GetPosition().y << endl;
 	//vec2 v = gameWorld.cam.camToWorldPos(vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y));
@@ -50,6 +44,10 @@ void Hero::ai()
 	//console() << v.x << endl;
 	//console() << "Actual Cam" << gameWorld.cam.pos << endl;
 	gameWorld.cam.setFixPoint(v.x,v.y);
+	
+	//much of the code below is for wall-jumping mechanics, and I am talking to my buddy TJ to understand a bit more of what's going on here because tbh a lot of this i don't know what he's trying to do
+
+	//check what objects you're touching
 	v = vec2(Entity::entityBody->GetPosition().x, Entity::entityBody->GetPosition().y);
 	b2Vec2 j = gameWorld.raycast(b2Vec2(v.x, v.y), b2Vec2(v.x, v.y + 1.2));
 	b2Vec2 j2 = gameWorld.raycast(b2Vec2(v.x - 0.45, v.y), b2Vec2(v.x - 0.45, v.y + 1.2));
@@ -109,18 +107,15 @@ void Hero::ai()
 
 	}
 
+	//handle controls
 	
-	//console() << "x " << j.x << " y " << j.y << " length " << jv.Length() << endl;
-	//gl::drawLine()
-	//STATE-DEPENDANT
-	//handle based off state
 	if (Entity::entityBody->GetLinearVelocity().x > 0) {
 		flip = false;
 	}
 	else if(Entity::entityBody->GetLinearVelocity().x < 0){
 		flip = true;
 	}
-	if (godInput.w) {
+	if (controls.w) {
 		if (touching && jumpingStat == 0) {	//touching ground
 			currentAnimation = jump;
 			currentFrame = 0;
@@ -150,7 +145,7 @@ void Hero::ai()
 		}
 	}
 
-	if (godInput.d) {
+	if (controls.d) {
 		if (touching) {
 			currentAnimation = run;
 
@@ -176,7 +171,7 @@ void Hero::ai()
 			//currentFrame = 0;
 		}
 	}
-	if (godInput.a) {
+	if (controls.a) {
 		if (touching) {
 			currentAnimation = run;
 
@@ -205,7 +200,7 @@ void Hero::ai()
 			//currentFrame = 0;
 		}
 	}
-	if (!godInput.w && !godInput.a && !godInput.d) {
+	if (!controls.w && !controls.a && !controls.d) {
 		if (touching && jumpingStat != 0) {
 			currentAnimation = crouch;
 		}
@@ -220,7 +215,9 @@ void Hero::ai()
 			//currentFrame = 0;
 		}
 	}
-	switch (curState)
+	
+	//deprecated state control for hero
+	/*switch (curState)
 	{
 	case IDLE:
 		if (boredomFactor > HERO_BOREDOM_THRESHOLD)
@@ -241,7 +238,7 @@ void Hero::ai()
 		break;
 	case FOLLOWING:
 		b2Vec2 newVec(b2Vec2(HERO_WALKING_VELOCITY, Entity::entityBody->GetLinearVelocity().y));
-		revelation curRevelation = godInput.getRevelation();
+		//revelation curRevelation = controls.getRevelation();
 		//console() << curRevelation << endl;
 		switch (curRevelation)
 		{
@@ -272,7 +269,7 @@ void Hero::ai()
 		
 		break;
 		
-	}
+	}*/
 	
 }
 

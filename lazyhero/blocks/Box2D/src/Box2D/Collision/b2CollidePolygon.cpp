@@ -29,7 +29,7 @@ static float32 b2EdgeSeparation(const b2PolygonShape* poly1, const b2Transform& 
 	int32 count2 = poly2->m_vertexCount;
 	const b2Vec2* vertices2 = poly2->m_vertices;
 
-	b2Assert(0 <= edge1 && edge1 < poly1->m_vertexCount);
+	b2assert(0 <= edge1 && edge1 < poly1->m_vertexCount);
 
 	// Convert normal from poly1's frame into poly2's frame.
 	b2Vec2 normal1World = b2Mul(xf1.q, normals1[edge1]);
@@ -148,7 +148,7 @@ static void b2FindIncidentEdge(b2ClipVertex c[2],
 	const b2Vec2* vertices2 = poly2->m_vertices;
 	const b2Vec2* normals2 = poly2->m_normals;
 
-	b2Assert(0 <= edge1 && edge1 < poly1->m_vertexCount);
+	b2assert(0 <= edge1 && edge1 < poly1->m_vertexCount);
 
 	// Get the normal of the reference edge in poly2's frame.
 	b2Vec2 normal1 = b2MulT(xf2.q, b2Mul(xf1.q, normals1[edge1]));

@@ -69,7 +69,7 @@ void b2Fixture::Create(b2BlockAllocator* allocator, b2Body* body, const b2Fixtur
 void b2Fixture::Destroy(b2BlockAllocator* allocator)
 {
 	// The proxies must be destroyed before calling this.
-	b2Assert(m_proxyCount == 0);
+	b2assert(m_proxyCount == 0);
 
 	// Free the proxy array.
 	int32 childCount = m_shape->GetChildCount();
@@ -112,7 +112,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 		break;
 
 	default:
-		b2Assert(false);
+		b2assert(false);
 		break;
 	}
 
@@ -121,7 +121,7 @@ void b2Fixture::Destroy(b2BlockAllocator* allocator)
 
 void b2Fixture::CreateProxies(b2BroadPhase* broadPhase, const b2Transform& xf)
 {
-	b2Assert(m_proxyCount == 0);
+	b2assert(m_proxyCount == 0);
 
 	// Create proxies in the broad-phase.
 	m_proxyCount = m_shape->GetChildCount();

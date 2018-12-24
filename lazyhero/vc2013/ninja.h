@@ -6,7 +6,7 @@
 using namespace std;
 
 #include "LazyWorld.h"
-#include "GodController.h"
+#include "InputManager.h"
 #include "Entity.h"
 
 #define NINJA_STAMINA 1.0	//seconds

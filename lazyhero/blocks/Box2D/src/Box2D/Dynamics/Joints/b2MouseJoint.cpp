@@ -31,10 +31,10 @@
 b2MouseJoint::b2MouseJoint(const b2MouseJointDef* def)
 : b2Joint(def)
 {
-	b2Assert(def->target.IsValid());
-	b2Assert(b2IsValid(def->maxForce) && def->maxForce >= 0.0f);
-	b2Assert(b2IsValid(def->frequencyHz) && def->frequencyHz >= 0.0f);
-	b2Assert(b2IsValid(def->dampingRatio) && def->dampingRatio >= 0.0f);
+	b2assert(def->target.IsValid());
+	b2assert(b2IsValid(def->maxForce) && def->maxForce >= 0.0f);
+	b2assert(b2IsValid(def->frequencyHz) && def->frequencyHz >= 0.0f);
+	b2assert(b2IsValid(def->dampingRatio) && def->dampingRatio >= 0.0f);
 
 	m_targetA = def->target;
 	m_localAnchorB = b2MulT(m_bodyB->GetTransform(), m_targetA);
@@ -122,7 +122,7 @@ void b2MouseJoint::InitVelocityConstraints(const b2SolverData& data)
 	// gamma has units of inverse mass.
 	// beta has units of inverse time.
 	float32 h = data.step.dt;
-	b2Assert(d + h * k > b2_epsilon);
+	b2assert(d + h * k > b2_epsilon);
 	m_gamma = h * (d + h * k);
 	if (m_gamma != 0.0f)
 	{

@@ -100,7 +100,7 @@ inline int32 b2DistanceProxy::GetVertexCount() const
 
 inline const b2Vec2& b2DistanceProxy::GetVertex(int32 index) const
 {
-	b2Assert(0 <= index && index < m_count);
+	b2assert(0 <= index && index < m_count);
 	return m_vertices[index];
 }
 

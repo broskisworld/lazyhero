@@ -53,7 +53,7 @@ void Entity::initPhysics() {
 	fixtureDef.filter.categoryBits = ENTITY;
 	fixtureDef.filter.maskBits = BOUNDARY | HERO;
 	
-	gameWorld.addPhysicsBody(entityBody);	//add to render n shit
+	gameWorld.addPhysicsBody(entityBody);	//add to render n s***
 
 	/*
 	//Create the hitbox
@@ -86,12 +86,14 @@ void Entity::draw() {
 	}
 	*/
 	
+	//TODO: clean up and consolodate animation drawing code into an Animation class that can be used anywhere
+
 	if (!mTexture)
 	{
-		auto img = loadImage(loadAsset(entSpriteSheet.textureName));
+		auto img = loadImage(loadAsset(entSpriteSheet.textureName));	//BUG: crashes automatically if asset not found??
 		mTexture = gl::Texture2d::create(img);
 
-		if(!mTexture)
+		if(!mTexture)	//^^^making this code useless and redundant (kinda pointless in the first place tho)
 			return;	//notexture
 	}
 	timeSinceLastFrame = timeSinceLastFrame + gameWorld.getDeltaRender();
@@ -127,6 +129,7 @@ void Entity::draw() {
 		y = y + currentAnimation.height;
 	}
 
+	//bounding box test by tj?
 	Area sourceArea{ x - currentAnimation.width, y - currentAnimation.height, x, y };
 	Rectf uvs = mTexture->getAreaTexCoords(sourceArea);
 

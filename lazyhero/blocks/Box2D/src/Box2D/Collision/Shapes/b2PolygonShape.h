@@ -88,7 +88,7 @@ inline b2PolygonShape::b2PolygonShape()
 
 inline const b2Vec2& b2PolygonShape::GetVertex(int32 index) const
 {
-	b2Assert(0 <= index && index < m_vertexCount);
+	b2assert(0 <= index && index < m_vertexCount);
 	return m_vertices[index];
 }
 

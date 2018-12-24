@@ -27,9 +27,9 @@ LazyWorld::LazyWorld()
 	//world blocks
 	for (int x = 0; x < WORLD_WIDTH_BLOCK; x++)
 	{
-		Block jim(0);
-		vector<Block> bob(WORLD_HEIGHT_BLOCK, jim);
-		worldData.push_back(bob);	//Fill 
+		Block emptyBlock(0);
+		vector<Block> row(WORLD_HEIGHT_BLOCK, emptyBlock);
+		worldData.push_back(row);	//Fill 2d vector with air blocks
 	}
 
 	//our wonderful lazy hero
@@ -201,18 +201,18 @@ void LazyWorld::stepAI()
 
 void LazyWorld::render()
 {
-	//delta t
+	//get delta t
 	deltaRender = deltaRenderTimer.getSeconds();
 	deltaRenderTimer.stop();
 	deltaRenderTimer.start();
 
+	//update camera
 	cam.update();
 	gl::clear();
-	//MENU
-
 
 	//fill screen w color
 	gl::color(1, 0.5f, 0.25f);
+	
 	//Camera
 	gl::pushMatrices();
 	gl::translate(cam.pos);
@@ -224,13 +224,14 @@ void LazyWorld::render()
 
 
 	//Render Blocks
+	//Find which blocks are on screen or slightly outside of screen (don't waste time drawing everything on the map)
 	//getBlockAt(round(getWindowWidth() / cam.scale), (getWindowHeight() / cam.scale));
 	vec2 b = cam.camToWorldPos(vec2(0, 0));
 	console() << (getWindowWidth() / 2 / cam.scale) << endl;
 	int bWidth = round(getWindowWidth() / cam.scale);
 	int bHeight = round(getWindowHeight() / cam.scale);
 	vec2 v = cam.camToWorldPos(vec2(0, 0));
-	int startX =round(b.x);
+	int startX = round(b.x);
 	int startY = round(b.y);
 	int endX = startX + bWidth + 1;
 	int endY = startY + bHeight + 1;
@@ -246,6 +247,7 @@ void LazyWorld::render()
 	if (endY >= WORLD_HEIGHT_BLOCK) {
 		endY = WORLD_HEIGHT_BLOCK - 1;
 	}
+	
 	/*
 	if (startX < WORLD_WIDTH_BLOCK && startY < WORLD_HEIGHT_BLOCK) {
 		for (int i = startX; i < endX; i++) {
@@ -268,8 +270,8 @@ void LazyWorld::render()
 
 	
 	//End of camera
-	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST
-	for (const auto &box : physicsBodies) {
+	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST (why?)
+	/*for (const auto &box : physicsBodies) {
 		gl::pushModelMatrix();
 		gl::translate(box->GetPosition().x, box->GetPosition().y);
 		gl::rotate(box->GetAngle());
@@ -277,20 +279,19 @@ void LazyWorld::render()
 		gl::drawSolidRect(Rectf(-0.5, -0.5, 0.5, 0.5));	//BOX SIZE
 
 		gl::popModelMatrix();
-	}
-
-	//TODO: iterate through entities and draw
-	/*for(int i = 0; i < worldEntities.size(); i++)
-	{
-		worldEntities[i].draw();
 	}*/
-	for (int i = 0; i < worldEntities.size(); i++) {
-	gl::pushMatrices();
-	gl::translate(vec2(worldEntities[i]->entityBody->GetPosition().x,worldEntities[i]->entityBody->GetPosition().y));
-	//l::drawSolidRect(Rectf(vec2(-0.5, -1), vec2(0.5, 1)));
-	worldEntities[i]->draw();	//TODO: implement draw function
-	gl::popMatrices();
-}
+
+	//iterate through entities and draw
+	for (int i = 0; i < worldEntities.size(); i++)
+	{
+		gl::pushMatrices();
+		gl::translate(vec2(worldEntities[i]->entityBody->GetPosition().x,worldEntities[i]->entityBody->GetPosition().y));
+		
+		//l::drawSolidRect(Rectf(vec2(-0.5, -1), vec2(0.5, 1)));
+		
+		worldEntities[i]->draw();
+		gl::popMatrices();
+	}
 
 
 	//draw block outlines
@@ -306,12 +307,14 @@ void LazyWorld::render()
 	}
 	gl::popModelMatrix();
 
-	b2Vec2 point = raycast(b2Vec2(100, 0), b2Vec2(1000, 1000));
+	//test line
+	/*b2Vec2 point = raycast(b2Vec2(100, 0), b2Vec2(1000, 1000));
 	vec2 p1(point.x, point.y);
 	vec2 p2(100, 0);
 	gl::color(Color(1, 1, 1));
 	gl::drawLine(p1, p2);
-	gl::drawLine(vec2(0, 0), vec2(1000, 1000));
+	gl::drawLine(vec2(0, 0), vec2(1000, 1000));*/
+
 	gl::popModelMatrix();
 }
 

@@ -1,3 +1,4 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project DefaultTargets="Build" ToolsVersion="12.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup Label="ProjectConfigurations">
     <ProjectConfiguration Include="Debug|Win32">
@@ -18,7 +19,7 @@
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
-    <ProjectGuid>{CD30496C-8A3F-4799-82D6-0FBFCC4543EF}</ProjectGuid>
+    <ProjectGuid>{FFF7BD73-4A6D-4719-BE37-1380183BE6E3}</ProjectGuid>
     <RootNamespace>lazyhero</RootNamespace>
     <Keyword>Win32Proj</Keyword>
   </PropertyGroup>
@@ -83,15 +84,10 @@
     <OutDir>$(ProjectDir)build\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)build\$(Platform)\$(Configuration)\intermediate\</IntDir>
   </PropertyGroup>
-  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
-    <IncludePath>$(IncludePath)</IncludePath>
-    <LibraryPath>$(LibraryPath)</LibraryPath>
-    <ReferencePath>$(ReferencePath)</ReferencePath>
-  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(CINDER_DIR)\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <MinimalRebuild>true</MinimalRebuild>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
@@ -102,11 +98,11 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;$(ProjectDir)cinder\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CINDER_DIR)\lib\msw\$(PlatformTarget);$(CINDER_DIR)\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -118,7 +114,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\blocks\Box2D\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;_DEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -128,11 +124,11 @@
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
     </ClCompile>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;$(ProjectDir)cinder\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget)";"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <RandomizedBaseAddress>false</RandomizedBaseAddress>
@@ -142,7 +138,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|Win32'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;$(CINDER_DIR)\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -154,11 +150,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;$(ProjectDir)cinder\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>$(CINDER_DIR)\lib\msw\$(PlatformTarget);$(CINDER_DIR)\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -171,7 +167,7 @@
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <ClCompile>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include;..\blocks\Box2D\src</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>..\include;"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\blocks\Box2D\src</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>WIN32;_WIN32_WINNT=0x0601;_WINDOWS;NOMINMAX;NDEBUG;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <PrecompiledHeader />
@@ -183,11 +179,11 @@
       <LinkLibraryDependencies>true</LinkLibraryDependencies>
     </ProjectReference>
     <ResourceCompile>
-      <AdditionalIncludeDirectories>..\include;$(ProjectDir)cinder\include</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\include";..\include</AdditionalIncludeDirectories>
     </ResourceCompile>
     <Link>
       <AdditionalDependencies>cinder.lib;OpenGL32.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalLibraryDirectories>$(ProjectDir)cinder\lib\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\;$(ProjectDir)cinder\lib\$(PlatformTarget)\</AdditionalLibraryDirectories>
+      <AdditionalLibraryDirectories>"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget)\";"..\..\cinder_0.9.1_vc2013\cinder_0.9.1_vc2013\lib\msw\$(PlatformTarget)\$(Configuration)\$(PlatformToolset)\"</AdditionalLibraryDirectories>
       <GenerateDebugInformation>false</GenerateDebugInformation>
       <GenerateMapFile>true</GenerateMapFile>
       <SubSystem>Windows</SubSystem>
@@ -254,7 +250,7 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
-    <ClInclude Include="GodController.h" />
+    <ClInclude Include="InputManager.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="LazyWorld.h" />
     <ClInclude Include="Line.h" />
@@ -309,7 +305,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="Entity.cpp" />
-    <ClCompile Include="GodController.cpp" />
+    <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="lazyheroApp.cpp" />
     <ClCompile Include="LazyWorld.cpp" />

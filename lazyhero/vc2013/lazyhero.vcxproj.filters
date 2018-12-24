@@ -1,5 +1,10 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
     <Filter Include="Header Files">
       <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
       <Extensions>h;hpp;hxx;hm;inl;inc;xsd</Extensions>
@@ -9,47 +14,46 @@
       <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav</Extensions>
     </Filter>
     <Filter Include="Blocks">
-      <UniqueIdentifier>{DEFBF90C-0917-4574-9F1D-19EE3C74A8E7}</UniqueIdentifier>
+      <UniqueIdentifier>{1358CEA4-E981-4605-95DE-8F321638835C}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D">
-      <UniqueIdentifier>{8DBF3CBF-F24C-4AB4-A33D-B57A9367D75C}</UniqueIdentifier>
+      <UniqueIdentifier>{416C9868-12E6-4656-A3B2-36C1A74B19C8}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src">
-      <UniqueIdentifier>{CD2E5E49-113B-4641-A3F4-B227A0FB67FC}</UniqueIdentifier>
+      <UniqueIdentifier>{4E617088-7D6E-40AF-8CF7-10037D829793}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D">
-      <UniqueIdentifier>{3FFF260F-3AAE-4795-93D8-618405957D12}</UniqueIdentifier>
+      <UniqueIdentifier>{440EEF5D-5A12-4648-A2C4-BEE2D77FB362}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D\Collision">
-      <UniqueIdentifier>{AC1BD198-2C0E-4528-B25E-A05ACBF58DAC}</UniqueIdentifier>
+      <UniqueIdentifier>{AA41EF0F-DF79-4D1C-97C5-C9E949F643B3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D\Collision\Shapes">
-      <UniqueIdentifier>{6A4CBBB8-30F8-442A-9053-03BC7ACFFD95}</UniqueIdentifier>
+      <UniqueIdentifier>{F870A5B1-A9B0-4558-865E-7A8792A63647}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D\Common">
-      <UniqueIdentifier>{AA098AC4-53F9-4F8C-81BD-E1D7913E0B27}</UniqueIdentifier>
+      <UniqueIdentifier>{D0FE4E93-D700-43F3-B512-7121E79BD9F5}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D\Dynamics">
-      <UniqueIdentifier>{357085E9-1AFF-4603-A5AA-D502169CC277}</UniqueIdentifier>
+      <UniqueIdentifier>{3D120A1D-632E-4C54-86A9-43030A9D9F0F}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D\Dynamics\Contacts">
-      <UniqueIdentifier>{466AA5E0-5066-44A0-8BA5-F543F92CD526}</UniqueIdentifier>
+      <UniqueIdentifier>{65A8D29F-E9DF-4E6F-874D-498DC58C18B3}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D\Dynamics\Joints">
-      <UniqueIdentifier>{07ECFA41-6732-4EDC-B0CB-17CA2FE30C70}</UniqueIdentifier>
+      <UniqueIdentifier>{52469D88-FABD-4FAA-9B8E-4BCAE50230DE}</UniqueIdentifier>
     </Filter>
     <Filter Include="Blocks\Box2D\src\Box2D\Rope">
-      <UniqueIdentifier>{214B53D2-0FF4-4E04-A628-1FD5BE361986}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Source Files">
-      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
-      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <UniqueIdentifier>{B915B599-8BDA-40C6-8C6A-87370BEF7BD3}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClCompile Include="..\src\lazyheroApp.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp">
       <Filter>Blocks\Box2D\src\Box2D\Collision</Filter>
     </ClCompile>
@@ -335,9 +339,6 @@
     <ClInclude Include="Game.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="GodController.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="Hero.h">
       <Filter>Header Files</Filter>
     </ClInclude>
@@ -348,6 +349,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ninja.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -371,9 +375,6 @@
     <ClCompile Include="Entity.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="GodController.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Hero.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -384,6 +385,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ninja.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InputManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

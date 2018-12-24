@@ -45,7 +45,7 @@ b2Rope::~b2Rope()
 
 void b2Rope::Initialize(const b2RopeDef* def)
 {
-	b2Assert(def->count >= 3);
+	b2assert(def->count >= 3);
 	m_count = def->count;
 	m_ps = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));
 	m_p0s = (b2Vec2*)b2Alloc(m_count * sizeof(b2Vec2));

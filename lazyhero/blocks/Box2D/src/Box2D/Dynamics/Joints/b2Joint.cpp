@@ -110,7 +110,7 @@ b2Joint* b2Joint::Create(const b2JointDef* def, b2BlockAllocator* allocator)
 		break;
 
 	default:
-		b2Assert(false);
+		b2assert(false);
 		break;
 	}
 
@@ -163,14 +163,14 @@ void b2Joint::Destroy(b2Joint* joint, b2BlockAllocator* allocator)
 		break;
 
 	default:
-		b2Assert(false);
+		b2assert(false);
 		break;
 	}
 }
 
 b2Joint::b2Joint(const b2JointDef* def)
 {
-	b2Assert(def->bodyA != def->bodyB);
+	b2assert(def->bodyA != def->bodyB);
 
 	m_type = def->type;
 	m_prev = NULL;

@@ -470,7 +470,7 @@ float32 b2RevoluteJoint::GetUpperLimit() const
 
 void b2RevoluteJoint::SetLimits(float32 lower, float32 upper)
 {
-	b2Assert(lower <= upper);
+	b2assert(lower <= upper);
 	
 	if (lower != m_lowerAngle || upper != m_upperAngle)
 	{

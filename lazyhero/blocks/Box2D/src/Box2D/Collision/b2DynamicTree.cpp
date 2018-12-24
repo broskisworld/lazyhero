@@ -58,7 +58,7 @@ int32 b2DynamicTree::AllocateNode()
 	// Expand the node pool as needed.
 	if (m_freeList == b2_nullNode)
 	{
-		b2Assert(m_nodeCount == m_nodeCapacity);
+		b2assert(m_nodeCount == m_nodeCapacity);
 
 		// The free list is empty. Rebuild a bigger pool.
 		b2TreeNode* oldNodes = m_nodes;
@@ -94,8 +94,8 @@ int32 b2DynamicTree::AllocateNode()
 // Return a node to the pool.
 void b2DynamicTree::FreeNode(int32 nodeId)
 {
-	b2Assert(0 <= nodeId && nodeId < m_nodeCapacity);
-	b2Assert(0 < m_nodeCount);
+	b2assert(0 <= nodeId && nodeId < m_nodeCapacity);
+	b2assert(0 < m_nodeCount);
 	m_nodes[nodeId].next = m_freeList;
 	m_nodes[nodeId].height = -1;
 	m_freeList = nodeId;
@@ -123,8 +123,8 @@ int32 b2DynamicTree::CreateProxy(const b2AABB& aabb, void* userData)
 
 void b2DynamicTree::DestroyProxy(int32 proxyId)
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
-	b2Assert(m_nodes[proxyId].IsLeaf());
+	b2assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2assert(m_nodes[proxyId].IsLeaf());
 
 	RemoveLeaf(proxyId);
 	FreeNode(proxyId);
@@ -132,9 +132,9 @@ void b2DynamicTree::DestroyProxy(int32 proxyId)
 
 bool b2DynamicTree::MoveProxy(int32 proxyId, const b2AABB& aabb, const b2Vec2& displacement)
 {
-	b2Assert(0 <= proxyId && proxyId < m_nodeCapacity);
+	b2assert(0 <= proxyId && proxyId < m_nodeCapacity);
 
-	b2Assert(m_nodes[proxyId].IsLeaf());
+	b2assert(m_nodes[proxyId].IsLeaf());
 
 	if (m_nodes[proxyId].aabb.Contains(aabb))
 	{
@@ -304,8 +304,8 @@ void b2DynamicTree::InsertLeaf(int32 leaf)
 		int32 child1 = m_nodes[index].child1;
 		int32 child2 = m_nodes[index].child2;
 
-		b2Assert(child1 != b2_nullNode);
-		b2Assert(child2 != b2_nullNode);
+		b2assert(child1 != b2_nullNode);
+		b2assert(child2 != b2_nullNode);
 
 		m_nodes[index].height = 1 + b2Max(m_nodes[child1].height, m_nodes[child2].height);
 		m_nodes[index].aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
@@ -379,7 +379,7 @@ void b2DynamicTree::RemoveLeaf(int32 leaf)
 // Returns the new root index.
 int32 b2DynamicTree::Balance(int32 iA)
 {
-	b2Assert(iA != b2_nullNode);
+	b2assert(iA != b2_nullNode);
 
 	b2TreeNode* A = m_nodes + iA;
 	if (A->IsLeaf() || A->height < 2)
@@ -389,8 +389,8 @@ int32 b2DynamicTree::Balance(int32 iA)
 
 	int32 iB = A->child1;
 	int32 iC = A->child2;
-	b2Assert(0 <= iB && iB < m_nodeCapacity);
-	b2Assert(0 <= iC && iC < m_nodeCapacity);
+	b2assert(0 <= iB && iB < m_nodeCapacity);
+	b2assert(0 <= iC && iC < m_nodeCapacity);
 
 	b2TreeNode* B = m_nodes + iB;
 	b2TreeNode* C = m_nodes + iC;
@@ -404,8 +404,8 @@ int32 b2DynamicTree::Balance(int32 iA)
 		int32 iG = C->child2;
 		b2TreeNode* F = m_nodes + iF;
 		b2TreeNode* G = m_nodes + iG;
-		b2Assert(0 <= iF && iF < m_nodeCapacity);
-		b2Assert(0 <= iG && iG < m_nodeCapacity);
+		b2assert(0 <= iF && iF < m_nodeCapacity);
+		b2assert(0 <= iG && iG < m_nodeCapacity);
 
 		// Swap A and C
 		C->child1 = iA;
@@ -421,7 +421,7 @@ int32 b2DynamicTree::Balance(int32 iA)
 			}
 			else
 			{
-				b2Assert(m_nodes[C->parent].child2 == iA);
+				b2assert(m_nodes[C->parent].child2 == iA);
 				m_nodes[C->parent].child2 = iC;
 			}
 		}
@@ -464,8 +464,8 @@ int32 b2DynamicTree::Balance(int32 iA)
 		int32 iE = B->child2;
 		b2TreeNode* D = m_nodes + iD;
 		b2TreeNode* E = m_nodes + iE;
-		b2Assert(0 <= iD && iD < m_nodeCapacity);
-		b2Assert(0 <= iE && iE < m_nodeCapacity);
+		b2assert(0 <= iD && iD < m_nodeCapacity);
+		b2assert(0 <= iE && iE < m_nodeCapacity);
 
 		// Swap A and B
 		B->child1 = iA;
@@ -481,7 +481,7 @@ int32 b2DynamicTree::Balance(int32 iA)
 			}
 			else
 			{
-				b2Assert(m_nodes[B->parent].child2 == iA);
+				b2assert(m_nodes[B->parent].child2 == iA);
 				m_nodes[B->parent].child2 = iB;
 			}
 		}
@@ -560,7 +560,7 @@ float32 b2DynamicTree::GetAreaRatio() const
 // Compute the height of a sub-tree.
 int32 b2DynamicTree::ComputeHeight(int32 nodeId) const
 {
-	b2Assert(0 <= nodeId && nodeId < m_nodeCapacity);
+	b2assert(0 <= nodeId && nodeId < m_nodeCapacity);
 	b2TreeNode* node = m_nodes + nodeId;
 
 	if (node->IsLeaf())
@@ -588,7 +588,7 @@ void b2DynamicTree::ValidateStructure(int32 index) const
 
 	if (index == m_root)
 	{
-		b2Assert(m_nodes[index].parent == b2_nullNode);
+		b2assert(m_nodes[index].parent == b2_nullNode);
 	}
 
 	const b2TreeNode* node = m_nodes + index;
@@ -598,17 +598,17 @@ void b2DynamicTree::ValidateStructure(int32 index) const
 
 	if (node->IsLeaf())
 	{
-		b2Assert(child1 == b2_nullNode);
-		b2Assert(child2 == b2_nullNode);
-		b2Assert(node->height == 0);
+		b2assert(child1 == b2_nullNode);
+		b2assert(child2 == b2_nullNode);
+		b2assert(node->height == 0);
 		return;
 	}
 
-	b2Assert(0 <= child1 && child1 < m_nodeCapacity);
-	b2Assert(0 <= child2 && child2 < m_nodeCapacity);
+	b2assert(0 <= child1 && child1 < m_nodeCapacity);
+	b2assert(0 <= child2 && child2 < m_nodeCapacity);
 
-	b2Assert(m_nodes[child1].parent == index);
-	b2Assert(m_nodes[child2].parent == index);
+	b2assert(m_nodes[child1].parent == index);
+	b2assert(m_nodes[child2].parent == index);
 
 	ValidateStructure(child1);
 	ValidateStructure(child2);
@@ -628,26 +628,26 @@ void b2DynamicTree::ValidateMetrics(int32 index) const
 
 	if (node->IsLeaf())
 	{
-		b2Assert(child1 == b2_nullNode);
-		b2Assert(child2 == b2_nullNode);
-		b2Assert(node->height == 0);
+		b2assert(child1 == b2_nullNode);
+		b2assert(child2 == b2_nullNode);
+		b2assert(node->height == 0);
 		return;
 	}
 
-	b2Assert(0 <= child1 && child1 < m_nodeCapacity);
-	b2Assert(0 <= child2 && child2 < m_nodeCapacity);
+	b2assert(0 <= child1 && child1 < m_nodeCapacity);
+	b2assert(0 <= child2 && child2 < m_nodeCapacity);
 
 	int32 height1 = m_nodes[child1].height;
 	int32 height2 = m_nodes[child2].height;
 	int32 height;
 	height = 1 + b2Max(height1, height2);
-	b2Assert(node->height == height);
+	b2assert(node->height == height);
 
 	b2AABB aabb;
 	aabb.Combine(m_nodes[child1].aabb, m_nodes[child2].aabb);
 
-	b2Assert(aabb.lowerBound == node->aabb.lowerBound);
-	b2Assert(aabb.upperBound == node->aabb.upperBound);
+	b2assert(aabb.lowerBound == node->aabb.lowerBound);
+	b2assert(aabb.upperBound == node->aabb.upperBound);
 
 	ValidateMetrics(child1);
 	ValidateMetrics(child2);
@@ -662,14 +662,14 @@ void b2DynamicTree::Validate() const
 	int32 freeIndex = m_freeList;
 	while (freeIndex != b2_nullNode)
 	{
-		b2Assert(0 <= freeIndex && freeIndex < m_nodeCapacity);
+		b2assert(0 <= freeIndex && freeIndex < m_nodeCapacity);
 		freeIndex = m_nodes[freeIndex].next;
 		++freeCount;
 	}
 
-	b2Assert(GetHeight() == ComputeHeight());
+	b2assert(GetHeight() == ComputeHeight());
 
-	b2Assert(m_nodeCount + freeCount == m_nodeCapacity);
+	b2assert(m_nodeCount + freeCount == m_nodeCapacity);
 }
 
 int32 b2DynamicTree::GetMaxBalance() const
@@ -683,7 +683,7 @@ int32 b2DynamicTree::GetMaxBalance() const
 			continue;
 		}
 
-		b2Assert(node->IsLeaf() == false);
+		b2assert(node->IsLeaf() == false);
 
 		int32 child1 = node->child1;
 		int32 child2 = node->child2;

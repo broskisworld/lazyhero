@@ -20,7 +20,7 @@ using namespace std;
 class LazyWorld
 {
 	//static boxes
-	bool debug = true;
+	//bool debug = true;
 	int WORLD_WIDTH_BLOCK = 200;
 	int WORLD_HEIGHT_BLOCK = 100;
 	double WORLD_SCALE_BLOCK = 1;
@@ -29,7 +29,7 @@ class LazyWorld
 
 	//entities
 	vector<Entity *> worldEntities;
-	Hero * hero;	//0th element of worldEntities (generated in buildLevel0() function)
+	Hero * hero;	//0th element of worldEntities (generated in buildLevel0() function - currently FALSE, actually in constructor)
 
 	//overall physics
 	b2World * physWorld;
@@ -54,7 +54,7 @@ public:
 	void buildLevel0();
 	vector<Line2> createWorldFromList();
 
-	//physics/entity/test shit
+	//physics/entity/test s***
 	void createTestBox(double x, double y);
 	b2Vec2 raycast(b2Vec2 p1, b2Vec2 p2);
 

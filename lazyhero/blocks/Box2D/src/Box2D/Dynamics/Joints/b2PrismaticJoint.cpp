@@ -572,7 +572,7 @@ float32 b2PrismaticJoint::GetUpperLimit() const
 
 void b2PrismaticJoint::SetLimits(float32 lower, float32 upper)
 {
-	b2Assert(lower <= upper);
+	b2assert(lower <= upper);
 	if (lower != m_lowerTranslation || upper != m_upperTranslation)
 	{
 		m_bodyA->SetAwake(true);

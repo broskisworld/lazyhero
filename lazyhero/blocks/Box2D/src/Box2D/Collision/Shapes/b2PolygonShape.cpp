@@ -73,7 +73,7 @@ int32 b2PolygonShape::GetChildCount() const
 
 static b2Vec2 ComputeCentroid(const b2Vec2* vs, int32 count)
 {
-	b2Assert(count >= 3);
+	b2assert(count >= 3);
 
 	b2Vec2 c; c.Set(0.0f, 0.0f);
 	float32 area = 0.0f;
@@ -112,14 +112,14 @@ static b2Vec2 ComputeCentroid(const b2Vec2* vs, int32 count)
 	}
 
 	// Centroid
-	b2Assert(area > b2_epsilon);
+	b2assert(area > b2_epsilon);
 	c *= 1.0f / area;
 	return c;
 }
 
 void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 {
-	b2Assert(3 <= count && count <= b2_maxPolygonVertices);
+	b2assert(3 <= count && count <= b2_maxPolygonVertices);
 	m_vertexCount = count;
 
 	// Copy vertices.
@@ -134,7 +134,7 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 		int32 i1 = i;
 		int32 i2 = i + 1 < m_vertexCount ? i + 1 : 0;
 		b2Vec2 edge = m_vertices[i2] - m_vertices[i1];
-		b2Assert(edge.LengthSquared() > b2_epsilon * b2_epsilon);
+		b2assert(edge.LengthSquared() > b2_epsilon * b2_epsilon);
 		m_normals[i] = b2Cross(edge, 1.0f);
 		m_normals[i].Normalize();
 	}
@@ -161,7 +161,7 @@ void b2PolygonShape::Set(const b2Vec2* vertices, int32 count)
 			// If this crashes, your polygon is non-convex, has colinear edges,
 			// or the winding order is wrong.
 			float32 s = b2Cross(edge, r);
-			b2Assert(s > 0.0f && "ERROR: Please ensure your polygon is convex and has a CCW winding order");
+			b2assert(s > 0.0f && "ERROR: Please ensure your polygon is convex and has a CCW winding order");
 		}
 	}
 #endif
@@ -246,7 +246,7 @@ bool b2PolygonShape::RayCast(b2RayCastOutput* output, const b2RayCastInput& inpu
 		}
 	}
 
-	b2Assert(0.0f <= lower && lower <= input.maxFraction);
+	b2assert(0.0f <= lower && lower <= input.maxFraction);
 
 	if (index >= 0)
 	{
@@ -303,7 +303,7 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
 	//
 	// The rest of the derivation is handled by computer algebra.
 
-	b2Assert(m_vertexCount >= 3);
+	b2assert(m_vertexCount >= 3);
 
 	b2Vec2 center; center.Set(0.0f, 0.0f);
 	float32 area = 0.0f;
@@ -349,7 +349,7 @@ void b2PolygonShape::ComputeMass(b2MassData* massData, float32 density) const
 	massData->mass = density * area;
 
 	// Center of mass
-	b2Assert(area > b2_epsilon);
+	b2assert(area > b2_epsilon);
 	center *= 1.0f / area;
 	massData->center = center + s;
 
