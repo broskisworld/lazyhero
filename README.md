@@ -22,10 +22,9 @@ DISCLAIMER: We did only have 24-hours to write it and the code is pretty messy a
 Important game vars:
 - `vector<vector<Block>> worldData` is a 2d vector for holding all of the blocks in an associated level. When `createWorldFromList()` is called, a list of 2d vectors is generated representing the outline of the level. 
 - `vector<Line2> blockOutlines` is that list of lines. Once loaded into Box2D as rigidbodies during the createWorldFromList(), this is simply a reference of lines to draw during the render phase. If textures are desired to be displayed as opposed to simply a world outline, this may be obsolete
-- `vector<Entity *> worldEntities` is a list of all entities currently in the world. Everytime Cinder calls `update()`, each entity's 
-- `stepAI()` function is called, and everytime Cinder calls `draw()`, each entity's `draw()` function is called.
+- `vector<Entity *> worldEntities` is a list of all entities currently in the world. Everytime Cinder calls `update()`, each entity's `stepAI()` function is called, and everytime Cinder calls `draw()`, each entity's `draw()` function is called.
 - `b2World * physWorld` is the Box2D world.
-- `vector<b2Body *> physicsBodies is a list of every physics body in the Box2D world.
+- `vector<b2Body *>` physicsBodies is a list of every physics body in the Box2D world.
 - `Camera2D cam` is the class that handles OpenGL's drawing, and has the algorithm to loosely follow the hero's XY coordinates.
 
 `InputManager` simple wrapper class to handle key presses and releases from Cinder and hold their values in public booleans.
