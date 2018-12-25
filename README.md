@@ -1,6 +1,6 @@
 # lazyhero
 
-lazyhero is the project me and my roommate TJ did for a 24-hour coding competition (USU Hackathon) in November 2018. The original concept was a game where you don't have direct control over the main character who is inherently lazy and easily distracted. Instead you would have to give him suggestions to point him in the right direction, and try and get him to the end without him getting distracted by butterflies and couches littered around the map. However, we ourselves got distracted and didn't finish within the 24-hour deadline :/ However, I think it has a decent base as a game engine.
+lazyhero is the project me and my roommate TJ did for a 24-hour coding competition (USU Hackathon) in November 2018. The original concept was a game where you don't have direct control over the main character who is inherently lazy and easily distracted. Instead you would have to give him suggestions to point him in the right direction, and try and get him to the end without him getting distracted by butterflies and couches littered around the map. However, we ourselves got distracted and didn't finish within the 24-hour deadline :/ Regardless, I think it is a decent base as a game engine.
 
 DISCLAIMER: We did only have 24-hours to write it and the code is pretty messy at points - I'm in the progress of cleaning it up sry.
 
