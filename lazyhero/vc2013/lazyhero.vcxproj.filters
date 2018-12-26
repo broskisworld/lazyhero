@@ -51,9 +51,6 @@
     <ClInclude Include="..\include\Resources.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClCompile Include="..\src\lazyheroApp.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp">
       <Filter>Blocks\Box2D\src\Box2D\Collision</Filter>
     </ClCompile>
@@ -354,6 +351,9 @@
     <ClInclude Include="InputManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="InkMonster.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\include\Resources.h">
@@ -388,6 +388,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="InputManager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="InkMonster.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

@@ -24,10 +24,12 @@ enum _entityCategory {
 Entity::Entity()
 {
 	startPos.x = 50;	//start pos
-	startPos.y = 20;
+	startPos.y = 35;
 	currentFrame = 0;
 	timeSinceLastFrame = 0;
 	flip = false;
+
+	health = 100;
 }
 
 void Entity::initPhysics() {
@@ -142,6 +144,14 @@ void Entity::draw() {
 		gl::drawSolidRect(destRect, uvs.getUpperRight(), uvs.getLowerLeft());
 	}
 }
+
+b2Vec2 Entity::getVectorToEntity(Entity* targetEntity)
+{
+	b2Vec2 myPosition = entityBody->GetPosition();
+	b2Vec2 targetPosition = targetEntity->entityBody->GetPosition();
+	return targetPosition - myPosition;
+}
+
 Entity::~Entity() {
 
 }

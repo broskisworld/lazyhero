@@ -57,6 +57,7 @@ public:
 	//physics/entity/test s***
 	void createTestBox(double x, double y);
 	b2Vec2 raycast(b2Vec2 p1, b2Vec2 p2);
+	void addEntity(Entity *entity);
 
 	//update
 	void stepPhysics();
@@ -74,6 +75,9 @@ public:
 	void addPhysicsBody(b2Body * newPhysBody);
 	float getDeltaRender();
 	float getDeltaPhysics();
+
+	Entity *getHero();
+
 	//destructor
 	~LazyWorld();
 };
