@@ -23,6 +23,8 @@ InkMonster::InkMonster()
 	inkMonsterSprite.addState({ SHOOTING, 4, 4, 0, 4 });
 
 	inkMonsterSprite.setState(IDLE);
+
+	startPos.x = 60;	// Start in a different location than the hero
 }
 
 void InkMonster::ai()

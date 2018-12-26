@@ -38,6 +38,7 @@ public:
 	void updateHealth();
 	void startContact(Entity *contactingEntity);
 	void endContact(Entity *contactingEntity);
+	float getHealth();
 
 	~Entity();
 };
