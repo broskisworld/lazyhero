@@ -5,21 +5,29 @@ extern LazyWorld gameWorld;
 
 #define HORIZONTAL_SPEED 0.2
 
+typedef enum
+{
+	IDLE,
+	MOVING,
+	SHOOTING,
+	ALL_FRAMES,
+	FALLING
+}inkMonsterState;
+
 InkMonster::InkMonster()
 {
-	entSpriteSheet = { "ninja-spritemap.png", 35, 0, 0, 0 };
+	inkMonsterSprite.addSpriteSheet({ "ninja-spritemap.png", 42, 26, 0, 35, 0, 0 });
 
-	idle = { 42, 26, 4, 3, 0, 0 };
-	running = { 42, 26, 3, 4, 0, 1 };
-	attack = { 42, 26, 4, 4, 0, 4 };
-	die = { 42, 26, 4, 2, 0, 3 };
+	inkMonsterSprite.addState({ IDLE, 4, 3, 0, 0 });
+	inkMonsterSprite.addState({ MOVING, 3, 4, 0, 1 });
+	inkMonsterSprite.addState({ SHOOTING, 4, 4, 0, 4 });
 
-	currentAnimation = idle;
+	inkMonsterSprite.setState(IDLE);
 }
 
 void InkMonster::ai()
 {
-	
+
 	b2Vec2 vectorToHero = this->getVectorToEntity(gameWorld.getHero());
 
 	if (vectorToHero.Length() < 20)
@@ -37,6 +45,13 @@ void InkMonster::ai()
 	{
 		entityBody->SetLinearVelocity(b2Vec2(0, 1));
 	}
+
+	updateHealth();
+}
+
+void InkMonster::draw()
+{
+	inkMonsterSprite.draw();
 }
 
 InkMonster::~InkMonster()

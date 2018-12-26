@@ -9,19 +9,6 @@ using namespace std;
 #include "LazyWorld.h"
 #include "Entity.h"
 #include "Animation.h"
-#include "Hero.h"
-
-typedef enum
-{
-	IDLE,
-	CROUCH,
-	RUN,
-	JUMP,
-	SLIDE,
-	LEDGE_CLIMB,
-	ALL_FRAMES,
-	FALLING
-}heroState;
 
 #define HERO_WALKING_VELOCITY 0.7
 #define HERO_JUMPING_FORCE 15.0

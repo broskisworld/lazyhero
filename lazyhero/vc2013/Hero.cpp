@@ -15,6 +15,18 @@ extern InputManager controls;
 using namespace ci;
 using namespace ci::app;
 
+typedef enum
+{
+	IDLE,
+	CROUCH,
+	RUN,
+	JUMP,
+	SLIDE,
+	LEDGE_CLIMB,
+	ALL_FRAMES,
+	FALLING
+}heroState;
+
 Hero::Hero()
 {
 	heroSprite.addSpriteSheet({ "adventurer-v1.5-Sheet.png", 50, 37, 0, 25, 0, 0 });
@@ -225,6 +237,7 @@ void Hero::ai()
 			heroSprite.setState(FALLING);
 		}
 	}
+	updateHealth();
 }
 
 Hero::~Hero()

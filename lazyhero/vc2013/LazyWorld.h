@@ -75,6 +75,9 @@ public:
 	float getDeltaRender();
 	float getDeltaPhysics();
 
+	Entity *getHero();
+	void addEntity(Entity *entity);
+
 	//destructor
 	~LazyWorld();
 };
