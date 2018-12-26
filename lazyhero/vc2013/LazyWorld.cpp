@@ -18,8 +18,32 @@ using namespace std;
 #include "LazyWorld.h"
 #include "Line.h"
 #include "Block.h"
+#include "InkMonster.h"
 
+class MyContactListener : public b2ContactListener
+{
+	void BeginContact(b2Contact* contact) {
 
+		void *firstUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+		void *secondUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+		if (firstUserData && secondUserData)
+		{
+			static_cast<Entity*>(firstUserData)->startContact(static_cast<Entity*>(secondUserData));
+			static_cast<Entity*>(secondUserData)->startContact(static_cast<Entity*>(firstUserData));
+		}
+	}
+
+	void EndContact(b2Contact* contact) {
+
+		void *firstUserData = contact->GetFixtureA()->GetBody()->GetUserData();
+		void *secondUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+		if (firstUserData && secondUserData)
+		{
+			static_cast<Entity*>(firstUserData)->endContact(static_cast<Entity*>(secondUserData));
+			static_cast<Entity*>(secondUserData)->endContact(static_cast<Entity*>(firstUserData));
+		}
+	}
+};
 
 LazyWorld::LazyWorld()
 {
@@ -36,6 +60,9 @@ LazyWorld::LazyWorld()
 	hero = new Hero();
 	worldEntities.push_back(/*(Entity *)*/ hero);
 
+	Entity *inkMonster = new InkMonster();
+	worldEntities.push_back(inkMonster);
+
 	//camera vars
 	cam.scale = 40;
 	cam.rotation = 0;
@@ -47,6 +74,16 @@ LazyWorld::LazyWorld()
 	deltaRenderTimer.start();
 	deltaPhysicsTimer.start();
 	srand(time(NULL));
+}
+
+Entity *LazyWorld::getHero()
+{
+	return hero;
+}
+
+void LazyWorld::addEntity(Entity *entity)
+{
+	worldEntities.push_back(entity);
 }
 
 b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
@@ -169,6 +206,7 @@ void LazyWorld::initPhysics()
 
 	//create world
 	physWorld = new b2World(gravity);
+	physWorld->SetContactListener(new MyContactListener);
 
 	for (int i = 0; i < worldEntities.size(); i++)
 		worldEntities[i]->initPhysics();

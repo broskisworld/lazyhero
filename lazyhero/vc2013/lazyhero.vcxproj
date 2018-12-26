@@ -251,6 +251,7 @@
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Entity.h" />
     <ClInclude Include="Game.h" />
+    <ClInclude Include="InkMonster.h" />
     <ClInclude Include="InputManager.h" />
     <ClInclude Include="Hero.h" />
     <ClInclude Include="LazyWorld.h" />
@@ -306,6 +307,7 @@
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="Entity.cpp" />
+    <ClCompile Include="InkMonster.cpp" />
     <ClCompile Include="InputManager.cpp" />
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="lazyheroApp.cpp" />

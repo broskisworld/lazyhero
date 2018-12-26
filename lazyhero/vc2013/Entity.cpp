@@ -21,10 +21,13 @@ enum _entityCategory {
 	SENSOR = 0x0010,
 };
 
+#define CONTACT_HEALTH_DECREMENT 1
+
 Entity::Entity()
 {
 	startPos.x = 50;	//start pos
 	startPos.y = 20;
+	contacting = false;
 }
 
 void Entity::initPhysics() {
@@ -34,6 +37,8 @@ void Entity::initPhysics() {
 	bodyDef.position.Set(startPos.x, startPos.y);
 
 	entityBody = physWorld->CreateBody(&bodyDef);
+
+	entityBody->SetUserData(this);
 
 	b2PolygonShape dynamicBox;
 	dynamicBox.SetAsBox(0.5, 1);
@@ -63,6 +68,31 @@ void Entity::physics() {
 
 void Entity::draw() {
 	//override this function :)
+}
+
+void Entity::updateHealth()
+{
+	if (contacting)
+	{
+		health -= CONTACT_HEALTH_DECREMENT;
+	}
+}
+
+void Entity::startContact(Entity *contactingEntity)
+{
+	contacting = true;
+}
+
+void Entity::endContact(Entity *contactingEntity)
+{
+	contacting = false;
+}
+
+b2Vec2 Entity::getVectorToEntity(Entity* targetEntity)
+{
+	b2Vec2 myPosition = entityBody->GetPosition();
+	b2Vec2 targetPosition = targetEntity->entityBody->GetPosition();
+	return targetPosition - myPosition;
 }
 
 Entity::~Entity() {

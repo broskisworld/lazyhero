@@ -14,6 +14,10 @@ using namespace ci::app;
 
 class Entity
 {
+private:
+	float health;
+	bool contacting;
+
 public:
 	//int currentFrame;
 	//double timeSinceLastFrame;
@@ -30,5 +34,10 @@ public:
 	virtual void ai();
 	virtual void physics();
 	virtual void draw();
+	b2Vec2 getVectorToEntity(Entity* targetEntity);
+	void updateHealth();
+	void startContact(Entity *contactingEntity);
+	void endContact(Entity *contactingEntity);
+
 	~Entity();
 };
