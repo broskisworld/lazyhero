@@ -17,7 +17,6 @@ using namespace ci::app;
 	int paddingLeft;
 	int paddingTop;
 	int paddingBottom;
-
 };
 
 struct animation {
@@ -31,6 +30,8 @@ struct animation {
 
 class Entity
 {
+private:
+	int health;
 public:
 	//int currentFrame;
 	//double timeSinceLastFrame;
@@ -47,5 +48,7 @@ public:
 	virtual void ai();
 	virtual void physics();
 	virtual void draw();
+	b2Vec2 getVectorToEntity(Entity* targetEntity);
+
 	~Entity();
 };

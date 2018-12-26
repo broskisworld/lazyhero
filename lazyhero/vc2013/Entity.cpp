@@ -137,7 +137,14 @@ void Entity::draw() {
 	}
 	else {
 		gl::drawSolidRect(destRect, uvs.getUpperRight(), uvs.getLowerLeft());
-	}*/
+	}
+}
+
+b2Vec2 Entity::getVectorToEntity(Entity* targetEntity)
+{
+	b2Vec2 myPosition = entityBody->GetPosition();
+	b2Vec2 targetPosition = targetEntity->entityBody->GetPosition();
+	return targetPosition - myPosition;
 }
 
 Entity::~Entity() {
