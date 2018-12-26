@@ -77,6 +77,7 @@ public:
 
 	Entity *getHero();
 	void addEntity(Entity *entity);
+	void removeEntity(Entity * entity);
 
 	//destructor
 	~LazyWorld();

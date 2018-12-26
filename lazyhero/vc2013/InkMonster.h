@@ -15,6 +15,7 @@ class InkMonster : public Entity
 private:
 	b2Vec2 movement;
 	int direction;
+	double timeSinceLastShot;
 
 	//animation
 	Animation inkMonsterSprite;

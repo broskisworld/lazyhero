@@ -14,7 +14,7 @@ using namespace ci::app;
 
 class Entity
 {
-private:
+protected:
 	float health;
 	bool contacting;
 
@@ -36,8 +36,8 @@ public:
 	virtual void draw();
 	b2Vec2 getVectorToEntity(Entity* targetEntity);
 	void updateHealth();
-	void startContact(Entity *contactingEntity);
-	void endContact(Entity *contactingEntity);
+	virtual void startContact(Entity *contactingEntity);
+	virtual void endContact(Entity *contactingEntity);
 
 	~Entity();
 };

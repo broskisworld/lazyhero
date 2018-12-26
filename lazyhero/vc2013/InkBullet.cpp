@@ -20,7 +20,7 @@ typedef enum
 	EXPLODING
 }bulletState;
 
-InkBullet::InkBullet(double dirFactor)
+InkBullet::InkBullet(double _dirFactor)
 {
 	inkBulletSprite.addSpriteSheet({ "Bullet Splash.png", 11, 18, 0, 0, 0, 0 });
 
@@ -29,7 +29,10 @@ InkBullet::InkBullet(double dirFactor)
 
 	inkBulletSprite.setState(FLYING);
 
-	entityBody->SetLinearVelocity(b2Vec2(dirFactor * BULLET_FLYING_VELOCITY, 0.0));	//fly in specified direction
+	dirFactor = _dirFactor;
+
+	if (dirFactor < 0.0)
+		inkBulletSprite.mirror = true;	//if flying left, mirror bullet sprite
 }
 
 void InkBullet::draw()
@@ -39,7 +42,7 @@ void InkBullet::draw()
 
 void InkBullet::ai()
 {
-	if (1)	//TOUCHING
+	if (contacting)	//TOUCHING
 	{
 		//stop moving
 		entityBody->SetLinearVelocity(b2Vec2(0.0, 0.0));
@@ -48,19 +51,26 @@ void InkBullet::ai()
 		inkBulletSprite.setState(EXPLODING);
 
 		if (inkBulletSprite.isFinished())
-			;//kill entity
-
-		if (!NULL)	//isEntity
-			if (1)	//isHero
-				;//damage hero
-			else if(1)	//isInkMonster
-				;//kill entity
+			gameWorld.removeEntity(this);
 	}
 	else
 	{
 		//still flying
+		entityBody->SetLinearVelocity(b2Vec2(dirFactor * BULLET_FLYING_VELOCITY, 0.0));	//fly in specified direction
 	}
 }
+
+/*void startContact(Entity *contactingEntity)
+{
+
+
+	Entity::startContact();
+}
+
+void endContact(Entity *contactingEntity)
+{
+	Entity::endContact();
+}*/
 
 InkBullet::~InkBullet()
 {

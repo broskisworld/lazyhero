@@ -204,6 +204,11 @@ int Animation::setState(int newStateID)
 	return 1;	//no matching state!
 }
 
+bool Animation::isFinished()
+{
+	return animationFinished;
+}
+
 Animation::~Animation()
 {
 

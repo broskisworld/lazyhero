@@ -86,6 +86,19 @@ void LazyWorld::addEntity(Entity *entity)
 	worldEntities.push_back(entity);
 }
 
+void LazyWorld::removeEntity(Entity * entity)
+{
+	for (int i = 0; i < worldEntities.size(); i++)
+		if (worldEntities[i] == entity)
+		{
+			delete worldEntities[i];
+
+			worldEntities[i] = worldEntities[worldEntities.size() - 1];	//swap with last entity
+			worldEntities.resize(worldEntities.size() - 1);	//resize
+		}
+			
+}
+
 b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
 	b2RayCastInput input;
 	input.p1 = p1;
