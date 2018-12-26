@@ -19,14 +19,14 @@ Hero::Hero()
 {
 	heroSprite.addSpriteSheet({ "adventurer-v1.5-Sheet.png", 50, 37, 0, 25, 0, 0 });
 
-	heroSprite.addState({ IDLE, 4, 5, 0, 0 });
-	heroSprite.addState({ CROUCH, 4, 10, 4, 0 });
-	heroSprite.addState({ RUN, 6, 10, 1, 1 });
-	heroSprite.addState({ JUMP, 10, 20, 0, 2 });
-	heroSprite.addState({ SLIDE, 5, 10, 3, 3 });
-	heroSprite.addState({ LEDGE_CLIMB, 9, 10, 1, 4 });
-	heroSprite.addState({ ALL_FRAMES, 50, 10, 1, 1 });
-	heroSprite.addState({ FALLING, 2, 10, 1, 3 });
+	heroSprite.addState({ IDLE, 4, 5, true, 0, 0 });
+	heroSprite.addState({ CROUCH, 4, 10, true, 4, 0 });
+	heroSprite.addState({ RUN, 6, 10, true, 1, 1 });
+	heroSprite.addState({ JUMP, 10, 20, true, 0, 2 });
+	heroSprite.addState({ SLIDE, 5, 10, true, 3, 3 });
+	heroSprite.addState({ LEDGE_CLIMB, 9, 10, true, 1, 4 });
+	heroSprite.addState({ ALL_FRAMES, 50, 10, true, 1, 1 });
+	heroSprite.addState({ FALLING, 2, 10, true, 1, 3 });
 	
 	jumpingStat = 0;
 	leftJumpStat = 0;

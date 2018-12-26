@@ -23,6 +23,7 @@ typedef struct {
 
 	int numFrames;
 	float fps;
+	bool repeat;
 
 	int frameOffsetX;
 	int frameOffsetY;
@@ -38,6 +39,7 @@ class Animation
 	int curAnimState;	//by index in vector NOT by animStates.id value (for internal use only)
 	int curFrame;
 	double timeSinceLastFrame;
+	bool animationFinished;
 public:
 	//constructor
 	Animation();
@@ -53,6 +55,7 @@ public:
 
 	int getState();	//returns current id of state being used
 	int setState(int newStateID);	//sets current state to id given - returns 0 if successful
+	bool isFinished();	//if non-repeating animation, return whether animation is complete
 
 	//destructor
 	~Animation();

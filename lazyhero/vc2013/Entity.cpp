@@ -66,5 +66,5 @@ void Entity::draw() {
 }
 
 Entity::~Entity() {
-
+	gameWorld.getB2World()->DestroyBody(entityBody);	//delete physics body
 }

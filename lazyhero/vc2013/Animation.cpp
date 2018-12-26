@@ -100,6 +100,9 @@ void Animation::draw()
 		}
 	}
 
+	if (animationFinished)
+		return;
+
 	//update timeSinceLastFrame
 	timeSinceLastFrame += gameWorld.getDeltaRender();
 
@@ -114,7 +117,16 @@ void Animation::draw()
 	}
 
 	if ((curFrame + 1) > animStates[curAnimState].numFrames)
-		curFrame = 0;
+	{
+		if (animStates[curAnimState].repeat)
+		{
+			curFrame = 0;
+		}
+		else
+		{
+			animationFinished = true;
+		}
+	}
 
 	//not quite sure what this does...
 	spriteSheetTexture->setMagFilter(GL_NEAREST); // disable multi-sample if >= 100%
@@ -177,6 +189,8 @@ int Animation::setState(int newStateID)
 {
 	if (newStateID == animStates[curAnimState].id)
 		return 0;
+
+	animationFinished = false;
 
 	for (int i = 0; i < animStates.size(); i++)
 		if (animStates[i].id == newStateID)
