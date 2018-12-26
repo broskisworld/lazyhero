@@ -175,6 +175,9 @@ int Animation::getState()
 
 int Animation::setState(int newStateID)
 {
+	if (newStateID == animStates[curAnimState].id)
+		return 0;
+
 	for (int i = 0; i < animStates.size(); i++)
 		if (animStates[i].id == newStateID)
 		{

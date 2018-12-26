@@ -18,7 +18,7 @@ using namespace std;
 #include "LazyWorld.h"
 #include "Line.h"
 #include "Block.h"
-#include "InkMonster.h"
+
 
 
 LazyWorld::LazyWorld()
@@ -35,8 +35,6 @@ LazyWorld::LazyWorld()
 	//our wonderful lazy hero
 	hero = new Hero();
 	worldEntities.push_back(/*(Entity *)*/ hero);
-	Entity *inkMonster = new InkMonster();
-	worldEntities.push_back(inkMonster);
 
 	//camera vars
 	cam.scale = 40;
@@ -77,11 +75,6 @@ b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
 	
 	b2Vec2 intersectionPoint = p1 + closestFraction * (p2 - p1);
 	return intersectionPoint;
-}
-
-Entity *LazyWorld::getHero()
-{
-	return hero;
 }
 
 void LazyWorld::buildLevel0()
@@ -199,11 +192,6 @@ void LazyWorld::stepPhysics()
 		physWorld->Step(1/30.0f, 10, 10);
 }
 
-void LazyWorld::addEntity(Entity *entity)
-{
-	worldEntities.push_back(entity);
-}
-
 void LazyWorld::stepAI()
 {
 	//iterate through all ai's
@@ -260,30 +248,9 @@ void LazyWorld::render()
 		endY = WORLD_HEIGHT_BLOCK - 1;
 	}
 	
-	/*
-	if (startX < WORLD_WIDTH_BLOCK && startY < WORLD_HEIGHT_BLOCK) {
-		for (int i = startX; i < endX; i++) {
-			for (int j = startY; j < endY; j++) {
-				if (getBlockAt(i, j).type != 0) {
-					gl::pushMatrices();
-					//gl::color((rand() % 100) / 100.0, (rand() % 100) / 100.0, (rand() % 100) / 100.0);
-					gl::translate(i, j);
-
-					gl::drawSolidRect(Rectf(-0.5, -0.5, 0.5, 0.5));
-					gl::popMatrices();
-				}
-				
-			}
-		}
-	}
-	*/
-	
-	
-
-	
 	//End of camera
 	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST (why?)
-	for (const auto &box : physicsBodies) {
+	/*for (const auto &box : physicsBodies) {
 		gl::pushModelMatrix();
 		gl::translate(box->GetPosition().x, box->GetPosition().y);
 		gl::rotate(box->GetAngle());
@@ -291,7 +258,7 @@ void LazyWorld::render()
 		gl::drawSolidRect(Rectf(-0.5, -0.5, 0.5, 0.5));	//BOX SIZE
 
 		gl::popModelMatrix();
-	}
+	}*/
 
 	//iterate through entities and draw
 	for (int i = 0; i < worldEntities.size(); i++)

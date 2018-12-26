@@ -11,27 +11,9 @@ using namespace ci;
 using namespace ci::app;
 
 #include "LazyWorld.h"
-/*struct spriteSheet {
-	string textureName;
-	int paddingRight;
-	int paddingLeft;
-	int paddingTop;
-	int paddingBottom;
-};
-
-struct animation {
-	int width;
-	int height;
-	int numFrames;
-	float fps;
-	int frameOffsetX;
-	int frameOffsetY;
-};*/
 
 class Entity
 {
-private:
-	int health;
 public:
 	//int currentFrame;
 	//double timeSinceLastFrame;
@@ -48,7 +30,5 @@ public:
 	virtual void ai();
 	virtual void physics();
 	virtual void draw();
-	b2Vec2 getVectorToEntity(Entity* targetEntity);
-
 	~Entity();
 };
