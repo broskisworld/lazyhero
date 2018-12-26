@@ -21,9 +21,9 @@ class LazyWorld
 {
 	//static boxes
 	//bool debug = true;
-	int WORLD_WIDTH_BLOCK = 200;
-	int WORLD_HEIGHT_BLOCK = 100;
-	double WORLD_SCALE_BLOCK = 1;
+	int WORLD_WIDTH_BLOCK = 200;	//how many blocks wide the world is
+	int WORLD_HEIGHT_BLOCK = 100;	//how many blocks tall the world is
+	double WORLD_SCALE_BLOCK = 1;	//how big one "block" is in Box2D
 	vector<vector<Block>> worldData;
 	vector<Line2> blockOutlines;
 
@@ -37,8 +37,8 @@ class LazyWorld
 
 	Timer deltaRenderTimer;
 	Timer deltaPhysicsTimer;
-	float deltaRender = 1.0;
-	float deltaPhysics = 1.0;
+	double deltaRender = 1.0;
+	double deltaPhysics = 1.0;
 	
 public:
 	//constructor
@@ -74,6 +74,7 @@ public:
 	void addPhysicsBody(b2Body * newPhysBody);
 	float getDeltaRender();
 	float getDeltaPhysics();
+
 	//destructor
 	~LazyWorld();
 };

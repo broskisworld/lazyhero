@@ -246,6 +246,7 @@
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.h" />
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.h" />
     <ClInclude Include="..\blocks\Box2D\src\Box2D\Box2d.h" />
+    <ClInclude Include="Animation.h" />
     <ClInclude Include="Block.h" />
     <ClInclude Include="Camera2D.h" />
     <ClInclude Include="Entity.h" />
@@ -254,7 +255,6 @@
     <ClInclude Include="Hero.h" />
     <ClInclude Include="LazyWorld.h" />
     <ClInclude Include="Line.h" />
-    <ClInclude Include="ninja.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Collision\b2BroadPhase.cpp" />
@@ -302,6 +302,7 @@
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WeldJoint.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Dynamics\Joints\b2WheelJoint.cpp" />
     <ClCompile Include="..\blocks\Box2D\src\Box2D\Rope\b2Rope.cpp" />
+    <ClCompile Include="Animation.cpp" />
     <ClCompile Include="Block.cpp" />
     <ClCompile Include="Camera2D.cpp" />
     <ClCompile Include="Entity.cpp" />
@@ -309,7 +310,6 @@
     <ClCompile Include="Hero.cpp" />
     <ClCompile Include="lazyheroApp.cpp" />
     <ClCompile Include="LazyWorld.cpp" />
-    <ClCompile Include="ninja.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />

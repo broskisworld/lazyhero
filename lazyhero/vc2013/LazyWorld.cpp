@@ -208,10 +208,10 @@ void LazyWorld::render()
 
 	//update camera
 	cam.update();
-	gl::clear();
+	gl::clear(ColorA(0.6f, 0.6f, 0.6f));
 
 	//fill screen w color
-	gl::color(1, 0.5f, 0.25f);
+	//gl::color(0.6, 0.6f, 0.6f);
 	
 	//Camera
 	gl::pushMatrices();
@@ -271,7 +271,7 @@ void LazyWorld::render()
 	
 	//End of camera
 	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST (why?)
-	/*for (const auto &box : physicsBodies) {
+	for (const auto &box : physicsBodies) {
 		gl::pushModelMatrix();
 		gl::translate(box->GetPosition().x, box->GetPosition().y);
 		gl::rotate(box->GetAngle());
@@ -279,7 +279,7 @@ void LazyWorld::render()
 		gl::drawSolidRect(Rectf(-0.5, -0.5, 0.5, 0.5));	//BOX SIZE
 
 		gl::popModelMatrix();
-	}*/
+	}
 
 	//iterate through entities and draw
 	for (int i = 0; i < worldEntities.size(); i++)

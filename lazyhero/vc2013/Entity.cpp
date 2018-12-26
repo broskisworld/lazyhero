@@ -25,9 +25,6 @@ Entity::Entity()
 {
 	startPos.x = 50;	//start pos
 	startPos.y = 20;
-	currentFrame = 0;
-	timeSinceLastFrame = 0;
-	flip = false;
 }
 
 void Entity::initPhysics() {
@@ -53,7 +50,7 @@ void Entity::initPhysics() {
 	fixtureDef.filter.categoryBits = ENTITY;
 	fixtureDef.filter.maskBits = BOUNDARY | HERO;
 	
-	gameWorld.addPhysicsBody(entityBody);	//add to render n s***
+	gameWorld.addPhysicsBody(entityBody);
 
 	/*
 	//Create the hitbox
@@ -72,8 +69,8 @@ void Entity::ai() {
 	//console() << "ENTITY XY\t" << entityBody->GetPosition().x << ", " << entityBody->GetPosition().y << endl;
 	//console() << "ENTITY" << endl;
 }
-void Entity::physics() {
 
+void Entity::physics() {
 
 }
 
@@ -88,7 +85,7 @@ void Entity::draw() {
 	
 	//TODO: clean up and consolodate animation drawing code into an Animation class that can be used anywhere
 
-	if (!mTexture)
+	/*if (!mTexture)
 	{
 		auto img = loadImage(loadAsset(entSpriteSheet.textureName));	//BUG: crashes automatically if asset not found??
 		mTexture = gl::Texture2d::create(img);
@@ -140,8 +137,9 @@ void Entity::draw() {
 	}
 	else {
 		gl::drawSolidRect(destRect, uvs.getUpperRight(), uvs.getLowerLeft());
-	}
+	}*/
 }
+
 Entity::~Entity() {
 
 }

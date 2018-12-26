@@ -6,6 +6,7 @@ using namespace std;
 #include "InputManager.h"
 #include "LazyWorld.h"
 #include "Entity.h"
+#include "Animation.h"
 #include "Hero.h"
 
 extern LazyWorld gameWorld;
@@ -16,23 +17,27 @@ using namespace ci::app;
 
 Hero::Hero()
 {
-	curState = IDLE;
+	heroSprite.addSpriteSheet({ "adventurer-v1.5-Sheet.png", 50, 37, 0, 25, 0, 0 });
 
-	entSpriteSheet = { "adventurer-v1.5-Sheet.png", 35, 0, 0, 0 };
-
-	idle = { 50,37,4,5,0,0 };
-	crouch = { 50,37,4,10,4,0 };
-	run = { 50,37,6,10,1,1 };
-	jump = { 50,37,10,20,0,2 };
-	slide = { 50,37,5,10,3,3 };
-	ledgeClimb = { 50,37,9,10,1,4 };
-	allFrames = { 50,37,50,10,1,1 };
-	falling = { 50,37,2,10,1,3 };
+	heroSprite.addState({ IDLE, 4, 5, 0, 0 });
+	heroSprite.addState({ CROUCH, 4, 10, 4, 0 });
+	heroSprite.addState({ RUN, 6, 10, 1, 1 });
+	heroSprite.addState({ JUMP, 10, 20, 0, 2 });
+	heroSprite.addState({ SLIDE, 5, 10, 3, 3 });
+	heroSprite.addState({ LEDGE_CLIMB, 9, 10, 1, 4 });
+	heroSprite.addState({ ALL_FRAMES, 50, 10, 1, 1 });
+	heroSprite.addState({ FALLING, 2, 10, 1, 3 });
+	
 	jumpingStat = 0;
 	leftJumpStat = 0;
 	rightJumpStat = 0;
 
-	currentAnimation = falling;
+	heroSprite.setState(FALLING);
+}
+
+void Hero::draw()
+{
+	heroSprite.draw();
 }
 
 void Hero::ai()
@@ -110,72 +115,72 @@ void Hero::ai()
 	//handle controls
 	
 	if (Entity::entityBody->GetLinearVelocity().x > 0) {
-		flip = false;
+		heroSprite.mirror = false;
 	}
 	else if(Entity::entityBody->GetLinearVelocity().x < 0){
-		flip = true;
+		heroSprite.mirror = true;
 	}
 	if (controls.w) {
 		if (touching && jumpingStat == 0) {	//touching ground
-			currentAnimation = jump;
-			currentFrame = 0;
+			heroSprite.setState(JUMP);
 			jumpingStat = 1;
 			Entity::entityBody->ApplyForceToCenter(b2Vec2(0.0, -HERO_JUMPING_FORCE));
 			touching = false;
 		}
 		if (touchingLeft && leftJumpStat == 0) {
-			currentAnimation = jump;
-			currentFrame = 0;
+			heroSprite.setState(JUMP);
 			leftJumpStat = 1;
 			Entity::entityBody->SetLinearVelocity(b2Vec2(0.9, -0.8));
-			flip = true;
+			heroSprite.mirror = true;
 			touchingLeft = false;
 		}
 		if (touchingRight && rightJumpStat == 0) {
-			currentAnimation = jump;
-			currentFrame = 0;
+			heroSprite.setState(JUMP);
 			rightJumpStat = 1;
 			Entity::entityBody->SetLinearVelocity(b2Vec2(-0.9, -0.8));
-			flip = true;
+			heroSprite.mirror = true;
 			touchingRight = false;
 		}
-		if (touching == false && currentFrame == jump.numFrames - 2) {
-			currentAnimation = falling;
+		//if (touching == false && currentFrame == jump.numFrames - 2) {	//TJ: is this okay?
+		if(touching == false)
+		{
+			heroSprite.setState(FALLING);
 			//currentFrame = 0;
 		}
 	}
 
-	if (controls.d) {
-		if (touching) {
-			currentAnimation = run;
-
-			boredomFactor = 0.0;	//reset boredom
-
-
+	if (controls.d)
+	{
+		if (touching)
+		{
+			heroSprite.setState(RUN);
 		}
 		
-		if (Entity::entityBody->GetLinearVelocity().x < HERO_WALKING_VELOCITY) {
-			if (touching) {
+		if (Entity::entityBody->GetLinearVelocity().x < HERO_WALKING_VELOCITY)
+		{
+			if (touching)
+			{
 				Entity::entityBody->SetLinearVelocity(b2Vec2(0.1 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
 			}
 			else
 			{
-				if (!touchingRight) {
+				if (!touchingRight)
+				{
 					Entity::entityBody->SetLinearVelocity(b2Vec2(0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
-
 				}
 			}
 		}
-		if (touching == false && currentFrame == jump.numFrames - 2) {
-			currentAnimation = falling;
-			//currentFrame = 0;
+		//if (touching == false && currentFrame == jump.numFrames - 2) {
+		if(touching == false)	//TJ: is this okay?
+		{
+			heroSprite.setState(FALLING);
 		}
 	}
-	if (controls.a) {
-		if (touching) {
-			currentAnimation = run;
-
-			boredomFactor = 0.0;//reset boredom
+	if (controls.a)
+	{
+		if (touching)
+		{
+			heroSprite.setState(RUN);
 		}
 		if (/*Entity::entityBody->GetLinearVelocity().x > -(HERO_WALKING_VELOCITY)*/1 == 1)	//wait to slow down?
 			if (Entity::entityBody->GetLinearVelocity().x > -HERO_WALKING_VELOCITY) {
@@ -185,96 +190,42 @@ void Hero::ai()
 				}
 				else
 				{
-					if (!touchingLeft) {
+					if (!touchingLeft)
+					{
 						Entity::entityBody->SetLinearVelocity(b2Vec2(-0.03 + Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y));
 
 					}
-					else {
+					else
+					{
 						Entity::entityBody->SetLinearVelocity(b2Vec2(0, Entity::entityBody->GetLinearVelocity().y));
 					}
 				}
 			}
 
-		if (touching == false && currentFrame == jump.numFrames - 2) {
-			currentAnimation = falling;
-			//currentFrame = 0;
+		if (touching == false/* && currentFrame == jump.numFrames - 2*/)	//TJ: same
+		{
+			heroSprite.setState(FALLING);
 		}
 	}
 	if (!controls.w && !controls.a && !controls.d) {
-		if (touching && jumpingStat != 0) {
-			currentAnimation = crouch;
+		if (touching && jumpingStat != 0)
+		{
+			heroSprite.setState(CROUCH);
 		}
-		if (touching) {
+		if (touching)
+		{
 			Entity::entityBody->SetLinearVelocity(b2Vec2(Entity::entityBody->GetLinearVelocity().x, Entity::entityBody->GetLinearVelocity().y+0.4f));
 		}
-		if (touching && jumpingStat == 0) {
-			currentAnimation = idle;
+		if (touching && jumpingStat == 0)
+		{
+			heroSprite.setState(IDLE);
 		}
-		if (touching == false && currentFrame == jump.numFrames - 2) {
-			currentAnimation = falling;
-			//currentFrame = 0;
+		if (touching == false/* && currentFrame == jump.numFrames - 2*/)	//TJ: ditto. idk what this code is for - is it a special animation feature?
+		{
+			heroSprite.setState(FALLING);
 		}
 	}
-	
-	//deprecated state control for hero
-	/*switch (curState)
-	{
-	case IDLE:
-		if (boredomFactor > HERO_BOREDOM_THRESHOLD)
-			;	//START WANDERING
-
-		//stay still af
-		currentAnimation = idle;
-		break;
-	case WANDER:
-		if (tiredFactor > HERO_TIRED_THRESHOLD)
-			curState = IDLE;
-		
-		
-
-		//keep walking towards desiredX
-
-		currentAnimation = jump;
-		break;
-	case FOLLOWING:
-		b2Vec2 newVec(b2Vec2(HERO_WALKING_VELOCITY, Entity::entityBody->GetLinearVelocity().y));
-		//revelation curRevelation = controls.getRevelation();
-		//console() << curRevelation << endl;
-		switch (curRevelation)
-		{
-		case GO_LEFT:
-			
-					
-			
-
-			break;
-		case GO_RIGHT:
-			
-			break;
-		case JUMP:
-			boredomFactor = 0.0;	//reset boredom
-
-			
-			break;
-		case NO_REVELATION:
-			
-			//increment boredom
-			break;
-
-			
-
-			if (boredomFactor > HERO_BOREDOM_THRESHOLD)
-				curState = IDLE;
-		}
-		
-		break;
-		
-	}*/
-	
 }
-
-//utility
-heroState Hero::getCurState() { return curState; }
 
 Hero::~Hero()
 {

@@ -8,48 +8,41 @@ using namespace std;
 
 #include "LazyWorld.h"
 #include "Entity.h"
+#include "Animation.h"
 #include "Hero.h"
-
-#define HERO_BOREDOM_THRESHOLD 8.0	//seconds? roughly
-#define HERO_TIRED_THRESHOLD 12.0
-
-#define HERO_WALKING_VELOCITY 0.7
-#define HERO_JUMPING_FORCE 15.0
 
 typedef enum
 {
 	IDLE,
-	WANDER,
-	FOLLOWING
+	CROUCH,
+	RUN,
+	JUMP,
+	SLIDE,
+	LEDGE_CLIMB,
+	ALL_FRAMES,
+	FALLING
 }heroState;
+
+#define HERO_WALKING_VELOCITY 0.7
+#define HERO_JUMPING_FORCE 15.0
 
 class Hero : public Entity
 {
-public:
-	heroState curState;
-	double boredomFactor;
-	double tiredFactor;
+	//animation
+	Animation heroSprite;
+
+	//movement
 	bool touching;
 	bool touchingLeft;
 	bool touchingRight;
 	int leftJumpStat;
 	int rightJumpStat;
 	int jumpingStat;
-
-	//animations
-	animation idle;
-	animation crouch;
-	animation run;
-	animation jump;
-	animation slide;
-	animation ledgeClimb;
-	animation allFrames;
-	animation falling;
-
+public:
 	Hero();
 	
+	void draw() override;
 	void ai() override;
-	heroState getCurState();
 
 	~Hero();
 };
