@@ -17,7 +17,7 @@ typedef enum
 InkMonster::InkMonster()
 {
 	inkMonsterSprite.addSpriteSheet({ "ninja-spritemap.png", 42, 26, 0, 35, 0, 0 });
-
+	inkMonsterSprite.setDrawingRect({ -1.5, -1.5, 1, 1 });
 	inkMonsterSprite.addState({ IDLE, 4, 3, 0, 0 });
 	inkMonsterSprite.addState({ MOVING, 3, 4, 0, 1 });
 	inkMonsterSprite.addState({ SHOOTING, 4, 4, 0, 4 });

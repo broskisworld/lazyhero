@@ -23,6 +23,8 @@ Animation::Animation()
 	curFrame = 0;
 	timeSinceLastFrame = 0.0;
 
+	drawingRect = { -1, -1, 1, 1 };
+
 	mirror = false;
 }
 
@@ -35,6 +37,12 @@ Animation::Animation(spriteSheet _defaultSpriteSheet)
 	timeSinceLastFrame = 0.0;
 
 	mirror = false;
+	drawingRect = { -0.5, -0.5, 0.5, 0.5 };
+}
+
+void Animation::setDrawingRect(Rectf rect)
+{
+	drawingRect = rect;
 }
 
 int Animation::addSpriteSheet(spriteSheet newSpriteSheet)
@@ -153,17 +161,15 @@ void Animation::draw()
 	gl::ScopedGlslProg shader(gl::getStockShader(gl::ShaderDef().texture(spriteSheetTexture)));
 	gl::ScopedTextureBind tex0(spriteSheetTexture);
 	
-	Rectf destRect;
+	Rectf destRect = drawingRect;
 	if (mirror)
 	{
-		//destRect = { -1.5,-1.5, 1, 1 };
-		destRect = { -1,-1.5,1.5,1 };
+		destRect.x1 = drawingRect.x2;
+		destRect.x2 = drawingRect.x1;
 		gl::drawSolidRect(destRect, uvs.getUpperRight(), uvs.getLowerLeft());
 	}
 	else
 	{
-		//destRect = { -1,-1.5,1.5,1 };
-		destRect = { -1.5,-1.5, 1, 1 };
 		gl::drawSolidRect(destRect, uvs.getUpperLeft(), uvs.getLowerRight());
 	}
 }

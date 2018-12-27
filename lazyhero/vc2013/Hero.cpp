@@ -30,7 +30,7 @@ typedef enum
 Hero::Hero()
 {
 	heroSprite.addSpriteSheet({ "adventurer-v1.5-Sheet.png", 50, 37, 0, 25, 0, 0 });
-
+	heroSprite.setDrawingRect({ -1.5, -1.5, 1, 1 });
 	heroSprite.addState({ IDLE, 4, 5, 0, 0 });
 	heroSprite.addState({ CROUCH, 4, 10, 4, 0 });
 	heroSprite.addState({ RUN, 6, 10, 1, 1 });

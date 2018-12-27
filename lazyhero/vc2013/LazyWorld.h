@@ -28,6 +28,7 @@ class LazyWorld
 	double WORLD_SCALE_BLOCK = 1;	//how big one "block" is in Box2D
 	vector<vector<Block>> worldData;
 	vector<Line2> blockOutlines;
+	Animation blockAnimation;
 
 	//entities
 	vector<Entity *> worldEntities;

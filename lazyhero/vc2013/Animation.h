@@ -38,6 +38,8 @@ class Animation
 	int curAnimState;	//by index in vector NOT by animStates.id value (for internal use only)
 	int curFrame;
 	double timeSinceLastFrame;
+	Rectf drawingRect;
+
 public:
 	//constructor
 	Animation();
@@ -45,7 +47,7 @@ public:
 
 	int addSpriteSheet(spriteSheet newSpriteSheet);	//TODO: multiple sprite sheet support? - returns 0 if succesful
 	int addState(animationDescription desc);	//add new animation state - returns 0 if succesful
-
+	void setDrawingRect(Rectf rect);
 	void draw();
 
 	//utility

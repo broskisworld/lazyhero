@@ -23,6 +23,15 @@ using namespace std;
 #define HEALTH_INDICATOR_WIDTH 7
 #define HEALTH_INDICATOR_HEIGHT 6
 
+enum
+{
+	BLOCK_SHORT,
+	BLOCK_LEFT,
+	BLOCK_RIGHT,
+	BLOCK_MIDDLE,
+	BLOCK_UNDER
+};
+
 class MyContactListener : public b2ContactListener
 {
 	void BeginContact(b2Contact* contact) {
@@ -77,6 +86,16 @@ LazyWorld::LazyWorld()
 		healthIndicators[i].addState({ 2, 1, 1, 5, 0 });
 		healthIndicators[i].setState(0);
 	}
+
+	blockAnimation.addSpriteSheet({ "BosleyGameAllBlocks.png", 44, 40, 0, 0, 0, 0 });
+	blockAnimation.addState({ BLOCK_SHORT, 1, 1, 0, 0 });
+	blockAnimation.addState({ BLOCK_LEFT, 1, 1, 0, 1 });
+	blockAnimation.addState({ BLOCK_RIGHT, 1, 1, 0, 2 });
+	blockAnimation.addState({ BLOCK_MIDDLE, 1, 1, 0, 3 });
+	blockAnimation.addState({ BLOCK_UNDER, 1, 1, 0, 4 });
+
+	blockAnimation.setState(BLOCK_SHORT);
+	blockAnimation.setDrawingRect({ -0.5f * 44.0f / 40.0f, -0.5f, 0.5f * 44.0f / 40.0f, 0.5f });
 
 	//camera vars
 	cam.scale = 40;
@@ -299,6 +318,49 @@ void LazyWorld::render()
 	if (endY >= WORLD_HEIGHT_BLOCK) {
 		endY = WORLD_HEIGHT_BLOCK - 1;
 	}
+	for (int i = startX; i < endX; i++)
+	{
+		for (int j = startY; j < endY; j++)
+		{
+			if (worldData[i][j].type != 0)
+			{
+				if (worldData[i][j-1].type == 0)
+				{
+					if ((i - 1) >= 0 && worldData[i - 1][j].type == 0)
+					{
+						// Nothing to the left
+						if ((i + 1) < WORLD_WIDTH_BLOCK && worldData[i + 1][j].type == 0)
+						{
+							// Nothing on either side
+							blockAnimation.setState(BLOCK_SHORT);
+						}
+						else
+						{
+							// Something to the right only
+							blockAnimation.setState(BLOCK_LEFT);
+						}
+					}
+					else if ((i + 1) < WORLD_WIDTH_BLOCK && worldData[i + 1][j].type == 0)
+					{
+						// Nothing to the right
+						blockAnimation.setState(BLOCK_RIGHT);
+					}
+					else
+					{
+						blockAnimation.setState(BLOCK_MIDDLE);
+					}
+				}
+				else
+				{
+					blockAnimation.setState(BLOCK_UNDER);
+				}
+				gl::pushMatrices();
+				gl::translate(vec2(WORLD_SCALE_BLOCK * i, WORLD_SCALE_BLOCK * j));
+				blockAnimation.draw();
+				gl::popMatrices();
+			}
+		}
+	}
 	
 	//End of camera
 	//TODO: MUST REMOVE ONCE ENTITY TEXTURES EXIST (why?)
@@ -323,19 +385,6 @@ void LazyWorld::render()
 		worldEntities[i]->draw();
 		gl::popMatrices();
 	}
-
-	//draw block outlines
-	gl::pushModelMatrix();
-	//gl::translate(lines[0].p1.x + -100, lines[0].p1.y + 100);
-	for (int i = 0; i < blockOutlines.size(); i++) {
-		Line2 line = blockOutlines[i];
-		//cout << line.p1.x;
-		gl::color(Color(0, 1, 1));
-		vec2 p1(line.p1.x, line.p1.y);
-		vec2 p2(line.p2.x, line.p2.y);
-		gl::drawLine(p1, p2);
-	}
-	gl::popModelMatrix();
 
 	gl::popModelMatrix();
 
