@@ -19,15 +19,10 @@ protected:
 	bool contacting;
 
 public:
-	//int currentFrame;
-	//double timeSinceLastFrame;
-	//gl::Texture2dRef mTexture;
-	//spriteSheet entSpriteSheet;
-	//animation currentAnimation;
+	//physics
 	b2Vec2 startPos;
+	b2PolygonShape boundingBox;
 	b2Body* entityBody;
-	//bool flip;
-	//Texture2d curTexture;
 
 	Entity();
 	void initPhysics();

@@ -20,9 +20,14 @@ typedef enum
 	EXPLODING
 }bulletState;
 
+InkBullet::InkBullet()
+{
+	dirFactor = 0.0;
+}
+
 InkBullet::InkBullet(double _dirFactor)
 {
-	inkBulletSprite.addSpriteSheet({ "Bullet Splash.png", 11, 18, 0, 0, 0, 0 });
+	inkBulletSprite.addSpriteSheet({ "Bullet Splash.png", 15, 18, 0, 0, 0, 0 });
 
 	inkBulletSprite.addState({ FLYING, 4, 3, true, 0, 0 });
 	inkBulletSprite.addState({ EXPLODING, 7, 5, false, 0, 1 });
@@ -54,9 +59,10 @@ void InkBullet::ai()
 			gameWorld.removeEntity(this);
 	}
 	else
-	{
+	{     
 		//still flying
-		entityBody->SetLinearVelocity(b2Vec2(dirFactor * BULLET_FLYING_VELOCITY, 0.0));	//fly in specified direction
+		b2Vec2 bulletVector = b2Vec2(dirFactor * BULLET_FLYING_VELOCITY, 0.0);
+		Entity::entityBody->SetLinearVelocity(bulletVector);	//fly in specified direction
 	}
 }
 

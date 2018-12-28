@@ -10,6 +10,8 @@ using namespace std;
 #include "Entity.h"
 #include "Animation.h"
 
+#define FIRING_FREQ 0.5
+
 class InkMonster : public Entity
 {
 private:

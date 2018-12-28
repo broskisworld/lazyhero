@@ -13,11 +13,11 @@ extern LazyWorld gameWorld;
 using namespace ci;
 using namespace ci::app;
 
-enum _entityCategory {
-	BOUNDARY = 0x0001,
-	ENTITY = 0x0002,
-	HERO = 0x0004,
-	ENTITY_COLLIDER = 0x0008,
+enum collideCategory {
+	BG = 0x0001,
+	WORLD = 0x0002,
+	DECOR = 0x0004,
+	ENTITY = 0x0008,
 	SENSOR = 0x0010,
 };
 
@@ -25,12 +25,18 @@ enum _entityCategory {
 
 Entity::Entity()
 {
+	//default entity spawn
 	startPos.x = 50;	//start pos
 	startPos.y = 20;
+
+	//default bounding box
+	boundingBox.SetAsBox(1, 1);	//width: 1 height: 1
+
 	contacting = false;
 }
 
-void Entity::initPhysics() {
+void Entity::initPhysics()
+{
 	b2World * physWorld = gameWorld.getB2World();
 	b2BodyDef bodyDef;
 	bodyDef.type = b2_dynamicBody;
@@ -40,11 +46,8 @@ void Entity::initPhysics() {
 
 	entityBody->SetUserData(this);
 
-	b2PolygonShape dynamicBox;
-	dynamicBox.SetAsBox(0.5, 1);
-
 	b2FixtureDef fixtureDef;
-	fixtureDef.shape = &dynamicBox;
+	fixtureDef.shape = &boundingBox;
 	//Makes it so it won't rotate
 	//fixtureDef.density = 0.0f
 	fixtureDef.friction = 0.1f;
@@ -53,7 +56,7 @@ void Entity::initPhysics() {
 	entityBody->CreateFixture(&fixtureDef);
 	
 	fixtureDef.filter.categoryBits = ENTITY;
-	fixtureDef.filter.maskBits = BOUNDARY | HERO;
+	fixtureDef.filter.maskBits = WORLD | ENTITY;
 	
 	gameWorld.addPhysicsBody(entityBody);
 }

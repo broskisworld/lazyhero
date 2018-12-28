@@ -45,6 +45,8 @@ Hero::Hero()
 	rightJumpStat = 0;
 
 	heroSprite.setState(FALLING);
+
+	boundingBox.SetAsBox(0.5, 1);	//width, height
 }
 
 void Hero::draw()

@@ -19,11 +19,15 @@ InkMonster::InkMonster()
 {
 	inkMonsterSprite.addSpriteSheet({ "ninja-spritemap.png", 42, 26, 0, 35, 0, 0 });
 
-	inkMonsterSprite.addState({ IDLE, 4, 3, 0, 0 });
-	inkMonsterSprite.addState({ MOVING, 3, 4, 0, 1 });
-	inkMonsterSprite.addState({ SHOOTING, 4, 4, 0, 4 });
+	inkMonsterSprite.addState({ IDLE, 4, 3, true, 0, 0 });
+	inkMonsterSprite.addState({ MOVING, 3, 4, true, 0, 1 });
+	inkMonsterSprite.addState({ SHOOTING, 4, 4, true, 0, 4 });
 
 	inkMonsterSprite.setState(IDLE);
+
+	timeSinceLastShot = 0.0;
+
+	boundingBox.SetAsBox(0.5, 1);	//width, height
 }
 
 void InkMonster::ai()
@@ -37,8 +41,14 @@ void InkMonster::ai()
 		//update time since last shot
 		timeSinceLastShot += gameWorld.getDeltaPhysics();
 
-		Entity * newGlob = new InkBullet((vectorToHero.x > 0) ? 1.0 : -1.0);	//move in direction of hero
-		newGlob->startPos = entityBody->GetPosition();
+		if (timeSinceLastShot > (1.0 / FIRING_FREQ))
+		{
+			Entity * newGlob = new InkBullet((vectorToHero.x > 0) ? 1.0 : -1.0);	//move in direction of hero
+			newGlob->startPos = b2Vec2(entityBody->GetPosition().x + ((vectorToHero.x > 0) ? 0.5 : -0.5), entityBody->GetPosition().y);
+			gameWorld.addEntity(newGlob);
+
+			timeSinceLastShot = 0.0;
+		}
 
 		//move towards hero
 		if (vectorToHero.x > 0)

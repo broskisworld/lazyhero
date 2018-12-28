@@ -24,6 +24,8 @@ Animation::Animation()
 	timeSinceLastFrame = 0.0;
 
 	mirror = false;
+
+	animationFinished = false;
 }
 
 Animation::Animation(spriteSheet _defaultSpriteSheet)
@@ -35,6 +37,8 @@ Animation::Animation(spriteSheet _defaultSpriteSheet)
 	timeSinceLastFrame = 0.0;
 
 	mirror = false;
+
+	animationFinished = false;
 }
 
 int Animation::addSpriteSheet(spriteSheet newSpriteSheet)

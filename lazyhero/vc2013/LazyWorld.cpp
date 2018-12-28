@@ -26,9 +26,17 @@ class MyContactListener : public b2ContactListener
 
 		void *firstUserData = contact->GetFixtureA()->GetBody()->GetUserData();
 		void *secondUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-		if (firstUserData && secondUserData)
+		/*if (firstUserData && secondUserData)
 		{
 			static_cast<Entity*>(firstUserData)->startContact(static_cast<Entity*>(secondUserData));
+			static_cast<Entity*>(secondUserData)->startContact(static_cast<Entity*>(firstUserData));
+		}*/
+		if (firstUserData)	//TODO: REMOVE!!!
+		{
+			static_cast<Entity*>(firstUserData)->startContact(static_cast<Entity*>(secondUserData));
+		}
+		if (secondUserData)
+		{
 			static_cast<Entity*>(secondUserData)->startContact(static_cast<Entity*>(firstUserData));
 		}
 	}
@@ -37,9 +45,17 @@ class MyContactListener : public b2ContactListener
 
 		void *firstUserData = contact->GetFixtureA()->GetBody()->GetUserData();
 		void *secondUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-		if (firstUserData && secondUserData)
+		/*if (firstUserData && secondUserData)
 		{
 			static_cast<Entity*>(firstUserData)->endContact(static_cast<Entity*>(secondUserData));
+			static_cast<Entity*>(secondUserData)->endContact(static_cast<Entity*>(firstUserData));
+		}*/
+		if (firstUserData)
+		{
+			static_cast<Entity*>(firstUserData)->endContact(static_cast<Entity*>(secondUserData));
+		}
+		if (secondUserData)
+		{
 			static_cast<Entity*>(secondUserData)->endContact(static_cast<Entity*>(firstUserData));
 		}
 	}
@@ -84,6 +100,7 @@ Entity *LazyWorld::getHero()
 void LazyWorld::addEntity(Entity *entity)
 {
 	worldEntities.push_back(entity);
+	entity->initPhysics();
 }
 
 void LazyWorld::removeEntity(Entity * entity)
@@ -201,9 +218,11 @@ Block LazyWorld::getBlockAt(int x, int y)
 {
 	return worldData[x][y];
 }
+
 void LazyWorld::setBlockAt(int x, int y, int type) {
 	worldData[x][y].type = type;
 }
+
 void LazyWorld::fillBlocks(int x1, int y1, int x2, int y2, int type) {
 	for (int i = x1; i <= x2; i++) {
 		for (int j = y1; j <= y2; j++) {
@@ -240,7 +259,7 @@ void LazyWorld::stepPhysics()
 	}
 
 	for (int i = 0; i < 10; ++i)
-		physWorld->Step(1/30.0f, 10, 10);
+		physWorld->Step(1.0 / 30.0, 5, 5);
 }
 
 void LazyWorld::stepAI()

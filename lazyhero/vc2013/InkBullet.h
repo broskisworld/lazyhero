@@ -12,7 +12,7 @@ using namespace std;
 
 extern LazyWorld gameWorld;
 
-#define BULLET_FLYING_VELOCITY 2.0
+#define BULLET_FLYING_VELOCITY 1.0
 
 class InkBullet : public Entity
 {
@@ -20,6 +20,7 @@ class InkBullet : public Entity
 
 	double dirFactor;
 public:
+	InkBullet();
 	InkBullet(double dirFactor);	//1.0 for going right, -1.0 for left
 
 	void draw() override;
