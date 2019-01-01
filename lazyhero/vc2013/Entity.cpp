@@ -33,6 +33,8 @@ Entity::Entity()
 	boundingBox.SetAsBox(1, 1);	//width: 1 height: 1
 
 	contacting = false;
+
+	health = 100.0f;
 }
 
 void Entity::initPhysics()
@@ -78,17 +80,27 @@ void Entity::updateHealth()
 	if (contacting)
 	{
 		health -= CONTACT_HEALTH_DECREMENT;
+		if (health < 0)
+		{
+			health = 0;
+		}
 	}
 }
 
 void Entity::startContact(Entity *contactingEntity)
 {
-	contacting = true;
+	if (contactingEntity != NULL)
+	{
+		contacting = true;
+	}
 }
 
 void Entity::endContact(Entity *contactingEntity)
 {
-	contacting = false;
+	if (contactingEntity != NULL)
+	{
+		contacting = false;
+	}
 }
 
 b2Vec2 Entity::getVectorToEntity(Entity* targetEntity)
@@ -96,6 +108,11 @@ b2Vec2 Entity::getVectorToEntity(Entity* targetEntity)
 	b2Vec2 myPosition = entityBody->GetPosition();
 	b2Vec2 targetPosition = targetEntity->entityBody->GetPosition();
 	return targetPosition - myPosition;
+}
+
+float Entity::getHealth()
+{
+	return health;
 }
 
 Entity::~Entity() {

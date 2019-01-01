@@ -20,18 +20,16 @@ using namespace std;
 #include "Block.h"
 #include "InkMonster.h"
 
+#define HEALTH_INDICATOR_WIDTH 7
+#define HEALTH_INDICATOR_HEIGHT 6
+
 class MyContactListener : public b2ContactListener
 {
 	void BeginContact(b2Contact* contact) {
 
 		void *firstUserData = contact->GetFixtureA()->GetBody()->GetUserData();
 		void *secondUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-		/*if (firstUserData && secondUserData)
-		{
-			static_cast<Entity*>(firstUserData)->startContact(static_cast<Entity*>(secondUserData));
-			static_cast<Entity*>(secondUserData)->startContact(static_cast<Entity*>(firstUserData));
-		}*/
-		if (firstUserData)	//TODO: REMOVE!!!
+		if (firstUserData)
 		{
 			static_cast<Entity*>(firstUserData)->startContact(static_cast<Entity*>(secondUserData));
 		}
@@ -78,6 +76,15 @@ LazyWorld::LazyWorld()
 
 	Entity *inkMonster = new InkMonster();
 	worldEntities.push_back(inkMonster);
+
+	for (int i = 0; i < NUM_HEALTH_INDICATORS; i++)
+	{
+		healthIndicators[i].addSpriteSheet({ "Health Indicators.png", HEALTH_INDICATOR_WIDTH, HEALTH_INDICATOR_HEIGHT, 0, 0, 0, 0 });
+		healthIndicators[i].addState({ 0, 1, 1, 0, 0 });
+		healthIndicators[i].addState({ 1, 1, 1, 1, 0 });
+		healthIndicators[i].addState({ 2, 1, 1, 5, 0 });
+		healthIndicators[i].setState(0);
+	}
 
 	//camera vars
 	cam.scale = 40;
@@ -282,7 +289,7 @@ void LazyWorld::render()
 
 	//fill screen w color
 	//gl::color(0.6, 0.6f, 0.6f);
-	
+
 	//Camera
 	gl::pushMatrices();
 	gl::translate(cam.pos);
@@ -297,7 +304,6 @@ void LazyWorld::render()
 	//Find which blocks are on screen or slightly outside of screen (don't waste time drawing everything on the map)
 	//getBlockAt(round(getWindowWidth() / cam.scale), (getWindowHeight() / cam.scale));
 	vec2 b = cam.camToWorldPos(vec2(0, 0));
-	console() << (getWindowWidth() / 2 / cam.scale) << endl;
 	int bWidth = round(getWindowWidth() / cam.scale);
 	int bHeight = round(getWindowHeight() / cam.scale);
 	vec2 v = cam.camToWorldPos(vec2(0, 0));
@@ -342,7 +348,6 @@ void LazyWorld::render()
 		gl::popMatrices();
 	}
 
-
 	//draw block outlines
 	gl::pushModelMatrix();
 	//gl::translate(lines[0].p1.x + -100, lines[0].p1.y + 100);
@@ -356,15 +361,36 @@ void LazyWorld::render()
 	}
 	gl::popModelMatrix();
 
-	//test line
-	/*b2Vec2 point = raycast(b2Vec2(100, 0), b2Vec2(1000, 1000));
-	vec2 p1(point.x, point.y);
-	vec2 p2(100, 0);
-	gl::color(Color(1, 1, 1));
-	gl::drawLine(p1, p2);
-	gl::drawLine(vec2(0, 0), vec2(1000, 1000));*/
-
 	gl::popModelMatrix();
+
+	//health bar
+	gl::pushMatrices();
+
+	for (int i = 0; i < NUM_HEALTH_INDICATORS; i++)
+	{
+		float indicatorSize = 10.0;
+		float windowEdgeOffset = 20.0;
+		float healthIncrement = 100.0 / NUM_HEALTH_INDICATORS;
+		float health = hero->getHealth();
+		gl::setMatricesWindow(getWindowSize());
+		gl::translate(getWindowCenter().x - getWindowBounds().getWidth() / 2, getWindowCenter().y + getWindowBounds().getHeight() / 2);
+		gl::translate(windowEdgeOffset + 3 * indicatorSize * i, -windowEdgeOffset);
+		gl::scale(indicatorSize, indicatorSize);
+		if (health <= healthIncrement * i)
+		{
+			healthIndicators[i].setState(2);
+		}
+		else if (health <= healthIncrement * i + healthIncrement / 2)
+		{
+			healthIndicators[i].setState(1);
+		}
+		else
+		{
+			healthIndicators[i].setState(0);
+		}
+		healthIndicators[i].draw();
+	}
+	gl::popMatrices();
 }
 
 vector<Line2> LazyWorld::createWorldFromList() {

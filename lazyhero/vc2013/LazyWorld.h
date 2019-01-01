@@ -17,6 +17,8 @@ using namespace std;
 #include "Hero.h"
 #include "Camera2D.h"
 
+#define NUM_HEALTH_INDICATORS 5
+
 class LazyWorld
 {
 	//static boxes
@@ -30,6 +32,8 @@ class LazyWorld
 	//entities
 	vector<Entity *> worldEntities;
 	Hero * hero;	//0th element of worldEntities (generated in buildLevel0() function - currently FALSE, actually in constructor)
+
+	Animation healthIndicators[NUM_HEALTH_INDICATORS];
 
 	//overall physics
 	b2World * physWorld;

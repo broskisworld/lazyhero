@@ -33,6 +33,7 @@ public:
 	void updateHealth();
 	virtual void startContact(Entity *contactingEntity);
 	virtual void endContact(Entity *contactingEntity);
+	float getHealth();
 
 	~Entity();
 };
