@@ -29,13 +29,14 @@ class MyContactListener : public b2ContactListener
 
 		void *firstUserData = contact->GetFixtureA()->GetBody()->GetUserData();
 		void *secondUserData = contact->GetFixtureB()->GetBody()->GetUserData();
+		
 		if (firstUserData)
 		{
-			static_cast<Entity*>(firstUserData)->startContact(static_cast<Entity*>(secondUserData));
+			static_cast<Entity*>(firstUserData)->startContact(contact->GetFixtureB(), static_cast<Entity*>(secondUserData));
 		}
 		if (secondUserData)
 		{
-			static_cast<Entity*>(secondUserData)->startContact(static_cast<Entity*>(firstUserData));
+			static_cast<Entity*>(secondUserData)->startContact(contact->GetFixtureA(), static_cast<Entity*>(firstUserData));
 		}
 	}
 
@@ -43,18 +44,14 @@ class MyContactListener : public b2ContactListener
 
 		void *firstUserData = contact->GetFixtureA()->GetBody()->GetUserData();
 		void *secondUserData = contact->GetFixtureB()->GetBody()->GetUserData();
-		/*if (firstUserData && secondUserData)
-		{
-			static_cast<Entity*>(firstUserData)->endContact(static_cast<Entity*>(secondUserData));
-			static_cast<Entity*>(secondUserData)->endContact(static_cast<Entity*>(firstUserData));
-		}*/
+		
 		if (firstUserData)
 		{
-			static_cast<Entity*>(firstUserData)->endContact(static_cast<Entity*>(secondUserData));
+			static_cast<Entity*>(firstUserData)->endContact(contact->GetFixtureB(), static_cast<Entity*>(secondUserData));
 		}
 		if (secondUserData)
 		{
-			static_cast<Entity*>(secondUserData)->endContact(static_cast<Entity*>(firstUserData));
+			static_cast<Entity*>(secondUserData)->endContact(contact->GetFixtureA(), static_cast<Entity*>(firstUserData));
 		}
 	}
 };
@@ -80,10 +77,10 @@ LazyWorld::LazyWorld()
 	for (int i = 0; i < NUM_HEALTH_INDICATORS; i++)
 	{
 		healthIndicators[i].addSpriteSheet({ "Health Indicators.png", HEALTH_INDICATOR_WIDTH, HEALTH_INDICATOR_HEIGHT, 0, 0, 0, 0 });
-		healthIndicators[i].addState({ 0, 1, 1, 0, 0 });
-		healthIndicators[i].addState({ 1, 1, 1, 1, 0 });
-		healthIndicators[i].addState({ 2, 1, 1, 5, 0 });
-		healthIndicators[i].setState(0);
+		healthIndicators[i].addState({ FULL_HEART, 1, 1, true, 0, 0 });
+		healthIndicators[i].addState({ HALF_HEART, 1, 1, true, 1, 0 });
+		healthIndicators[i].addState({ NO_HEART, 1, 1, true, 5, 0 });
+		healthIndicators[i].setState(FULL_HEART);
 	}
 
 	//camera vars
@@ -112,15 +109,7 @@ void LazyWorld::addEntity(Entity *entity)
 
 void LazyWorld::removeEntity(Entity * entity)
 {
-	for (int i = 0; i < worldEntities.size(); i++)
-		if (worldEntities[i] == entity)
-		{
-			delete worldEntities[i];
-
-			worldEntities[i] = worldEntities[worldEntities.size() - 1];	//swap with last entity
-			worldEntities.resize(worldEntities.size() - 1);	//resize
-		}
-			
+	entitiesToBeRemoved.push_back(entity);
 }
 
 b2Vec2 LazyWorld::raycast(b2Vec2 p1, b2Vec2 p2) {
@@ -245,7 +234,7 @@ void LazyWorld::initPhysics()
 
 	//create world
 	physWorld = new b2World(gravity);
-	physWorld->SetContactListener(new MyContactListener);
+	physWorld->SetContactListener(new MyContactListener());
 
 	for (int i = 0; i < worldEntities.size(); i++)
 		worldEntities[i]->initPhysics();
@@ -274,6 +263,19 @@ void LazyWorld::stepAI()
 	//iterate through all ai's
 	for (int i = 0; i < worldEntities.size(); i++)
 		worldEntities[i]->ai();
+
+	for (size_t curEntityBeingDeleted = 0; curEntityBeingDeleted < entitiesToBeRemoved.size(); curEntityBeingDeleted++)
+	{
+		for (size_t i = 0; i < worldEntities.size(); i++)
+			if (worldEntities[i] == entitiesToBeRemoved[curEntityBeingDeleted])
+			{
+				delete worldEntities[i];
+
+				worldEntities[i] = worldEntities[worldEntities.size() - 1];	//swap with last entity
+				worldEntities.resize(worldEntities.size() - 1);	//resize
+			}
+	}
+	entitiesToBeRemoved.resize(0);
 }
 
 void LazyWorld::render()
@@ -340,7 +342,7 @@ void LazyWorld::render()
 	for (int i = 0; i < worldEntities.size(); i++)
 	{
 		gl::pushMatrices();
-		gl::translate(vec2(worldEntities[i]->entityBody->GetPosition().x,worldEntities[i]->entityBody->GetPosition().y));
+		gl::translate(vec2(worldEntities[i]->getB2Body()->GetPosition().x,worldEntities[i]->getB2Body()->GetPosition().y));
 		
 		//l::drawSolidRect(Rectf(vec2(-0.5, -1), vec2(0.5, 1)));
 		
@@ -370,23 +372,23 @@ void LazyWorld::render()
 	{
 		float indicatorSize = 10.0;
 		float windowEdgeOffset = 20.0;
-		float healthIncrement = 100.0 / NUM_HEALTH_INDICATORS;
+		float healthIncrement = hero->getMaxHealth() / (float)NUM_HEALTH_INDICATORS;
 		float health = hero->getHealth();
 		gl::setMatricesWindow(getWindowSize());
 		gl::translate(getWindowCenter().x - getWindowBounds().getWidth() / 2, getWindowCenter().y + getWindowBounds().getHeight() / 2);
-		gl::translate(windowEdgeOffset + 3 * indicatorSize * i, -windowEdgeOffset);
+		gl::translate(windowEdgeOffset + (3.0 * indicatorSize * i), -windowEdgeOffset);
 		gl::scale(indicatorSize, indicatorSize);
 		if (health <= healthIncrement * i)
 		{
-			healthIndicators[i].setState(2);
+			healthIndicators[i].setState(NO_HEART);
 		}
-		else if (health <= healthIncrement * i + healthIncrement / 2)
+		else if (health <= (healthIncrement * i) + (healthIncrement / 2))
 		{
-			healthIndicators[i].setState(1);
+			healthIndicators[i].setState(HALF_HEART);
 		}
 		else
 		{
-			healthIndicators[i].setState(0);
+			healthIndicators[i].setState(FULL_HEART);
 		}
 		healthIndicators[i].draw();
 	}
@@ -618,40 +620,10 @@ vector<Line2> LazyWorld::createWorldFromList() {
 		fixtureDef.friction = 0.7f;
 		fixtureDef.restitution = 0.1f; // bounce
 
+		fixtureDef.filter.categoryBits = COLLIDER_WORLD;	//colliding categories
+
 		body->CreateFixture(&fixtureDef);
 		physicsBodies.push_back(body);
-
-		/*
-		Line2 line = addLines[i];
-		float len = b2Vec2(line.p2.x - line.p1.x, line.p2.y - line.p1.y).Length();
-		b2Vec2 pos =b2Vec2((line.p1.x + line.p2.x) / 2, (line.p1.y + line.p2.y) / 2);
-		b2BodyDef bodyDef;
-		bodyDef.type = b2_dynamicBody;
-		bodyDef.position.Set(pos.x, pos.y);
-		bodyDef.angle = 0;
-
-		b2Body *body = physWorld->CreateBody(&bodyDef);
-
-			//Make the edge Shape
-		b2FixtureDef fixtureDef;
-
-		//set density
-		fixtureDef.density = 0;
-		fixtureDef.restitution = 0;
-		fixtureDef.friction = 0.5;
-
-		b2EdgeShape es;
-		es.Set(line.p1,line.p2);
-		fixtureDef.shape = &es;
-		body->CreateFixture(&fixtureDef);
-		//Dispose of the shape? look into this to maek sure its good
-		//fixtureDef.shape.dispose();
-
-		//body.SetTransform(pos.x, pos.y, atan2(line.p2.y - line.p1.y, line.p2.x - line.p1.x))
-			//ADD TO THE PHYSICS WORLD LIST THING
-
-			*/
-
 	}
 	
 	blockOutlines = addLines;

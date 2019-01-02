@@ -10,8 +10,9 @@ using namespace std;
 #include "Entity.h"
 #include "Animation.h"
 
-#define HERO_WALKING_VELOCITY 0.7
-#define HERO_JUMPING_FORCE 15.0
+#define HERO_HEALTH 100.0f
+#define HERO_WALKING_VELOCITY 0.7f
+#define HERO_JUMPING_FORCE 15.0f
 
 class Hero : public Entity
 {

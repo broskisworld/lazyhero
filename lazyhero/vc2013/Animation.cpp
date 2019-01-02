@@ -23,6 +23,8 @@ Animation::Animation()
 	curFrame = 0;
 	timeSinceLastFrame = 0.0;
 
+	//animStates.resize(0);
+
 	mirror = false;
 
 	animationFinished = false;
@@ -35,6 +37,8 @@ Animation::Animation(spriteSheet _defaultSpriteSheet)
 	curAnimState = 0;
 	curFrame = 0;
 	timeSinceLastFrame = 0.0;
+
+	//animStates.resize(0);
 
 	mirror = false;
 
@@ -70,7 +74,7 @@ int Animation::addSpriteSheet(spriteSheet newSpriteSheet)
 
 int Animation::addState(animationDescription desc)
 {
-	for (int i = 0; i < animStates.size(); i++)	//check for duplicate ids
+	for (size_t i = 0; i < animStates.size(); i++)	//check for duplicate ids
 		if (desc.id == animStates[i].id)
 			return 1;	//do not allow animations with the same id (use enums for state type)
 
@@ -186,7 +190,10 @@ void Animation::draw()
 
 int Animation::getState()
 {
-	return animStates[curAnimState].id;
+	if (animStates.size() > 0)
+		return animStates[curAnimState].id;
+	else
+		return -1;
 }
 
 int Animation::setState(int newStateID)
@@ -196,7 +203,7 @@ int Animation::setState(int newStateID)
 
 	animationFinished = false;
 
-	for (int i = 0; i < animStates.size(); i++)
+	for (size_t i = 0; i < animStates.size(); i++)
 		if (animStates[i].id == newStateID)
 		{
 			curAnimState = i;

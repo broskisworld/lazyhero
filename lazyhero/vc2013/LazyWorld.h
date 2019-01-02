@@ -17,7 +17,26 @@ using namespace std;
 #include "Hero.h"
 #include "Camera2D.h"
 
+//UI
 #define NUM_HEALTH_INDICATORS 5
+
+enum healthIndicatorState
+{
+	FULL_HEART,
+	HALF_HEART,
+	NO_HEART
+};
+
+//PHYSICS
+enum collideCategory {
+	COLLIDER_BG = 0x0001,
+	COLLIDER_WORLD = 0x0002,
+	COLLIDER_DECOR = 0x0004,
+	COLLIDER_ENTITY = 0x0008,	//ANY ENTITY THAT DOESN'T OBEY SPECIAL RULES
+	COLLIDER_ENEMY = 0x0010,
+	COLLIDER_BULLET = 0x0020,
+	COLLIDER_SENSOR = 0x0040,
+};
 
 class LazyWorld
 {
@@ -31,6 +50,7 @@ class LazyWorld
 
 	//entities
 	vector<Entity *> worldEntities;
+	vector<Entity *> entitiesToBeRemoved;
 	Hero * hero;	//0th element of worldEntities (generated in buildLevel0() function - currently FALSE, actually in constructor)
 
 	Animation healthIndicators[NUM_HEALTH_INDICATORS];

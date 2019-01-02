@@ -36,7 +36,7 @@ class Animation
 
 	std::vector<animationDescription> animStates;
 	
-	int curAnimState;	//by index in vector NOT by animStates.id value (for internal use only)
+	size_t curAnimState;	//by index in vector NOT by animStates.id value (for internal use only)
 	int curFrame;
 	double timeSinceLastFrame;
 	bool animationFinished;

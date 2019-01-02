@@ -34,6 +34,12 @@ InkBullet::InkBullet(double _dirFactor)
 
 	inkBulletSprite.setState(FLYING);
 
+	boundingBox.SetAsBox(1.0f, 0.5f);
+
+	entityColliderType = COLLIDER_BULLET;
+	collideWithWhat = COLLIDER_WORLD | COLLIDER_ENTITY;
+
+	triggerExplosion = false;
 	dirFactor = _dirFactor;
 
 	if (dirFactor < 0.0)
@@ -47,13 +53,28 @@ void InkBullet::draw()
 
 void InkBullet::ai()
 {
-	if (contacting)	//TOUCHING
+	if (contacting)
 	{
-		//stop moving
-		entityBody->SetLinearVelocity(b2Vec2(0.0, 0.0));
-		
-		//show exploding animation
-		inkBulletSprite.setState(EXPLODING);
+		if (triggerExplosion)	//only explode when hitting walls
+		{
+			inkBulletSprite.setState(EXPLODING);
+			
+			b2Filter noCollideFilter;
+			noCollideFilter.categoryBits = COLLIDER_BULLET;
+			noCollideFilter.maskBits = 0x0000;
+			entityBody->GetFixtureList()->SetFilterData(noCollideFilter);
+			entityBody->SetType(b2_staticBody);
+
+			triggerExplosion = false;
+		}
+		else if(inkBulletSprite.getState() != EXPLODING)
+		{
+			gameWorld.removeEntity(this);
+		}
+	}
+
+	if (inkBulletSprite.getState() == EXPLODING)
+	{
 
 		if (inkBulletSprite.isFinished())
 			gameWorld.removeEntity(this);
@@ -80,5 +101,6 @@ void endContact(Entity *contactingEntity)
 
 InkBullet::~InkBullet()
 {
-	
+	//if (explodingJoint)
+		//gameWorld.getB2World()->DestroyJoint(explodingJoint);
 }

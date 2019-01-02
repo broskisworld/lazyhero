@@ -13,28 +13,24 @@ extern LazyWorld gameWorld;
 using namespace ci;
 using namespace ci::app;
 
-enum collideCategory {
-	BG = 0x0001,
-	WORLD = 0x0002,
-	DECOR = 0x0004,
-	ENTITY = 0x0008,
-	SENSOR = 0x0010,
-};
-
 #define CONTACT_HEALTH_DECREMENT 1
 
 Entity::Entity()
 {
 	//default entity spawn
-	startPos.x = 50;	//start pos
-	startPos.y = 20;
+	startPos.x = ENTITY_DEFAULT_SPAWN_X;	//start pos
+	startPos.y = ENTITY_DEFAULT_SPAWN_Y;
 
 	//default bounding box
-	boundingBox.SetAsBox(1, 1);	//width: 1 height: 1
+	boundingBox.SetAsBox(ENTITY_DEFAULT_BOUNDING_WIDTH, ENTITY_DEFAULT_BOUNDING_HEIGHT);	//width: 1 height: 1
 
-	contacting = false;
+	//colliders
+	entityColliderType = COLLIDER_ENTITY;
+	collideWithWhat = COLLIDER_WORLD | COLLIDER_ENTITY | COLLIDER_ENEMY | COLLIDER_BULLET;
+	contacting = 0;
 
-	health = 100.0f;
+	maxHP = ENTITY_DEFAULT_HEALTH;
+	health = maxHP;
 }
 
 void Entity::initPhysics()
@@ -55,16 +51,22 @@ void Entity::initPhysics()
 	fixtureDef.friction = 0.1f;
 	fixtureDef.restitution = 0.0f; // bounce
 
+	fixtureDef.filter.categoryBits = entityColliderType;
+	fixtureDef.filter.maskBits = collideWithWhat;
+
 	entityBody->CreateFixture(&fixtureDef);
-	
-	fixtureDef.filter.categoryBits = ENTITY;
-	fixtureDef.filter.maskBits = WORLD | ENTITY;
 	
 	gameWorld.addPhysicsBody(entityBody);
 }
 
 void Entity::ai() {
 	//override this function :)
+
+	//example death sequence:
+	//if (health <= 0.0f)
+	//{
+	//	gameWorld.removeEntity(this);
+	//}
 }
 
 void Entity::physics() {
@@ -75,32 +77,24 @@ void Entity::draw() {
 	//override this function :)
 }
 
-void Entity::updateHealth()
-{
-	if (contacting)
-	{
-		health -= CONTACT_HEALTH_DECREMENT;
-		if (health < 0)
-		{
-			health = 0;
-		}
-	}
-}
-
-void Entity::startContact(Entity *contactingEntity)
+void Entity::startContact(b2Fixture * contactingFixture, Entity *contactingEntity)
 {
 	if (contactingEntity != NULL)
 	{
-		contacting = true;
+		;//is entity
 	}
+
+	contacting++;
 }
 
-void Entity::endContact(Entity *contactingEntity)
+void Entity::endContact(b2Fixture * contactingFixture, Entity *contactingEntity)
 {
 	if (contactingEntity != NULL)
 	{
-		contacting = false;
+		;//is entity
 	}
+
+	contacting--;
 }
 
 b2Vec2 Entity::getVectorToEntity(Entity* targetEntity)
@@ -110,9 +104,24 @@ b2Vec2 Entity::getVectorToEntity(Entity* targetEntity)
 	return targetPosition - myPosition;
 }
 
+void Entity::setHealth(float newHealth)
+{
+	health = newHealth;
+}
+
+void Entity::changeHealth(float deltaHealth)
+{
+	health += deltaHealth;
+}
+
 float Entity::getHealth()
 {
 	return health;
+}
+
+float Entity::getMaxHealth()
+{
+	return maxHP;
 }
 
 Entity::~Entity() {

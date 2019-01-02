@@ -3,6 +3,7 @@
 
 using namespace std;
 
+#include "Game.h"
 #include "InputManager.h"
 #include "LazyWorld.h"
 #include "Entity.h"
@@ -11,6 +12,7 @@ using namespace std;
 
 extern LazyWorld gameWorld;
 extern InputManager controls;
+extern gameState curGameState;
 
 using namespace ci;
 using namespace ci::app;
@@ -46,7 +48,10 @@ Hero::Hero()
 
 	heroSprite.setState(FALLING);
 
-	boundingBox.SetAsBox(0.5, 1);	//width, height
+	boundingBox.SetAsBox(0.5f, 1.0f);	//width, height
+
+	maxHP = HERO_HEALTH;
+	health = maxHP;
 }
 
 void Hero::draw()
@@ -239,7 +244,19 @@ void Hero::ai()
 			heroSprite.setState(FALLING);
 		}
 	}
-	updateHealth();
+
+	if (health > maxHP)
+	{
+		health = maxHP;
+	}
+	if (health <= 0.0f)
+	{
+		//DEATH SEQUENCE
+		//gameWorld.removeEntity(this);
+
+		curGameState = PAUSED;
+		console() << "You died." << endl;
+	}
 }
 
 Hero::~Hero()

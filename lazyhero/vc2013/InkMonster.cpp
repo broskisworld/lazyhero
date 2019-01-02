@@ -25,7 +25,10 @@ InkMonster::InkMonster()
 
 	inkMonsterSprite.setState(IDLE);
 
-	timeSinceLastShot = 0.0;
+	entityColliderType = COLLIDER_ENEMY;
+	collideWithWhat = COLLIDER_WORLD | COLLIDER_ENTITY | COLLIDER_ENEMY;
+
+	timeSinceLastShot = -1.0f;
 
 	boundingBox.SetAsBox(0.5, 1);	//width, height
 }
@@ -66,7 +69,7 @@ void InkMonster::ai()
 		timeSinceLastShot = 0.0;	//reset firing
 	}
 
-	updateHealth();
+	//updateHealth();
 }
 
 void InkMonster::draw()
