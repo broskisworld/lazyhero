@@ -1,9 +1,6 @@
 # lazyhero
 
-lazyhero is the project me and my roommate TJ did for a 24-hour coding competition (USU Hackathon) in November 2018. The original concept was a game where you don't have direct control over the main character who is inherently lazy and easily distracted. Instead you would have to give him suggestions to point him in the right direction, and try and get him to the end without him getting distracted by butterflies and couches littered around the map. However, we ourselves got distracted and didn't finish within the 24-hour deadline :/ Regardless, I think it is a decent base as a game engine.
-
-DISCLAIMER: We did only have 24-hours to write it and the code is pretty messy at points - I'm in the progress of cleaning it up sry.
-
+Basic platformer game engine with entities, collisions, animations, world building, and sample AI implementation. Originally based on a project by Josh Bosley (me) and Timothy Luebke (my roommate) from the 24-hour USU Hackathon coding competition.
 
 ## Basic Heirarchy
 
@@ -50,3 +47,9 @@ Cinder requires the C++ build tools from Visual Studio 2013. While you can still
 
 ### Box2D/OpenGL
 lazyhero also used Box2D for all physics interations, but should be included in the repo already. Cinder is OpenGL based, and I haven't had any issues with versions or hardware capability but lmk if you find something :)
+
+## Gallery
+
+![Sample Gameplay 1](/gallery/1.png)
+![Sample Gameplay 2](/gallery/2.png)
+![Sample Gameplay 3](/gallery/3.png)
